@@ -1,4 +1,4 @@
-namespace OpenAI.Official;
+namespace OpenAI.Official.Embeddings;
 
 public partial class EmbeddingTokenUsage
 {

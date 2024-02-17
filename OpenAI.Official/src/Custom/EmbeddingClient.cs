@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace OpenAI.Official;
+namespace OpenAI.Official.Embeddings;
 
 /// <summary> The service client for the OpenAI Embeddings endpoint. </summary>
 public partial class EmbeddingClient

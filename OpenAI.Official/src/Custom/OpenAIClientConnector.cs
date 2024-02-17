@@ -2,7 +2,7 @@ using System;
 using System.ClientModel;
 using System.ClientModel.Internal;
 
-namespace OpenAI.Official;
+namespace OpenAI.Official.Embeddings;
 
 internal partial class OpenAIClientConnector
 {

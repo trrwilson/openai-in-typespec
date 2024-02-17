@@ -1,4 +1,4 @@
-namespace OpenAI.Official;
+namespace OpenAI.Official.Embeddings;
 
 /// <summary>
 /// Client-level options for OpenAI Embeddings.

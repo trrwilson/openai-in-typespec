@@ -3,7 +3,7 @@ using System.ClientModel.Primitives.Pipeline;
 using System.ClientModel.Primitives;
 using System.Threading;
 
-namespace OpenAI.Official;
+namespace OpenAI.Official.Embeddings;
 
 /// <summary>
 /// Client-level options for the OpenAI service.

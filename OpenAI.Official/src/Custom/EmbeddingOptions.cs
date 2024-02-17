@@ -1,4 +1,4 @@
-namespace OpenAI.Official;
+namespace OpenAI.Official.Embeddings;
 
 public class EmbeddingOptions
 {
@@ -10,8 +10,16 @@ public class EmbeddingOptions
     }
 
     /// <inheritdoc cref="Internal.CreateEmbeddingRequest.User"/>
-    public string User => _internalOptions.User;
+    public string User
+    {
+        get => _internalOptions.User;
+        set => _internalOptions.User = value;
+    }
 
     /// <inheritdoc cref="Internal.CreateEmbeddingRequest.Dimensions"/>
-    public long? Dimensions => _internalOptions.Dimensions;
+    public long? Dimensions
+    {
+        get => _internalOptions.Dimensions;
+        set => _internalOptions.Dimensions = value;
+    }
 }

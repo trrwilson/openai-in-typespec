@@ -4,9 +4,11 @@
 
 using System;
 using System.ClientModel;
+using System.Collections.Generic;
 using NUnit.Framework;
 using OpenAI;
 using OpenAI.Official;
+using OpenAI.Official.Embeddings;
 
 namespace OpenAI.Official.Tests;
 
@@ -29,13 +31,18 @@ public partial class EmbeddingClientTests
     [Test]
     public void SeveralEmbeddings()
     {
-        EmbeddingClient client = new("text-embedding-ada-002");
-        Result<EmbeddingCollection> response = client.GenerateEmbeddings(new string[]
-        {
+        EmbeddingClient client = new("text-embedding-3-small");
+        List<string> prompts =
+        [
             "Hello, world!",
             "This is a test.",
             "Goodbye!"
-        });
+        ];
+        EmbeddingOptions options = new()
+        {
+            Dimensions = 456,
+        };
+        Result<EmbeddingCollection> response = client.GenerateEmbeddings(prompts, options);
         Assert.That(response.Value, Is.Not.Null);
         Assert.That(response.Value.Count, Is.EqualTo(3));
         for (int i = 0; i < response.Value.Count; i++)
