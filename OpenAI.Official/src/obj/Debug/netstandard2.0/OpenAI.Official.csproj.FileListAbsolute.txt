@@ -1,0 +1,13 @@
+D:\s\openai-in-typespec\OpenAI.Official\src\bin\Debug\netstandard2.0\OpenAI.Official.deps.json
+D:\s\openai-in-typespec\OpenAI.Official\src\bin\Debug\netstandard2.0\OpenAI.Official.dll
+D:\s\openai-in-typespec\OpenAI.Official\src\bin\Debug\netstandard2.0\OpenAI.Official.pdb
+D:\s\openai-in-typespec\OpenAI.Official\src\bin\Debug\netstandard2.0\OpenAI.Official.xml
+D:\s\openai-in-typespec\OpenAI.Official\src\obj\Debug\netstandard2.0\OpenAI.Official.csproj.AssemblyReference.cache
+D:\s\openai-in-typespec\OpenAI.Official\src\obj\Debug\netstandard2.0\OpenAI.Official.GeneratedMSBuildEditorConfig.editorconfig
+D:\s\openai-in-typespec\OpenAI.Official\src\obj\Debug\netstandard2.0\OpenAI.Official.AssemblyInfoInputs.cache
+D:\s\openai-in-typespec\OpenAI.Official\src\obj\Debug\netstandard2.0\OpenAI.Official.AssemblyInfo.cs
+D:\s\openai-in-typespec\OpenAI.Official\src\obj\Debug\netstandard2.0\OpenAI.Official.csproj.CoreCompileInputs.cache
+D:\s\openai-in-typespec\OpenAI.Official\src\obj\Debug\netstandard2.0\OpenAI.Official.sourcelink.json
+D:\s\openai-in-typespec\OpenAI.Official\src\obj\Debug\netstandard2.0\OpenAI.Official.dll
+D:\s\openai-in-typespec\OpenAI.Official\src\obj\Debug\netstandard2.0\OpenAI.Official.xml
+D:\s\openai-in-typespec\OpenAI.Official\src\obj\Debug\netstandard2.0\OpenAI.Official.pdb

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>OpenAI.Official</id>
+    <version>1.0.0-beta.1</version>
+    <authors>OpenAI.Official</authors>
+    <description>This is the OpenAI.Official client library for developing .NET applications with rich experience.</description>
+    <tags>OpenAI.Official</tags>
+    <repository type="git" commit="4e9e7aa6963c616b48f74c51eb486d2ecbc626de" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="System.ClientModel" version="1.0.0-beta.3" exclude="Build,Analyzers" />
+        <dependency id="System.Text.Json" version="4.7.2" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="D:\s\openai-in-typespec\OpenAI.Official\src\bin\Debug\netstandard2.0\OpenAI.Official.dll" target="lib\netstandard2.0\OpenAI.Official.dll" />
+    <file src="D:\s\openai-in-typespec\OpenAI.Official\src\bin\Debug\netstandard2.0\OpenAI.Official.xml" target="lib\netstandard2.0\OpenAI.Official.xml" />
+  </files>
+</package>

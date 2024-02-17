@@ -1,0 +1,5 @@
+is_global = true
+build_property.RootNamespace = OpenAI.Official
+build_property.ProjectDir = d:\s\trrwilson-openai-in-typespec\OpenAI.Official\src\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 

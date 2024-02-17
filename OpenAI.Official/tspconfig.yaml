@@ -1,0 +1,15 @@
+parameters:
+  "service-dir":
+    default: "OpenAI.Official"
+  "dependencies":
+    default: ""
+emit:
+ - "@azure-tools/typespec-csharp"
+options:
+  "@azure-tools/typespec-csharp":
+    namespace: "OpenAI.Official"
+    branded: false
+    clear-output-folder: true
+    model-namespace: false
+    use-model-reader-writer: true
+    emitter-output-dir: "{cwd}"
