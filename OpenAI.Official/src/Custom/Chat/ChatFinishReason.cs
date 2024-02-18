@@ -28,7 +28,9 @@ using System;
 /// <item>
 ///     <member><see cref="ToolCalls"/></member>
 ///     <rest><c>tool_calls</c></rest>
-///     <cond>The model called one or more tools that were defined in the request.</cond>
+///     <cond>
+///         With no explicit <c>tool_choice</c>, the model called one or more tools that were defined in the request.
+///     </cond>
 /// </item>
 /// <item>
 ///     <member><see cref="FunctionCall"/></member>
@@ -76,6 +78,11 @@ public readonly struct ChatFinishReason : IEquatable<ChatFinishReason>
     /// To resolve tool calls, append the message associated with the tool calls followed by matching instances of
     /// <see cref="ChatRequestToolMessage"/> for each tool call, then perform another chat completion with the combined
     /// set of messages.
+    /// <para>
+    /// <b>Note</b>: <see cref="ToolCalls"/> is <i>not</i> provided as the <c>finish_reason</c> if the model calls a
+    /// tool in response to an explicit <c>tool_choice</c> via <see cref="ChatCompletionOptions.ToolConstraint"/>.
+    /// In that case, calling the specified tool is assumed and the expected reason is <see cref="Stopped"/>.
+    /// </para>
     /// </remarks>
     public static ChatFinishReason ToolCalls { get; } = "tool_calls";
     /// <inheritdoc/>

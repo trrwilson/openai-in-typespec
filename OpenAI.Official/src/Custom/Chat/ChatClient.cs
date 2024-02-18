@@ -1,6 +1,5 @@
 using System;
 using System.ClientModel;
-using System.ClientModel.Internal;
 using System.ClientModel.Primitives;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -226,8 +225,8 @@ public partial class ChatClient
         CancellationToken cancellationToken = default)
         => CompleteChatStreaming(
             new List<ChatRequestMessage> { new ChatRequestUserMessage(message) },
-            options,
             choiceCount,
+            options,
             cancellationToken);
 
     /// <summary>
@@ -251,8 +250,8 @@ public partial class ChatClient
         CancellationToken cancellationToken = default)
     => CompleteChatStreamingAsync(
         new List<ChatRequestMessage> { new ChatRequestUserMessage(message) },
-        options,
         choiceCount,
+        options,
         cancellationToken);
 
     /// <summary>
@@ -339,11 +338,13 @@ public partial class ChatClient
         int? choiceCount = null,
         bool? stream = null)
     {
+        options ??= new();
         List<BinaryData> messageDataItems = [];
         foreach (ChatRequestMessage message in messages)
         {
             messageDataItems.Add(message.ToBinaryData());
         }
+        Dictionary<string, BinaryData> additionalData = [];
         return new Internal.CreateChatCompletionRequest(
             messageDataItems,
             _clientConnector.Model,
@@ -361,11 +362,11 @@ public partial class ChatClient
             options?.Temperature,
             options?.NucleusSamplingFactor,
             options?.GetInternalTools(),
-            options?.ToolConstraint?.ToBinaryData(),
+            options?.ToolConstraint?.GetBinaryData(),
             options?.User,
             options?.FunctionConstraint?.ToBinaryData(),
             options?.GetInternalFunctions(),
-            serializedAdditionalRawData: null
+            additionalData
         );
     }
 }

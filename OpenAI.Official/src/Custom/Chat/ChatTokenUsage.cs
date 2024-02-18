@@ -1,9 +1,7 @@
 namespace OpenAI.Official.Chat;
 
-using System;
-
 /// <summary>
-/// Represents computed token consumption statistics for a chat completions request.
+/// Represents computed token consumption statistics for a chat completion request.
 /// </summary>
 public class ChatTokenUsage
 {

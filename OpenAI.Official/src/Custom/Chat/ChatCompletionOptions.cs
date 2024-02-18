@@ -1,20 +1,19 @@
 using System;
-using System.ClientModel;
-using System.ClientModel.Primitives;
+using System.ClientModel.Internal;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace OpenAI.Official.Chat;
 
+/// <summary>
+/// Request-level options for chat completion.
+/// </summary>
 public partial class ChatCompletionOptions
 {
     /// <inheritdoc cref="Internal.CreateChatCompletionRequest.FrequencyPenalty" />
     public double? FrequencyPenalty { get; set; }
     /// <inheritdoc cref="Internal.CreateChatCompletionRequest.LogitBias" />
-    public IDictionary<long, long> TokenSelectionBiases { get; set; }
+    public IDictionary<long, long> TokenSelectionBiases { get; set; } = new OptionalDictionary<long, long>();
     /// <inheritdoc cref="Internal.CreateChatCompletionRequest.Logprobs" />
     public bool? IncludeLogProbabilities { get; set; }
     /// <inheritdoc cref="Internal.CreateChatCompletionRequest.TopLogprobs" />
@@ -28,25 +27,25 @@ public partial class ChatCompletionOptions
     /// <inheritdoc cref="Internal.CreateChatCompletionRequest.Seed" />
     public long? Seed { get; set; }
     /// <inheritdoc cref="Internal.CreateChatCompletionRequest.Stop" />
-    public List<string> StopSequences { get; set; }
+    public IList<string> StopSequences { get; } = new OptionalList<string>();
     /// <inheritdoc cref="Internal.CreateChatCompletionRequest.Temperature" />
     public double? Temperature { get; set; }
     /// <inheritdoc cref="Internal.CreateChatCompletionRequest.TopP" />
     public double? NucleusSamplingFactor { get; set; }
     /// <inheritdoc cref="Internal.CreateChatCompletionRequest.Tools" />
-    public IList<ChatToolDefinition> Tools { get; }
+    public IList<ChatToolDefinition> Tools { get; } = new OptionalList<ChatToolDefinition>();
     /// <inheritdoc cref="Internal.CreateChatCompletionRequest.ToolChoice" />
     public ChatToolConstraint? ToolConstraint { get; set; }
     /// <inheritdoc cref="Internal.CreateChatCompletionRequest.User" />
     public string User { get; set; }
     /// <inheritdoc cref="Internal.CreateChatCompletionRequest.Functions" />
-    public IList<ChatFunctionDefinition> Functions { get; }
+    public IList<ChatFunctionDefinition> Functions { get; } = new OptionalList<ChatFunctionDefinition>();
     /// <inheritdoc cref="Internal.CreateChatCompletionRequest.FunctionCall" />
     public ChatFunctionConstraint? FunctionConstraint { get; set; }
 
     internal BinaryData GetInternalStopSequences()
     {
-        if (StopSequences == null || StopSequences.Count == 0)
+        if (!OptionalProperty.IsCollectionDefined(StopSequences))
         {
             return null;
         }
@@ -55,11 +54,7 @@ public partial class ChatCompletionOptions
 
     internal IDictionary<string, long> GetInternalLogitBias()
     {
-        if (TokenSelectionBiases == null)
-        {
-            return null;
-        }
-        Dictionary<string, long> packedLogitBias = new();
+        OptionalDictionary<string, long> packedLogitBias = [];
         foreach (KeyValuePair<long, long> pair in TokenSelectionBiases)
         {
             packedLogitBias[$"{pair.Key}"] = pair.Value;
@@ -83,11 +78,7 @@ public partial class ChatCompletionOptions
 
     internal IList<Internal.ChatCompletionTool> GetInternalTools()
     {
-        if (Tools == null)
-        {
-            return null;
-        }
-        List<Internal.ChatCompletionTool> internalTools = [];
+        OptionalList<Internal.ChatCompletionTool> internalTools = [];
         foreach (ChatToolDefinition tool in Tools)
         {
             if (tool is ChatFunctionToolDefinition functionTool)
@@ -105,7 +96,7 @@ public partial class ChatCompletionOptions
 
     internal IList<Internal.ChatCompletionFunctions> GetInternalFunctions()
     {
-        List<Internal.ChatCompletionFunctions> internalFunctions = [];
+        OptionalList<Internal.ChatCompletionFunctions> internalFunctions = [];
         foreach (ChatFunctionDefinition function in Functions)
         {
             Internal.ChatCompletionFunctions internalFunction = new(

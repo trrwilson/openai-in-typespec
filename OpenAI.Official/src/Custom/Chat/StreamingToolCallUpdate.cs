@@ -1,28 +1,23 @@
 namespace OpenAI.Official.Chat;
-
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Text.Json;
-using System.Xml.Serialization;
 
 /// <summary>
-/// Represents an incremental update to a streaming tool call that is part of a streaming chat completions choice.
+/// A base representation of an incremental update to a streaming tool call that is part of a streaming chat completion
+/// request.
 /// </summary>
 /// <remarks>
 /// <para>
-/// This type encapsulates the payload located in e.g. $.choices[0].delta.tool_calls[] in the REST API schema.
+/// This type encapsulates the payload located in e.g. <c>$.choices[0].delta.tool_calls[]</c> in the REST API schema.
 /// </para>
 /// <para>
 /// To differentiate between parallel streaming tool calls within a single streaming choice, use the value of the
 /// <see cref="ToolCallIndex"/> property.
 /// </para>
 /// <para>
-/// Please note <see cref="StreamingToolCallUpdate"/> is the base class. According to the scenario, a derived class
-/// of the base class might need to be assigned here, or this property needs to be casted to one of the possible
-/// derived classes.
-/// The available derived classes include: <see cref="StreamingFunctionToolCallUpdate"/>.
+/// <see cref="StreamingToolCallUpdate"/> is the streaming, base class counterpart to <see cref="ChatToolCall"/>.
+/// Currently, chat completion supports <c>function</c> tools and the derived
+/// <see cref="StreamingFunctionToolCallUpdate"/> type will provide required information about the matching function
+/// tool call.
 /// </para>
 /// </remarks>
 public abstract partial class StreamingToolCallUpdate
@@ -32,7 +27,7 @@ public abstract partial class StreamingToolCallUpdate
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Corresponds to e.g. $.choices[0].delta.tool_calls[0].id in the REST API schema.
+    /// Corresponds to e.g. <c>$.choices[0].delta.tool_calls[0].id</c> in the REST API schema.
     /// </para>
     /// <para>
     /// This value appears once for each streaming tool call, typically on the first update message for each
@@ -50,7 +45,7 @@ public abstract partial class StreamingToolCallUpdate
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Corresponds to e.g. $.choices[0].delta.tool_calls[0].index in the REST API schema.
+    /// Corresponds to e.g. <c>$.choices[0].delta.tool_calls[0].index</c> in the REST API schema.
     /// </para>
     /// <para>
     /// This value appears on every streaming tool call update. When multiple tool calls occur within the same

@@ -10,6 +10,9 @@ namespace OpenAI.Official;
 /// </summary>
 public partial class OpenAIClientOptions : RequestOptions
 {
+    // Note: this type currently proxies RequestOptions properties manually via the matching internal type. This is a
+    //       temporary extra step pending richer integration with code generation.
+
     internal Internal.OpenAIClientOptions InternalOptions { get; }
 
     /// <inheritdoc cref="RequestOptions.CancellationToken"/>

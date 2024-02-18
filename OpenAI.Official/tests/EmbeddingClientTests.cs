@@ -2,15 +2,12 @@
 
 #nullable disable
 
-using System;
+using NUnit.Framework;
+using OpenAI.Official.Embeddings;
 using System.ClientModel;
 using System.Collections.Generic;
-using NUnit.Framework;
-using OpenAI;
-using OpenAI.Official;
-using OpenAI.Official.Embeddings;
 
-namespace OpenAI.Official.Tests;
+namespace OpenAI.Official.Tests.Embeddings;
 
 public partial class EmbeddingClientTests
 {

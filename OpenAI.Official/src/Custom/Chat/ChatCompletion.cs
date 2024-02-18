@@ -2,10 +2,6 @@ namespace OpenAI.Official.Chat;
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text.Json;
-using System.Xml.Serialization;
 
 /// <inheritdoc cref="Internal.CreateChatCompletionResponse"/>
 public class ChatCompletion

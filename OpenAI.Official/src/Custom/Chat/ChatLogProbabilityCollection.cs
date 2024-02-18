@@ -1,11 +1,22 @@
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
 namespace OpenAI.Official.Chat;
 
+/// <summary>
+/// Represents a collection of log probability result information as requested via
+/// <see cref="ChatCompletionOptions.IncludeLogProbabilities"/>.
+/// </summary>
 public class ChatLogProbabilityCollection : ReadOnlyCollection<ChatLogProbabilityResult>
 {
     internal ChatLogProbabilityCollection(IList<ChatLogProbabilityResult> list) : base(list) { }
     internal static ChatLogProbabilityCollection FromInternalData(
         Internal.CreateChatCompletionResponseChoiceLogprobs internalLogprobs)
     {
+        if (internalLogprobs == null)
+        {
+            return null;
+        }
         List<ChatLogProbabilityResult> logProbabilities = [];
         foreach (Internal.ChatCompletionTokenLogprob internalLogprob in internalLogprobs.Content)
         {

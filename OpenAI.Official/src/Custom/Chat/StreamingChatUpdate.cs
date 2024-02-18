@@ -2,23 +2,22 @@ namespace OpenAI.Official.Chat;
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Text.Json;
-using System.Xml.Serialization;
 
+/// <summary>
+/// Represents an incremental item of new data in a streaming response to a chat completion request.
+/// </summary>
 public partial class StreamingChatUpdate
 {
-
     /// <summary>
     /// Gets a unique identifier associated with this streamed Chat Completions response.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Corresponds to $.id in the underlying REST schema.
+    /// Corresponds to <c>$.id</c> in the underlying REST schema.
     /// </para>
     /// When using Azure OpenAI, note that the values of <see cref="Id"/> and <see cref="Created"/> may not be
-    /// populated until the first <see cref="StreamingChatCompletionsUpdate"/> containing role, content, or
+    /// populated until the first <see cref="StreamingChatUpdate"/> containing role, content, or
     /// function information.
     /// </remarks>
     public string Id { get; }
@@ -29,10 +28,10 @@ public partial class StreamingChatUpdate
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Corresponds to $.created in the underlying REST schema.
+    /// Corresponds to <c>$.created</c> in the underlying REST schema.
     /// </para>
     /// When using Azure OpenAI, note that the values of <see cref="Id"/> and <see cref="Created"/> may not be
-    /// populated until the first <see cref="StreamingChatCompletionsUpdate"/> containing role, content, or
+    /// populated until the first <see cref="StreamingChatUpdate"/> containing role, content, or
     /// function information.
     /// </remarks>
     public DateTimeOffset? Created { get; }
@@ -42,7 +41,7 @@ public partial class StreamingChatUpdate
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Corresponds to e.g. $.choices[0].delta.role in the underlying REST schema.
+    /// Corresponds to e.g. <c>$.choices[0].delta.role</c> in the underlying REST schema.
     /// </para>
     /// <see cref="ChatRole"/> assignment typically occurs in a single update across a streamed Chat Completions
     /// choice and the value should be considered to be persist for all subsequent updates without a
@@ -55,7 +54,7 @@ public partial class StreamingChatUpdate
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Corresponds to e.g. $.choices[0].delta.content in the underlying REST schema.
+    /// Corresponds to e.g. <c>$.choices[0].delta.content</c> in the underlying REST schema.
     /// </para>
     /// Each update contains only a small number of tokens. When presenting or reconstituting a full, streamed
     /// response, all <see cref="ContentUpdate"/> values for the same <see cref="ChoiceIndex"/> should be
@@ -67,7 +66,7 @@ public partial class StreamingChatUpdate
     /// Gets the name of a function to be called.
     /// </summary>
     /// <remarks>
-    /// Corresponds to e.g. $.choices[0].delta.function_call.name in the underlying REST schema.
+    /// Corresponds to e.g. <c>$.choices[0].delta.function_call.name</c> in the underlying REST schema.
     /// </remarks>
     public string FunctionName { get; }
 
@@ -76,7 +75,7 @@ public partial class StreamingChatUpdate
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Corresponds to e.g. $.choices[0].delta.function_call.arguments in the underlying REST schema.
+    /// Corresponds to e.g. <c>$.choices[0].delta.function_call.arguments</c> in the underlying REST schema.
     /// </para>
     ///
     /// <para>
@@ -86,7 +85,7 @@ public partial class StreamingChatUpdate
     /// </para>
     ///
     /// <para>
-    /// As is the case for non-streaming <see cref="FunctionCall.Arguments"/>, the content provided for function
+    /// As is the case for non-streaming <see cref="ChatFunctionCall.Arguments"/>, the content provided for function
     /// arguments is not guaranteed to be well-formed JSON or to contain expected data. Callers should validate
     /// function arguments before using them.
     /// </para>
@@ -132,18 +131,18 @@ public partial class StreamingChatUpdate
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Corresponds to e.g. $.choices[0].index in the underlying REST schema.
+    /// Corresponds to e.g. <c>$.choices[0].index</c> in the underlying REST schema.
     /// </para>
     /// <para>
-    /// Unless a value greater than one was provided to <see cref="ChatCompletionsOptions.ChoiceCount"/> ('n' in
-    /// REST), only one choice will be generated. In that case, this value will always be 0 and may not need to be
-    /// considered.
+    /// Unless a value greater than <c>1</c> was provided as the <c>choiceCount</c> to
+    /// <see cref="ChatClient.CompleteChatStreaming(IEnumerable{ChatRequestMessage}, int?, ChatCompletionOptions, System.Threading.CancellationToken)"/>,
+    /// only one choice will be generated. In that case, this value will always be 0 and may not need to be considered.
     /// </para>
     /// <para>
-    /// When providing a value greater than one to <see cref="ChatCompletionsOptions.ChoiceCount"/>, this index
-    /// identifies which logical response the payload is associated with. In the event that a single underlying
-    /// server-sent event contains multiple choices, multiple instances of
-    /// <see cref="StreamingChatCompletionsUpdate"/> will be created.
+    /// When a value greater than <c>1</c> to that <c>choiceCount</c> is provided, this index represents
+    /// which logical <c>choice</c> the <see cref="StreamingChatUpdate"/> information is associated with. In the event
+    /// that a single underlying server-sent event contains multiple choices, multiple instances of
+    /// <see cref="StreamingChatUpdate"/> will be created.
     /// </para>
     /// </remarks>
     public int? ChoiceIndex { get; }
@@ -151,9 +150,11 @@ public partial class StreamingChatUpdate
     /// <inheritdoc cref="ChatCompletion.SystemFingerprint"/>
     public string SystemFingerprint { get; }
 
+    /// <summary>
+    /// The log probability information for choices in the chat completion response, as requested via
+    /// <see cref="ChatCompletionOptions.IncludeLogProbabilities"/>.
+    /// </summary>
     public ChatLogProbabilityCollection LogProbabilities { get; }
-
-    protected StreamingChatUpdate() { }
 
     internal StreamingChatUpdate(
         string id,

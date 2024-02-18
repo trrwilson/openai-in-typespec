@@ -219,8 +219,11 @@ namespace OpenAI.Official.Internal
             if (OptionalProperty.IsDefined(ToolChoice))
             {
                 writer.WritePropertyName("tool_choice"u8);
-#if NET6_0_OR_GREATER
-				writer.WriteRawValue(ToolChoice);
+// !!! BEGIN: Generated code change !!!
+// #if NET6_0_OR_GREATER
+#if true
+// !!! END: Generated code change !!!
+                writer.WriteRawValue(ToolChoice);
 #else
                 using (JsonDocument document = JsonDocument.Parse(ToolChoice))
                 {

@@ -1,11 +1,5 @@
 namespace OpenAI.Official.Chat;
-
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Text.Json;
-using System.Xml.Serialization;
 
 /// <summary>
 /// Represents an incremental update to a streaming function tool call that is part of a streaming chat completions
@@ -13,16 +7,12 @@ using System.Xml.Serialization;
 /// </summary>
 public partial class StreamingFunctionToolCallUpdate : StreamingToolCallUpdate
 {
-    // CUSTOM CODE NOTE:
-    //   This is an entirely custom-code-only type created to handle tool call details within a streaming chat
-    //   completions response.
-
     /// <summary>
     /// The name of the function requested by the tool call.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Corresponds to e.g. $.choices[0].delta.tool_calls[0].function.name in the REST API schema.
+    /// Corresponds to e.g. <c>$.choices[0].delta.tool_calls[0].function.name</c> in the REST API schema.
     /// </para>
     /// <para>
     /// For a streaming function tool call, this name will appear in a single streaming update payload, typically the
@@ -38,7 +28,7 @@ public partial class StreamingFunctionToolCallUpdate : StreamingToolCallUpdate
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Corresponds to e.g. $.choices[0].delta.tool_calls[0].function.arguments in the REST API schema.
+    /// Corresponds to e.g. <c>$.choices[0].delta.tool_calls[0].function.arguments</c> in the REST API schema.
     /// </para>
     /// Note that the model does not always generate valid JSON and may hallucinate parameters
     /// not defined by your function schema. Validate the arguments in your code before calling
@@ -57,7 +47,7 @@ public partial class StreamingFunctionToolCallUpdate : StreamingToolCallUpdate
         ArgumentsUpdate = functionArgumentsUpdate;
     }
 
-        internal static StreamingFunctionToolCallUpdate DeserializeStreamingFunctionToolCallUpdate(JsonElement element)
+    internal static StreamingFunctionToolCallUpdate DeserializeStreamingFunctionToolCallUpdate(JsonElement element)
     {
         if (element.ValueKind == JsonValueKind.Null)
         {

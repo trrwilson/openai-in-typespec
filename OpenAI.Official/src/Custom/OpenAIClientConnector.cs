@@ -4,6 +4,8 @@ using System.ClientModel.Internal;
 
 namespace OpenAI.Official;
 
+// This internal type facilitates composition rather than inheritance for scenario clients.
+
 internal partial class OpenAIClientConnector
 {
     private static readonly string s_OpenAIEndpointEnvironmentVariable = "OPENAI_ENDPOINT";
