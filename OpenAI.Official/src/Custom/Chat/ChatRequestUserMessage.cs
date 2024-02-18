@@ -33,4 +33,16 @@ public class ChatRequestUserMessage : ChatRequestMessage
     public ChatRequestUserMessage(IEnumerable<ChatMessageContent> contentItems)
         : base(ChatRole.User, new ChatMessageContentCollection(contentItems))
     { }
+
+    /// <summary>
+    /// Creates a new instance of <see cref="ChatRequestUserMessage"/> using a collection of content items that can
+    /// include text and image information. This content format is currently only applicable to the
+    /// <c>gpt-4-vision-preview</c> model and will not be accepted by other models.
+    /// </summary>
+    /// <param name="contentItems">
+    ///     The collection of text and image content items associated with the message.
+    /// </param>
+    public ChatRequestUserMessage(params ChatMessageContent[] contentItems)
+        : this(contentItems as IEnumerable<ChatMessageContent>)
+    { }
 }
