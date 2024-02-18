@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using OpenAI.Official.Chat;
+using System;
 using System.ClientModel;
 
 namespace OpenAI.Official.Tests.Chat;
@@ -15,7 +16,11 @@ public partial class ChatWithVision
                 new ChatRequestUserMessage(
                     "Describe this image for me",
                     new ChatMessageImageUrlContent(s_stopSignDataUrl)),
-            ]);
+            ], new ChatCompletionOptions()
+            {
+                MaxTokens = 2048,
+            });
+        Console.WriteLine(result.Value.Content);
         Assert.That(result.Value.Content.ToString().ToLowerInvariant(), Contains.Substring("stop"));
     }
 

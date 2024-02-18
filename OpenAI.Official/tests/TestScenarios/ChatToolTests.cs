@@ -3,10 +3,12 @@ using OpenAI.Official.Chat;
 using System;
 using System.ClientModel;
 using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace OpenAI.Official.Tests.Chat;
 
-public partial class ChatToolConstraintTests
+public partial class ChatToolTests
 {
     [Test]
     public void NoParameterToolWorks()
@@ -39,5 +41,49 @@ public partial class ChatToolConstraintTests
             ]);
         Assert.That(result.Value.FinishReason, Is.EqualTo(ChatFinishReason.Stopped));
         Assert.That(result.Value.Content.ToString().ToLowerInvariant(), Contains.Substring("green"));
+    }
+
+    [Test]
+    public void ParametersWork()
+    {
+        ChatClient client = new("gpt-3.5-turbo");
+        ChatFunctionToolDefinition favoriteColorForMonthTool = new()
+        {
+            Name = "get_favorite_color_for_month",
+            Description = "gets the caller's favorite color for a given month",
+            Parameters = BinaryData.FromObjectAsJson(new
+            {
+                type = "object",
+                properties = new
+                {
+                    month = new
+                    {
+                        type = "string",
+                        description = "the name of a month, like January or September",
+                    },
+                },
+            }),
+        };
+        ChatCompletionOptions options = new()
+        {
+            Tools = { favoriteColorForMonthTool },
+        };
+        List<ChatRequestMessage> messages =
+        [
+            new ChatRequestUserMessage("What's my favorite color in February?"),
+        ];
+        Result<ChatCompletion> result = client.CompleteChat(messages, options);
+        Assert.That(result.Value.FinishReason, Is.EqualTo(ChatFinishReason.ToolCalls));
+        Assert.That(result.Value.ToolCalls?.Count, Is.EqualTo(1));
+        var functionToolCall = result.Value.ToolCalls[0] as ChatFunctionToolCall;
+        Assert.That(functionToolCall.Name, Is.EqualTo(favoriteColorForMonthTool.Name));
+        JsonObject argumentsJson = JsonSerializer.Deserialize<JsonObject>(functionToolCall.Arguments);
+        Assert.That(argumentsJson.Count, Is.EqualTo(1));
+        Assert.That(argumentsJson.ContainsKey("month"));
+        Assert.That(argumentsJson["month"].ToString().ToLowerInvariant(), Is.EqualTo("february"));
+        messages.Add(new ChatRequestAssistantMessage(result.Value));
+        messages.Add(new ChatRequestToolMessage(functionToolCall.Id, "chartreuse"));
+        result = client.CompleteChat(messages, options);
+        Assert.That(result.Value.Content.ToString().ToLowerInvariant(), Contains.Substring("chartreuse"));
     }
 }
