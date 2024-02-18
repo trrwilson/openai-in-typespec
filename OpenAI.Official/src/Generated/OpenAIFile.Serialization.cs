@@ -99,6 +99,13 @@ namespace OpenAI.Official.Internal
                 }
                 if (property.NameEquals("bytes"u8))
                 {
+/// !!! BEGIN CUSTOM CODE CHANGE
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        bytes = 0;
+                        continue;
+                    }
+/// !!! END CUSTOM CODE CHANGE
                     bytes = property.Value.GetInt64();
                     continue;
                 }
