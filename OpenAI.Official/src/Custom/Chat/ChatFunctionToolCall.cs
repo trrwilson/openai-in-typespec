@@ -1,4 +1,7 @@
+using System;
+using System.ClientModel.Primitives;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 
 namespace OpenAI.Official.Chat;
 
@@ -12,7 +15,7 @@ public class ChatFunctionToolCall : ChatToolCall
     /// <summary>
     /// Gets the <c>name</c> of the function.
     /// </summary>
-    public required string FunctionName
+    public required string Name
     {
         get => InternalToolCall.Name;
         set => InternalToolCall.Name = value;
@@ -49,7 +52,17 @@ public class ChatFunctionToolCall : ChatToolCall
         : this()
     {
         Id = toolCallId;
-        FunctionName = functionName;
+        Name = functionName;
         Arguments = arguments;
+    }
+
+    internal override void WriteDerivedAdditions(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+    {
+        writer.WriteString("type"u8, "function"u8);
+        writer.WritePropertyName("function"u8);
+        writer.WriteStartObject();
+        writer.WriteString("name"u8, Name);
+        writer.WriteString("arguments"u8, Arguments);
+        writer.WriteEndObject();
     }
 }

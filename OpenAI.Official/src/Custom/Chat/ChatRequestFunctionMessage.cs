@@ -1,3 +1,6 @@
+using System.ClientModel.Primitives;
+using System.Text.Json;
+
 namespace OpenAI.Official.Chat;
 
 /// <summary>
@@ -27,5 +30,10 @@ public class ChatRequestFunctionMessage : ChatRequestMessage
         : base(ChatRole.Function, content)
     {
         FunctionName = functionName;
+    }
+
+    internal override void WriteDerivedAdditions(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+    {
+        writer.WriteString("name"u8, FunctionName);
     }
 }

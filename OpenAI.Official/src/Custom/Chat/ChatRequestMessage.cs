@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Dynamic;
-
 namespace OpenAI.Official.Chat;
 
 /// <summary>
@@ -53,7 +49,7 @@ namespace OpenAI.Official.Chat;
 /// </item>
 /// </list>
 /// </remarks>
-public abstract class ChatRequestMessage
+public abstract partial class ChatRequestMessage
 {
     /// <summary>
     /// The content associated with the message. The interpretation of this content will vary depending on the message type.
@@ -74,84 +70,5 @@ public abstract class ChatRequestMessage
     {
         Role = role;
         Content = content;
-    }
-
-    internal BinaryData ToBinaryData()
-    {
-        dynamic data = new ExpandoObject();
-        data.role = Role.ToString();
-        if (this is ChatRequestSystemMessage systemMessage && !string.IsNullOrEmpty(systemMessage.ParticipantName))
-        {
-            data.name = systemMessage.ParticipantName;
-        }
-        if (this is ChatRequestUserMessage userMessage && !string.IsNullOrEmpty(userMessage.ParticipantName))
-        {
-            data.name = userMessage.ParticipantName;
-        }
-
-        if (Content is ChatMessageContentCollection contentCollection)
-        {
-            data.content = new List<dynamic>();
-            foreach (ChatMessageContent contentItem in contentCollection)
-            {
-                if (contentItem is ChatMessageTextContent textContent)
-                {
-                    data.content.Add(new
-                    {
-                        type = "text",
-                        text = textContent.ToString(),
-                    });
-                }
-                else if (contentItem is ChatMessageImageUrlContent imageUrlContent)
-                {
-                    data.content.Add(new
-                    {
-                        type = "image_url",
-                        image_url = new
-                        {
-                            url = imageUrlContent.ImageUrl,
-                        }
-                    });
-                }
-            }
-        }
-        else if (Content is ChatMessageTextContent textContent)
-        {
-            data.content = textContent.Text;
-        }
-
-        if (this is ChatRequestAssistantMessage assistantMessage)
-        {
-            if (assistantMessage.ToolCalls != null)
-            {
-                data.tool_calls = new List<dynamic>();
-                foreach (ChatToolCall toolCall in assistantMessage.ToolCalls)
-                {
-                    if (toolCall is ChatFunctionToolCall functionToolCall)
-                    {
-                        data.tool_calls.Add(new
-                        {
-                            id = functionToolCall.Id,
-                            type = "function",
-                            function = new
-                            {
-                                name = functionToolCall.FunctionName,
-                                arguments = functionToolCall.Arguments,
-                            }
-                        });
-                    }
-                }
-            }
-            if (assistantMessage.FunctionCall != null)
-            {
-                data.function_call = new
-                {
-                    name = assistantMessage.FunctionCall.FunctionName,
-                    arguments = assistantMessage.FunctionCall.Arguments,
-                };
-            }
-        }
-
-        return BinaryData.FromObjectAsJson(data);
     }
 }

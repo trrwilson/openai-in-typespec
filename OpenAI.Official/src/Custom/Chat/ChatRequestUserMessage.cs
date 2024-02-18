@@ -1,4 +1,9 @@
+using System.ClientModel.Internal;
+using System;
 using System.Collections.Generic;
+using System.Dynamic;
+using System.Text.Json;
+using System.ClientModel.Primitives;
 
 namespace OpenAI.Official.Chat;
 
@@ -12,7 +17,7 @@ public class ChatRequestUserMessage : ChatRequestMessage
     /// <summary>
     /// An optional <c>name</c> for the participant.
     /// </summary>
-    public string ParticipantName { get; set; }
+    public string Name { get; set; }
 
     /// <summary>
     /// Creates a new instance of <see cref="ChatRequestUserMessage"/> with ordinary text <c>content</c>.
@@ -45,4 +50,12 @@ public class ChatRequestUserMessage : ChatRequestMessage
     public ChatRequestUserMessage(params ChatMessageContent[] contentItems)
         : this(contentItems as IEnumerable<ChatMessageContent>)
     { }
+
+    internal override void WriteDerivedAdditions(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+    {
+        if (OptionalProperty.IsDefined(Name))
+        {
+            writer.WriteString("name"u8, Name);
+        }
+    }
 }

@@ -19,12 +19,12 @@ namespace OpenAI.Official.Chat;
 ///     request.
 /// </para>
 /// </remarks>
-public class ChatFunctionCall
+public partial class ChatFunctionCall
 {
     /// <summary>
     /// The name of the function being called by the model.
     /// </summary>
-    public required string FunctionName { get; set; }
+    public required string Name { get; set; }
     /// <summary>
     /// The arguments to the function being called by the model.
     /// </summary>
@@ -41,7 +41,7 @@ public class ChatFunctionCall
     [SetsRequiredMembers]
     public ChatFunctionCall(string functionName, string arguments)
     {
-        FunctionName = functionName;
+        Name = functionName;
         Arguments = arguments;
     }
 }

@@ -5,7 +5,7 @@ namespace OpenAI.Official.Chat;
 /// parameterized resolution against a previously defined tool that is needed for the model to continue the logical
 /// conversation.
 /// </summary>
-public abstract class ChatToolCall
+public abstract partial class ChatToolCall
 {
     /// <summary>
     /// A unique identifier associated with the tool call, used in a subsequent <see cref="ChatRequestToolMessage"/> to

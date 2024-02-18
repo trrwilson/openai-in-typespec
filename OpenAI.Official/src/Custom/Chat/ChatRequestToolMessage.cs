@@ -1,3 +1,8 @@
+using System;
+using System.ClientModel.Internal;
+using System.ClientModel.Primitives;
+using System.Text.Json;
+
 namespace OpenAI.Official.Chat;
 
 /// <summary>
@@ -37,5 +42,10 @@ public class ChatRequestToolMessage : ChatRequestMessage
         : base(ChatRole.Tool, content)
     {
         ToolCallId = toolCallId;
+    }
+
+    internal override void WriteDerivedAdditions(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+    {
+        writer.WriteString("tool_call_id"u8, ToolCallId);
     }
 }

@@ -342,7 +342,7 @@ public partial class ChatClient
         List<BinaryData> messageDataItems = [];
         foreach (ChatRequestMessage message in messages)
         {
-            messageDataItems.Add(message.ToBinaryData());
+            messageDataItems.Add(ModelReaderWriter.Write(message));
         }
         Dictionary<string, BinaryData> additionalData = [];
         return new Internal.CreateChatCompletionRequest(

@@ -1,4 +1,7 @@
+using System;
+using System.ClientModel.Primitives;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 
 namespace OpenAI.Official.Chat;
 
@@ -10,7 +13,6 @@ namespace OpenAI.Official.Chat;
 /// <remarks>
 /// Creates a new instance of <see cref="ChatMessageImageUrlContent"/>
 /// </remarks>
-/// <param name="url"> The URL of the image. </param>
 public class ChatMessageImageUrlContent : ChatMessageContent
 {
     /// <summary>
@@ -36,5 +38,22 @@ public class ChatMessageImageUrlContent : ChatMessageContent
     public ChatMessageImageUrlContent(string imageUrl)
     {
         ImageUrl = imageUrl;
+    }
+
+    internal override void WriteTopLevel(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+    {
+        throw new InvalidOperationException(
+            "Image URL content items are not valid as top-level content, only within a content collection.");
+    }
+
+    internal override void WriteInCollection(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+    {
+        writer.WriteStartObject();
+        writer.WriteString("type"u8, "image_url"u8);
+        writer.WritePropertyName("image_url"u8);
+        writer.WriteStartObject();
+        writer.WriteString("url"u8, ImageUrl);
+        writer.WriteEndObject();
+        writer.WriteEndObject();
     }
 }

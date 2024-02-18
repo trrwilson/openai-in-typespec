@@ -1,7 +1,7 @@
-namespace OpenAI.Official.Chat;
-
 using System;
 using System.Collections.Generic;
+
+namespace OpenAI.Official.Chat;
 
 /// <inheritdoc cref="Internal.CreateChatCompletionResponse"/>
 public class ChatCompletion
@@ -51,6 +51,7 @@ public class ChatCompletion
                     toolCalls.Add(new ChatFunctionToolCall(internalToolCall.Id, internalToolCall.Function.Name, internalToolCall.Function.Arguments));
                 }
             }
+            ToolCalls = toolCalls;
         }
         if (internalChoice.Message.FunctionCall != null)
         {

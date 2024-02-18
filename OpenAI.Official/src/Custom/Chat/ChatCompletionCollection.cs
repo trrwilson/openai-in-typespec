@@ -1,7 +1,7 @@
-namespace OpenAI.Official.Chat;
-
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+
+namespace OpenAI.Official.Chat;
 
 /// <summary>
 /// Represents a chat completions response payload that contains information about multiple requested chat completion

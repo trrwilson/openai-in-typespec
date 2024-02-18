@@ -1,4 +1,8 @@
+using System;
+using System.ClientModel.Internal;
+using System.ClientModel.Primitives;
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace OpenAI.Official.Chat;
 
@@ -13,7 +17,7 @@ public class ChatRequestAssistantMessage : ChatRequestMessage
     /// An optional <c>name</c> associated with the assistant message. This is typically defined with a <c>system</c>
     /// message and is used to differentiate between multiple participants of the same role.
     /// </summary>
-    public string ParticipantName { get; set; }
+    public string Name { get; set; }
     /// <summary>
     /// The <c>tool_calls</c> furnished by the model that are needed to continue the logical conversation across chat
     /// completion requests. A <see cref="ChatToolCall"/> instance corresponds to a supplied
@@ -68,5 +72,55 @@ public class ChatRequestAssistantMessage : ChatRequestMessage
         : base(ChatRole.Assistant, content)
     {
         FunctionCall = functionCall;
+    }
+
+    /// <summary>
+    /// Creates a new instance of <see cref="ChatRequestAssistantMessage"/> from a <see cref="ChatCompletion"/> with
+    /// an <c>assistant</c> role response.
+    /// </summary>
+    /// <remarks>
+    ///     This constructor will copy the <c>content</c>, <c>tool_calls</c>, and <c>function_call</c> from a chat
+    ///     completion response into a new <c>assistant</c> role request message. 
+    /// </remarks>
+    /// <param name="chatCompletion">
+    ///     The <see cref="ChatCompletion"/> from which the conversation history request message should be created.
+    /// </param>
+    /// <exception cref="ArgumentException">
+    ///     The <c>role</c> of the provided chat completion response was not <see cref="ChatRole.Assistant"/>.
+    /// </exception>
+    public ChatRequestAssistantMessage(ChatCompletion chatCompletion)
+        : base(ChatRole.Assistant, chatCompletion?.Content)
+    {
+        if (chatCompletion?.Role != ChatRole.Assistant)
+        {
+            throw new ArgumentException(
+                $"Can't instantiate a {nameof(ChatRequestAssistantMessage)} from a chat completion"
+                + $" with finish reason: {chatCompletion?.FinishReason}");
+        }
+        ToolCalls = chatCompletion.ToolCalls;
+        FunctionCall = chatCompletion.FunctionCall;
+    }
+
+    internal override void WriteDerivedAdditions(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+    {
+        if (OptionalProperty.IsDefined(Name))
+        {
+            writer.WriteString("name"u8, Name);
+        }
+        if (OptionalProperty.IsCollectionDefined(ToolCalls))
+        {
+            writer.WritePropertyName("tool_calls"u8);
+            writer.WriteStartArray();
+            foreach (ChatToolCall toolCall in ToolCalls)
+            {
+                (toolCall as IJsonModel<ChatToolCall>).Write(writer, options);
+            }
+            writer.WriteEndArray();
+        }
+        if (OptionalProperty.IsDefined(FunctionCall))
+        {
+            writer.WritePropertyName("function_call"u8);
+            (FunctionCall as IJsonModel<ChatFunctionCall>).Write(writer, options);
+        }
     }
 }

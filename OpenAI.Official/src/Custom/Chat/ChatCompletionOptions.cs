@@ -111,6 +111,10 @@ public partial class ChatCompletionOptions
 
     internal static Internal.FunctionParameters CreateInternalFunctionParameters(BinaryData parameters)
     {
+        if (parameters == null)
+        {
+            return null;
+        }
         JsonElement parametersElement = JsonDocument.Parse(parameters.ToString()).RootElement;
         Internal.FunctionParameters internalParameters = new();
         foreach (JsonProperty property in parametersElement.EnumerateObject())

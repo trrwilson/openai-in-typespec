@@ -1,6 +1,11 @@
+using System;
+using System.ClientModel.Primitives;
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
+using System.IO;
 using System.Linq;
+using System.Text.Json;
 
 namespace OpenAI.Official.Chat;
 
@@ -19,7 +24,7 @@ public class ChatMessageContentCollection : ChatMessageContent, IEnumerable<Chat
     /// Creates a new instance of <see cref="ChatMessageContentCollection"/>.
     /// </summary>
     /// <param name="contentItems"> The content items contained in this collection. </param>
-    public ChatMessageContentCollection(IEnumerable<ChatMessageContent> contentItems)
+    internal ChatMessageContentCollection(IEnumerable<ChatMessageContent> contentItems)
     {
         Items = contentItems.ToList();
     }
@@ -29,4 +34,19 @@ public class ChatMessageContentCollection : ChatMessageContent, IEnumerable<Chat
 
     /// <inheritdoc/>
     IEnumerator IEnumerable.GetEnumerator() => Items.GetEnumerator();
+
+    internal override void WriteTopLevel(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+    {
+        writer.WriteStartArray();
+        foreach (ChatMessageContent contentItem in Items)
+        {
+            contentItem.WriteInCollection(writer, options);
+        }
+        writer.WriteEndArray();
+    }
+
+    internal override void WriteInCollection(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+    {
+        throw new InvalidOperationException("Content collections cannot be written inside other content collections.");
+    }
 }

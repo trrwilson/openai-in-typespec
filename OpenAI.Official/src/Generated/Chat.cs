@@ -7,6 +7,7 @@ using System.ClientModel;
 using System.ClientModel.Internal;
 using System.ClientModel.Primitives;
 using System.ClientModel.Primitives.Pipeline;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -152,6 +153,17 @@ namespace OpenAI.Official.Internal
 
         internal PipelineMessage CreateCreateChatCompletionRequest(RequestBody content, RequestOptions context)
         {
+/// !!! BEGIN Custom code change (Debug only)
+            string requestContentDump = null;
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                using MemoryStream localStream = new();
+                content.WriteTo(localStream, default);
+                localStream.Position = 0;
+                using StreamReader localStreamReader = new(localStream);
+                requestContentDump = localStreamReader.ReadToEnd();
+            }
+/// !!! END Custom code change (Debug only)
             var message = _pipeline.CreateMessage(context, ResponseErrorClassifier200);
             var request = message.Request;
             request.SetMethod("POST");

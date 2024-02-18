@@ -1,3 +1,7 @@
+using System;
+using System.ClientModel.Primitives;
+using System.Text.Json;
+
 namespace OpenAI.Official.Chat;
 
 /// <summary>
@@ -26,4 +30,17 @@ public class ChatMessageTextContent : ChatMessageContent
     public static implicit operator ChatMessageTextContent(string value) => new(value);
     /// <inheritdoc/>
     public override string ToString() => Text;
+
+    internal override void WriteTopLevel(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+    {
+        writer.WriteStringValue(Text);
+    }
+
+    internal override void WriteInCollection(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+    {
+        writer.WriteStartObject();
+        writer.WriteString("type"u8, "text"u8);
+        writer.WriteString("text"u8, Text);
+        writer.WriteEndObject();
+    }
 }

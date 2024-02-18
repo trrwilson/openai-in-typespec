@@ -1,3 +1,10 @@
+using System;
+using System.ClientModel.Internal;
+using System.ClientModel.Primitives;
+using System.Dynamic;
+using System.Runtime.InteropServices;
+using System.Text.Json;
+
 namespace OpenAI.Official.Chat;
 
 /// <summary>
@@ -11,11 +18,19 @@ public class ChatRequestSystemMessage : ChatRequestMessage
     /// <summary>
     /// An optional <c>name</c> for the participant.
     /// </summary>
-    public string ParticipantName { get; set; } // JSON "name"
+    public string Name { get; set; } // JSON "name"
 
     /// <summary>
     /// Creates a new instance of <see cref="ChatRequestSystemMessage"/>.
     /// </summary>
     /// <param name="content"> The <c>system</c> message text that guides the model's behavior. </param>
     public ChatRequestSystemMessage(ChatMessageTextContent content) : base(ChatRole.System, content) { }
+
+    internal override void WriteDerivedAdditions(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+    {
+        if (OptionalProperty.IsDefined(Name))
+        {
+            writer.WriteString("name"u8, Name);
+        }
+    }
 }
