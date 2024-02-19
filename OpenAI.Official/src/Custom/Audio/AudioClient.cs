@@ -148,12 +148,12 @@ public partial class AudioClient
 
     /// <inheritdoc cref="Internal.Audio.CreateSpeech(RequestBody, RequestOptions)"/>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result GenerateTextToSpeech(RequestBody content, RequestOptions context = null)
+    public virtual Result GenerateSpeechFromText(RequestBody content, RequestOptions context = null)
         => Shim.CreateSpeech(content, context);
 
-    /// <inheritdoc cref="Internal.CreateSpeechAsync(RequestBody, RequestOptions)"/>
+    /// <inheritdoc cref="Internal.Audio.CreateSpeech(RequestBody, RequestOptions)"/>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> GenerateTextToSpeechAsync(RequestBody content, RequestOptions context = null)
+    public virtual Task<Result> GenerateSpeechFromTextAsync(RequestBody content, RequestOptions context = null)
         => Shim.CreateSpeechAsync(content, context);
 
     private Internal.CreateSpeechRequest CreateInternalTtsRequest(

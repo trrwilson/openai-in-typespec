@@ -703,7 +703,6 @@ public partial class AssistantClient
     internal static Internal.CreateRunRequest CreateInternalCreateRunRequest(
         string assistantId,
         RunCreationOptions options = null)
-
     {
         options ??= new();
         return new(
