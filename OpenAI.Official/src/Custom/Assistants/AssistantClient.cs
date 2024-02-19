@@ -2,16 +2,14 @@ using System;
 using System.ClientModel;
 using System.ClientModel.Internal;
 using System.ClientModel.Primitives;
-using System.ClientModel.Primitives.Pipeline;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace OpenAI.Official.Assistants;
 
 /// <summary>
-///     The service client for OpenAI assistants.
+/// The service client for OpenAI assistants.
 /// </summary>
 public partial class AssistantClient
 {
@@ -215,7 +213,7 @@ public partial class AssistantClient
     public virtual async Task<Result<AssistantFileAssociation>> CreateAssistantFileAssociationAsync(
         string assistantId,
         string fileId,
-    CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default)
     {
         Result<Internal.AssistantFileObject> internalResult
             = await Shim.CreateAssistantFileAsync(assistantId, new(fileId), cancellationToken).ConfigureAwait(false);
@@ -245,16 +243,16 @@ public partial class AssistantClient
         string assistantId,
         int? maxResults = null,
         CreatedAtSortOrder? createdSortOrder = null,
-        string previousAssistantId = null,
-        string subsequentAssistantId = null,
+        string previousId = null,
+        string subsequentId = null,
         CancellationToken cancellationToken = default)
     {
         Result<Internal.ListAssistantFilesResponse> internalFunc() => Shim.GetAssistantFiles(
             assistantId,
             maxResults,
             ToInternalListOrder(createdSortOrder),
-            previousAssistantId,
-            subsequentAssistantId,
+            previousId,
+            subsequentId,
             cancellationToken);
         return GetListQueryPage<AssistantFileAssociation, Internal.ListAssistantFilesResponse>(internalFunc);
     }
@@ -263,8 +261,8 @@ public partial class AssistantClient
         string assistantId,
         int? maxResults = null,
         CreatedAtSortOrder? createdSortOrder = null,
-        string previousAssistantId = null,
-        string subsequentAssistantId = null,
+        string previousId = null,
+        string subsequentId = null,
         CancellationToken cancellationToken = default)
     {
         Func<Task<Result<Internal.ListAssistantFilesResponse>>> internalFunc
@@ -272,8 +270,8 @@ public partial class AssistantClient
                 assistantId,
                 maxResults,
                 ToInternalListOrder(createdSortOrder),
-                previousAssistantId,
-                subsequentAssistantId,
+                previousId,
+                subsequentId,
                 cancellationToken);
         return GetListQueryPageAsync<AssistantFileAssociation, Internal.ListAssistantFilesResponse>(internalFunc);
     }
@@ -302,11 +300,7 @@ public partial class AssistantClient
         ThreadCreationOptions options = null,
         CancellationToken cancellationToken = default)
     {
-        options ??= new();
-        Internal.CreateThreadRequest request = new Internal.CreateThreadRequest(
-            ToInternalCreateMessageRequestList(options.Messages),
-            options.Metadata,
-            serializedAdditionalRawData: null);
+        Internal.CreateThreadRequest request = CreateInternalCreateThreadRequest(options);
         Result<Internal.ThreadObject> internalResult = ThreadShim.CreateThread(request, cancellationToken);
         return Result.FromValue(new AssistantThread(internalResult.Value), internalResult.GetRawResponse());
     }
@@ -315,11 +309,7 @@ public partial class AssistantClient
         ThreadCreationOptions options = null,
         CancellationToken cancellationToken = default)
     {
-        options ??= new();
-        Internal.CreateThreadRequest request = new Internal.CreateThreadRequest(
-            ToInternalCreateMessageRequestList(options.Messages),
-            options.Metadata,
-            serializedAdditionalRawData: null);
+        Internal.CreateThreadRequest request = CreateInternalCreateThreadRequest(options);
         Result<Internal.ThreadObject> internalResult
             = await ThreadShim.CreateThreadAsync(request, cancellationToken).ConfigureAwait(false);
         return Result.FromValue(new AssistantThread(internalResult.Value), internalResult.GetRawResponse());
@@ -436,16 +426,16 @@ public partial class AssistantClient
         string threadId,
         int? maxResults = null,
         CreatedAtSortOrder? createdSortOrder = null,
-        string previousAssistantId = null,
-        string subsequentAssistantId = null,
+        string previousMessageId = null,
+        string subsequentMessageId = null,
         CancellationToken cancellationToken = default)
     {
         Result<Internal.ListMessagesResponse> internalFunc() => MessageShim.GetMessages(
             threadId,
             maxResults,
             ToInternalListOrder(createdSortOrder),
-            previousAssistantId,
-            subsequentAssistantId,
+            previousMessageId,
+            subsequentMessageId,
             cancellationToken);
         return GetListQueryPage<ThreadMessage, Internal.ListMessagesResponse>(internalFunc);
     }
@@ -454,18 +444,80 @@ public partial class AssistantClient
         string threadId,
         int? maxResults = null,
         CreatedAtSortOrder? createdSortOrder = null,
-        string previousAssistantId = null,
-        string subsequentAssistantId = null,
+        string previousMessageId = null,
+        string subsequentMessageId = null,
         CancellationToken cancellationToken = default)
     {
         Func<Task<Result<Internal.ListMessagesResponse>>> internalFunc = () => MessageShim.GetMessagesAsync(
                 threadId,
                 maxResults,
                 ToInternalListOrder(createdSortOrder),
-                previousAssistantId,
-                subsequentAssistantId,
+                previousMessageId,
+                subsequentMessageId,
                 cancellationToken);
         return GetListQueryPageAsync<ThreadMessage, Internal.ListMessagesResponse>(internalFunc);
+    }
+
+    public virtual Result<MessageFileAssociation> GetMessageFileAssociation(
+        string threadId,
+        string messageId,
+        string fileId,
+        CancellationToken cancellationToken = default)
+    {
+        Result<Internal.MessageFileObject> internalResult
+            = MessageShim.GetMessageFile(threadId, messageId, fileId, cancellationToken);
+        return Result.FromValue(new MessageFileAssociation(internalResult.Value), internalResult.GetRawResponse());
+    }
+
+    public virtual async Task<Result<MessageFileAssociation>> GetMessageFileAssociationAsync(
+        string threadId,
+        string messageId,
+        string fileId,
+        CancellationToken cancellationToken = default)
+    {
+        Result<Internal.MessageFileObject> internalResult
+            = await MessageShim.GetMessageFileAsync(threadId, messageId, fileId, cancellationToken).ConfigureAwait(false);
+        return Result.FromValue(new MessageFileAssociation(internalResult.Value), internalResult.GetRawResponse());
+    }
+
+    public virtual Result<ListQueryPage<MessageFileAssociation>> GetMessageFileAssociations(
+        string threadId,
+        string messageId,
+        int? maxResults = null,
+        CreatedAtSortOrder? createdSortOrder = null,
+        string previousId = null,
+        string subsequentId = null,
+        CancellationToken cancellationToken = default)
+    {
+        Result<Internal.ListMessageFilesResponse> internalFunc() => MessageShim.GetMessageFiles(
+            threadId,
+            messageId,
+            maxResults,
+            ToInternalListOrder(createdSortOrder),
+            previousId,
+            subsequentId,
+            cancellationToken);
+        return GetListQueryPage<MessageFileAssociation, Internal.ListMessageFilesResponse>(internalFunc);
+    }
+
+    public virtual Task<Result<ListQueryPage<MessageFileAssociation>>> GetMessageFileAssociationsAsync(
+        string threadId,
+        string messageId,
+        int? maxResults = null,
+        CreatedAtSortOrder? createdSortOrder = null,
+        string previousId = null,
+        string subsequentId = null,
+        CancellationToken cancellationToken = default)
+    {
+        Task<Result<Internal.ListMessageFilesResponse>> internalFunc() => MessageShim.GetMessageFilesAsync(
+            threadId,
+            messageId,
+            maxResults,
+            ToInternalListOrder(createdSortOrder),
+            previousId,
+            subsequentId,
+            cancellationToken);
+        return GetListQueryPageAsync<MessageFileAssociation, Internal.ListMessageFilesResponse>(internalFunc);
     }
 
     public virtual Result<ThreadRun> CreateRun(
@@ -491,6 +543,31 @@ public partial class AssistantClient
         return Result.FromValue(new ThreadRun(internalResult.Value), internalResult.GetRawResponse());
     }
 
+    public virtual Result<ThreadRun> CreateThreadAndRun(
+        string assistantId,
+        ThreadCreationOptions threadOptions = null,
+        RunCreationOptions runOptions = null,
+        CancellationToken cancellationToken = default)
+    {
+        Internal.CreateThreadAndRunRequest request
+            = CreateInternalCreateThreadAndRunRequest(assistantId, threadOptions, runOptions);
+        Result<Internal.RunObject> internalResult = RunShim.CreateThreadAndRun(request, cancellationToken);
+        return Result.FromValue(new ThreadRun(internalResult.Value), internalResult.GetRawResponse());
+    }
+
+    public virtual async Task<Result<ThreadRun>> CreateThreadAndRunAsync(
+        string assistantId,
+        ThreadCreationOptions threadOptions = null,
+        RunCreationOptions runOptions = null,
+        CancellationToken cancellationToken = default)
+    {
+        Internal.CreateThreadAndRunRequest request
+            = CreateInternalCreateThreadAndRunRequest(assistantId, threadOptions, runOptions);
+        Result<Internal.RunObject> internalResult
+            = await RunShim.CreateThreadAndRunAsync(request, cancellationToken).ConfigureAwait(false);
+        return Result.FromValue(new ThreadRun(internalResult.Value), internalResult.GetRawResponse());
+    }
+
     public virtual Result<ThreadRun> GetRun(string threadId, string runId, CancellationToken cancellationToken = default)
     {
         Result<Internal.RunObject> internalResult = RunShim.GetRun(threadId, runId, cancellationToken);
@@ -508,16 +585,16 @@ public partial class AssistantClient
         string threadId,
         int? maxResults = null,
         CreatedAtSortOrder? createdSortOrder = null,
-        string previousAssistantId = null,
-        string subsequentAssistantId = null,
+        string previousRunId = null,
+        string subsequentRunId = null,
         CancellationToken cancellationToken = default)
     {
         Result<Internal.ListRunsResponse> internalFunc() => RunShim.GetRuns(
             threadId,
             maxResults,
             ToInternalListOrder(createdSortOrder),
-            previousAssistantId,
-            subsequentAssistantId,
+            previousRunId,
+            subsequentRunId,
             cancellationToken);
         return GetListQueryPage<ThreadRun, Internal.ListRunsResponse>(internalFunc);
     }
@@ -526,16 +603,16 @@ public partial class AssistantClient
         string threadId,
         int? maxResults = null,
         CreatedAtSortOrder? createdSortOrder = null,
-        string previousAssistantId = null,
-        string subsequentAssistantId = null,
+        string previousRunId = null,
+        string subsequentRunId = null,
         CancellationToken cancellationToken = default)
     {
         Func<Task<Result<Internal.ListRunsResponse>>> internalFunc = () => RunShim.GetRunsAsync(
             threadId,
             maxResults,
             ToInternalListOrder(createdSortOrder),
-            previousAssistantId,
-            subsequentAssistantId,
+            previousRunId,
+            subsequentRunId,
             cancellationToken);
         return GetListQueryPageAsync<ThreadRun, Internal.ListRunsResponse>(internalFunc);
     }
@@ -585,18 +662,6 @@ public partial class AssistantClient
         return Result.FromValue(true, internalResult.GetRawResponse());
     }
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result SubmitToolOutputs(string threadId, string runId, RequestBody content, RequestOptions context = null)
-    {
-        return RunShim.SubmitToolOuputsToRun(threadId, runId, content, context);
-    }
-
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> SubmitToolOutputsAsync(string threadId, string runId, RequestBody content, RequestOptions context = null)
-    {
-        return RunShim.SubmitToolOuputsToRunAsync(threadId, runId, content, context);
-    }
-
     internal static Internal.CreateAssistantRequest CreateInternalCreateAssistantRequest(
         string modelName,
         AssistantCreationOptions options)
@@ -626,6 +691,15 @@ public partial class AssistantClient
             serializedAdditionalRawData: null);
     }
 
+    internal static Internal.CreateThreadRequest CreateInternalCreateThreadRequest(ThreadCreationOptions options)
+    {
+        options ??= new();
+        return new Internal.CreateThreadRequest(
+            ToInternalCreateMessageRequestList(options.Messages),
+            options.Metadata,
+            serializedAdditionalRawData: null);
+    }
+
     internal static Internal.CreateRunRequest CreateInternalCreateRunRequest(
         string assistantId,
         RunCreationOptions options = null)
@@ -639,6 +713,22 @@ public partial class AssistantClient
             options.AdditionalInstructions,
             ToInternalBinaryDataList(options.OverrideTools),
             options.Metadata,
+            serializedAdditionalRawData: null);
+    }
+
+    internal static Internal.CreateThreadAndRunRequest CreateInternalCreateThreadAndRunRequest(
+        string assistantId,
+        ThreadCreationOptions threadOptions,
+        RunCreationOptions runOptions)
+    {
+        Internal.CreateThreadRequest internalThreadOptions = CreateInternalCreateThreadRequest(threadOptions);
+        return new Internal.CreateThreadAndRunRequest(
+            assistantId,
+            internalThreadOptions,
+            runOptions?.OverrideModel,
+            runOptions.OverrideInstructions,
+            ToInternalBinaryDataList(runOptions?.OverrideTools),
+            runOptions?.Metadata,
             serializedAdditionalRawData: null);
     }
 

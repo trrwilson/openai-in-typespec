@@ -49,6 +49,16 @@ public abstract partial class ListQueryPage
         return new(messages, internalResponse.FirstId, internalResponse.LastId, internalResponse.HasMore);
     }
 
+    internal static ListQueryPage<MessageFileAssociation> Create(Internal.ListMessageFilesResponse internalResponse)
+    {
+        OptionalList<MessageFileAssociation> messageFileAssociations = new();
+        foreach (Internal.MessageFileObject internalFile in internalResponse.Data)
+        {
+            messageFileAssociations.Add(new(internalFile));
+        }
+        return new(messageFileAssociations, internalResponse.FirstId, internalResponse.LastId, internalResponse.HasMore);
+    }
+
     internal static ListQueryPage<ThreadRun> Create(Internal.ListRunsResponse internalResponse)
     {
         OptionalList<ThreadRun> runs = new();
@@ -64,9 +74,10 @@ public abstract partial class ListQueryPage
     {
         return internalResponse switch
         {
-            Internal.ListAssistantFilesResponse internalFilesResponse => Create(internalFilesResponse),
             Internal.ListAssistantsResponse internalAssistantsResponse => Create(internalAssistantsResponse),
+            Internal.ListAssistantFilesResponse internalFilesResponse => Create(internalFilesResponse),
             Internal.ListMessagesResponse internalMessagesResponse => Create(internalMessagesResponse),
+            Internal.ListMessageFilesResponse internalMessageFilesResponse => Create(internalMessageFilesResponse),
             Internal.ListRunsResponse internalRunsResponse => Create(internalRunsResponse),
             _ => throw new ArgumentException(
                 $"Unknown type for generic {nameof(ListQueryPage)} conversion: {internalResponse.GetType()}"),

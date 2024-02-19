@@ -3,9 +3,6 @@ using OpenAI.Official.Assistants;
 using OpenAI.Official.Chat;
 using System;
 using System.ClientModel;
-using System.Collections.Generic;
-using System.Text.Json;
-using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 namespace OpenAI.Official.Tests.Assistants;
@@ -35,7 +32,7 @@ public partial class AssistantTests
     public async Task AddingMessagesWorks()
     {
         AssistantClient client = new();
-        Result<AssistantThread> threadResult = await client.CreateThreadAsync(new()
+        Result<AssistantThread> threadResult = await client.CreateThreadAsync(new ThreadCreationOptions()
         {
             Messages =
             {
@@ -144,12 +141,13 @@ public partial class AssistantTests
         return newAssistantResult.Value;
     }
 
-    private async Task DeleteRecentTestAssistants()
+    private async Task DeleteRecentTestThings()
     {
         AssistantClient client = new();
         foreach(Assistant assistant in client.GetAssistants().Value)
         {
-            if (assistant.Name == s_testAssistantName)
+            if (assistant.Name == s_testAssistantName
+                || assistant.Metadata?.ContainsKey(s_cleanupMetadataKey) == true)
             {
                 _ = await client.DeleteAssistantAsync(assistant.Id);
             }
