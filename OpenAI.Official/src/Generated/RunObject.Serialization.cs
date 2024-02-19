@@ -268,7 +268,9 @@ namespace OpenAI.Official.Internal
                         startedAt = null;
                         continue;
                     }
-                    startedAt = property.Value.GetDateTimeOffset("O");
+/// !!! BEGIN
+                    startedAt = DateTimeOffset.FromUnixTimeSeconds(property.Value.GetInt64()); // property.Value.GetDateTimeOffset("O");
+/// !!! END
                     continue;
                 }
                 if (property.NameEquals("cancelled_at"u8))
@@ -278,7 +280,9 @@ namespace OpenAI.Official.Internal
                         cancelledAt = null;
                         continue;
                     }
-                    cancelledAt = property.Value.GetDateTimeOffset("O");
+/// !!! BEGIN
+                    cancelledAt = DateTimeOffset.FromUnixTimeSeconds(property.Value.GetInt64()); // property.Value.GetDateTimeOffset("O");
+/// !!! END
                     continue;
                 }
                 if (property.NameEquals("failed_at"u8))
@@ -288,7 +292,10 @@ namespace OpenAI.Official.Internal
                         failedAt = null;
                         continue;
                     }
-                    failedAt = property.Value.GetDateTimeOffset("O");
+                    /// !!! BEGIN
+                    failedAt = DateTimeOffset.FromUnixTimeSeconds(property.Value.GetInt64()); // ; property.Value.GetDateTimeOffset("O");
+/// !!! END
+
                     continue;
                 }
                 if (property.NameEquals("completed_at"u8))
@@ -298,7 +305,9 @@ namespace OpenAI.Official.Internal
                         completedAt = null;
                         continue;
                     }
-                    completedAt = property.Value.GetDateTimeOffset("O");
+                    /// !!! BEGIN
+                    completedAt = DateTimeOffset.FromUnixTimeSeconds(property.Value.GetInt64()); // ; property.Value.GetDateTimeOffset("O");
+/// !!! END
                     continue;
                 }
                 if (property.NameEquals("model"u8))

@@ -5,6 +5,7 @@ using OpenAI.Official.Images;
 using System;
 using System.ClientModel;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace OpenAI.Official.Tests.Examples;
 
@@ -12,7 +13,7 @@ public partial class CombinationExamples
 {
     [Test]
     [Ignore("Compilation validation")]
-    public void AlpacaArtCritic()
+    public void AlpacaArtAssessor()
     {
         // First, we create an image using dall-e-3:
         ImageClient imageClient = new("dall-e-3");
@@ -61,5 +62,89 @@ public partial class CombinationExamples
             ttsFileWriter.Write(ttsResult.Value);
         }
         Console.WriteLine($"Alpaca evaluation audio available at:\n{new Uri(ttsFileInfo.FullName).AbsoluteUri}");
+    }
+
+    [Test]
+    [Ignore("Compilation validation")]
+    public async Task CuriousCreatureCreator()
+    {
+        // First, we'll use gpt-4 to have a creative helper imagine a twist on a household pet
+        ChatClient creativeWriterClient = new("gpt-4");
+        Result<ChatCompletion> creativeWriterResult = creativeWriterClient.CompleteChat(
+            [
+                new ChatRequestSystemMessage("You're a creative helper that specializes in brainstorming designs for concepts that fuse ordinary, mundane items with a fantastical touch. In particular, you can provide good one-paragraph descriptions of concept images."),
+                new ChatRequestUserMessage("Imagine a household pet. Now add in a subtle touch of magic or 'different'. What do you imagine? Provide a one-paragraph description of a picture of this new creature, focusing on the details of the imagery such that it'd be suitable for creating a picture."),
+            ],
+            new ChatCompletionOptions()
+            {
+                MaxTokens = 2048,
+            });
+        string description = creativeWriterResult.Value.Content;
+        Console.WriteLine($"Creative helper's creature description:\n{description}");
+
+        // Asynchronously, in parallel to the next steps, we'll get the creative description in the voice of Onyx
+        AudioClient ttsClient = new("tts-1-hd");
+        Task<Result<BinaryData>> imageDescriptionAudioTask = ttsClient.GenerateSpeechFromTextAsync(
+            description,
+            TextToSpeechVoice.Onyx,
+            new TextToSpeechOptions()
+            {
+                SpeedMultiplier = 1.1f,
+                ResponseFormat = AudioDataFormat.Opus,
+            });
+        _ = Task.Run(async () =>
+        {
+            Result<BinaryData> audioResult = await imageDescriptionAudioTask;
+            FileInfo audioFileInfo = new FileInfo($"{creativeWriterResult.Value.Id}-description.opus");
+            using FileStream fileStream = audioFileInfo.Create();
+            using BinaryWriter fileWriter = new(fileStream);
+            fileWriter.Write(audioResult.Value);
+            Console.WriteLine($"Spoken description available at:\n{new Uri(audioFileInfo.FullName).AbsoluteUri}");
+        });
+
+        // Meanwhile, we'll use dall-e-3 to generate a rendition of our LLM artist's vision
+        ImageClient imageGenerationClient = new("dall-e-3");
+        Result<ImageGeneration> imageGenerationResult = await imageGenerationClient.GenerateImageAsync(
+            description,
+            new ImageGenerationOptions()
+            {
+                Size = ImageSize.Size1792x1024,
+                Quality = ImageQuality.High,
+            });
+        string imageLocation = imageGenerationResult.Value.ImageBlobUri.AbsoluteUri;
+        Console.WriteLine($"Creature image available at:\n{imageLocation}");
+
+        // Now, we'll use gpt-4-vision-preview to get a hopelessly taken assessment from a usually exigent art connoisseur
+        ChatClient imageCriticClient = new("gpt-4-vision-preview");
+        Result<ChatCompletion> criticalAppraisalResult = await imageCriticClient.CompleteChatAsync(
+            [
+                new ChatRequestSystemMessage("Assume the role of an art critic. Although usually cranky and occasionally even referred to as a 'curmudgeon', you're somehow entirely smitten with the subject presented to you and, despite your best efforts, can't help but lavish praise when you're asked to appraise a provided image."),
+                new ChatRequestUserMessage(
+                    "Evaluate this image for me. What is it, and what do you think of it?",
+                    new ChatMessageImageUrlContent(imageLocation)),
+            ],
+            new ChatCompletionOptions()
+            {
+                MaxTokens = 2048,
+            });
+        string appraisal = criticalAppraisalResult.Value.Content;
+        Console.WriteLine($"Critic's appraisal:\n{appraisal}");
+
+        // Finally, we'll get that art expert's laudations in the voice of Fable
+        Result<BinaryData> appraisalAudioResult = await ttsClient.GenerateSpeechFromTextAsync(
+            appraisal,
+            TextToSpeechVoice.Fable,
+            new TextToSpeechOptions()
+            {
+                ResponseFormat = AudioDataFormat.Opus,
+                SpeedMultiplier = 0.9f,
+            });
+        FileInfo criticAudioFileInfo = new($"{criticalAppraisalResult.Value.Id}-appraisal.opus");
+        using (FileStream criticStream = criticAudioFileInfo.Create())
+        using (BinaryWriter criticFileWriter = new(criticStream))
+        {
+            criticFileWriter.Write(appraisalAudioResult.Value);
+        }
+        Console.WriteLine($"Critical appraisal available at:\n{new Uri(criticAudioFileInfo.FullName).AbsoluteUri}");
     }
 }

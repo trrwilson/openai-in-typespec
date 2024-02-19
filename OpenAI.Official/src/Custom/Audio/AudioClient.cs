@@ -136,7 +136,7 @@ public partial class AudioClient
     ///     Unless otherwise specified via <see cref="TextToSpeechOptions.ResponseFormat"/>, the <c>mp3</c> format of
     ///     <see cref="AudioDataFormat.Mp3"/> will be used for the generated audio.
     /// </returns>
-    public virtual Task<Result<BinaryData>> GenerateTextToSpeechAsync(
+    public virtual Task<Result<BinaryData>> GenerateSpeechFromTextAsync(
         string input,
         TextToSpeechVoice voice,
         TextToSpeechOptions options = null,
