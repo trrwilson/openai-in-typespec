@@ -1,9 +1,3 @@
-using System;
-using System.ClientModel.Primitives;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Text.Json;
-
 namespace OpenAI.Official.Assistants;
 
 public partial class RunTokenUsage

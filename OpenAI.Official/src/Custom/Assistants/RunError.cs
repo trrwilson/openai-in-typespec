@@ -1,5 +1,4 @@
 using OpenAI.Official.Chat;
-using System;
 
 namespace OpenAI.Official.Assistants;
 

@@ -2,7 +2,6 @@
 using OpenAI.Official.Files;
 using System;
 using System.ClientModel;
-using System.IO;
 
 namespace OpenAI.Official.Tests.Files;
 

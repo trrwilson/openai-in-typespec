@@ -1,12 +1,10 @@
 ﻿using NUnit.Framework;
-using OpenAI.Official.Chat;
 using OpenAI.Official.LegacyCompletions;
 using System;
 using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
 
 namespace OpenAI.Official.Tests.LegacyCompletions;
 

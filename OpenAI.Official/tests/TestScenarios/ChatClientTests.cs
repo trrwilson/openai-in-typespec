@@ -2,12 +2,9 @@
 using OpenAI.Official.Chat;
 using System;
 using System.ClientModel;
-using System.ClientModel.Internal;
-using System.ClientModel.Primitives;
-using System.ClientModel.Primitives.Pipeline;
-using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using static OpenAI.Official.Tests.TestHelpers;
 
 namespace OpenAI.Official.Tests.Chat;
 
@@ -16,7 +13,8 @@ public partial class ChatClientTests
     [Test]
     public void HelloWorldChat()
     {
-        ChatClient client = new("gpt-3.5-turbo");
+        ChatClient client = GetTestClient<ChatClient>(TestScenario.Chat); // new("gpt-3.5-turbo");
+        ChatClientOptions o = new();
         Assert.That(client, Is.InstanceOf<ChatClient>());
         Result<ChatCompletion> result = client.CompleteChat("Hello, world!");
         Assert.That(result, Is.InstanceOf<Result<ChatCompletion>>());

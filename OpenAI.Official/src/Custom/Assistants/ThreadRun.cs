@@ -1,4 +1,3 @@
-using OpenAI.Official.Chat;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;

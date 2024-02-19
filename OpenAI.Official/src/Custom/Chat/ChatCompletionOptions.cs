@@ -23,7 +23,7 @@ public partial class ChatCompletionOptions
     /// <inheritdoc cref="Internal.CreateChatCompletionRequest.PresencePenalty" />
     public double? PresencePenalty { get; set; }
     /// <inheritdoc cref="Internal.CreateChatCompletionRequest.ResponseFormat" />
-    public ChatResponseFormat ResponseFormat { get; set; }
+    public ChatResponseFormat? ResponseFormat { get; set; }
     /// <inheritdoc cref="Internal.CreateChatCompletionRequest.Seed" />
     public long? Seed { get; set; }
     /// <inheritdoc cref="Internal.CreateChatCompletionRequest.Stop" />

@@ -1,5 +1,3 @@
-using OpenAI.Official.Chat;
-using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace OpenAI.Official.Assistants;

@@ -1,6 +1,5 @@
 namespace OpenAI.Official.Assistants;
 
-public partial class ToolDefinition
+public abstract partial class ToolDefinition
 {
-
 }

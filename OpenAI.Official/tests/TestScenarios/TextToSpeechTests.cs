@@ -1,11 +1,7 @@
 ﻿using NUnit.Framework;
 using OpenAI.Official.Audio;
-using OpenAI.Official.Chat;
-using OpenAI.Official.Images;
 using System;
 using System.ClientModel;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace OpenAI.Official.Tests.Audio;
 

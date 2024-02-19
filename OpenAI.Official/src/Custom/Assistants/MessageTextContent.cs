@@ -1,9 +1,5 @@
-using OpenAI.Official.Internal;
-using System;
-using System.ClientModel.Internal;
 using System.ClientModel.Primitives;
 using System.Collections.Generic;
-using System.Data;
 using System.Text.Json;
 
 namespace OpenAI.Official.Assistants;

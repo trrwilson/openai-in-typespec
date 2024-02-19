@@ -1,35 +1,28 @@
 ﻿using System;
-using System.ClientModel.Internal;
 using System.ClientModel.Primitives;
 using System.ClientModel.Primitives.Pipeline;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace OpenAI.Official.Tests;
 
-internal class TestPipelinePolicy : IPipelinePolicy<PipelineMessage>
+internal partial class TestPipelinePolicy : IPipelinePolicy<PipelineMessage>
 {
-    public void Process(PipelineMessage message, IPipelineEnumerator pipeline)
+    private Action<PipelineMessage> _processMessageAction;
+
+    public TestPipelinePolicy(Action<PipelineMessage> processMessageAction)
     {
-        if (message?.Request?.Content is Utf8JsonRequestBody json)
-        {
-            using MemoryStream stream = new();
-            json.WriteTo(stream, default);
-            stream.Position = 0;
-            using StreamReader reader = new(stream);
-            Console.WriteLine(reader.ReadToEnd());
-        }
-
-        if (message.HasResponse)
-        {
-            Console.WriteLine(message.Response.Content.ToString());
-        }
-
-        // pipeline?.ProcessNext();
+        _processMessageAction = processMessageAction;
     }
 
-    public ValueTask ProcessAsync(PipelineMessage message, IPipelineEnumerator pipeline)
+    public void Process(PipelineMessage message, IPipelineEnumerator pipeline)
     {
-        throw new NotImplementedException();
+        _processMessageAction(message);
+        _ = pipeline.ProcessNext();
+    }
+
+    public async ValueTask ProcessAsync(PipelineMessage message, IPipelineEnumerator pipeline)
+    {
+        _processMessageAction(message);
+        _ = await pipeline.ProcessNextAsync();
     }
 }

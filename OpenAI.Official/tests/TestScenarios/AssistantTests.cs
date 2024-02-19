@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
 using OpenAI.Official.Assistants;
-using OpenAI.Official.Chat;
 using System;
 using System.ClientModel;
 using System.Threading.Tasks;
