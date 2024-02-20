@@ -5,6 +5,7 @@ using System.ClientModel;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using static OpenAI.Official.Tests.TestHelpers;
 
 namespace OpenAI.Official.Tests.Chat;
 
@@ -46,7 +47,7 @@ public partial class ChatToolTests
     [Test]
     public void ParametersWork()
     {
-        ChatClient client = new("gpt-3.5-turbo");
+        ChatClient client = GetTestClient<ChatClient>(TestScenario.Chat);
         ChatFunctionToolDefinition favoriteColorForMonthTool = new()
         {
             Name = "get_favorite_color_for_month",

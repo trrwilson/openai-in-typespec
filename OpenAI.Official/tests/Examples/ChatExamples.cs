@@ -32,14 +32,14 @@ public partial class ChatExamples
 
     [Test]
     [Ignore("Compilation validation only")]
-    public void ChatWithImage(string imageUrl = "")
+    public void ChatWithImage(Uri imageUri)
     {
         ChatClient client = new("gpt-4-vision-preview");
         Result<ChatCompletion> result = client.CompleteChat(
         [
             new ChatRequestUserMessage(
                 "Describe this image for me",
-                new ChatMessageImageUrlContent(imageUrl)),
+                ChatMessageContent.CreateImage(imageUri)),
         ]);
     }
 

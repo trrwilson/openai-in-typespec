@@ -5,6 +5,14 @@
     <NoWarn>$(NoWarn);CS1591</NoWarn>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="data\stop_sign.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="data\stop_sign.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\src\OpenAI.Official.csproj" />

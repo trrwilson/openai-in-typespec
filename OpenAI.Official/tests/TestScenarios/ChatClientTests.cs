@@ -14,12 +14,11 @@ public partial class ChatClientTests
     public void HelloWorldChat()
     {
         ChatClient client = GetTestClient<ChatClient>(TestScenario.Chat); // new("gpt-3.5-turbo");
-        ChatClientOptions o = new();
         Assert.That(client, Is.InstanceOf<ChatClient>());
         Result<ChatCompletion> result = client.CompleteChat("Hello, world!");
         Assert.That(result, Is.InstanceOf<Result<ChatCompletion>>());
-        Assert.That(result.Value.Content, Is.InstanceOf<ChatMessageTextContent>());
-        Assert.That(result.Value.Content.ToString().Length, Is.GreaterThan(0));
+        Assert.That(result.Value.Content?.ContentKind, Is.EqualTo(ChatMessageContentKind.Text));
+        Assert.That(result.Value.Content.ToText().Length, Is.GreaterThan(0));
     }
 
     [Test]

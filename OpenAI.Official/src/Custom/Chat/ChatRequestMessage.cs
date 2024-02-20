@@ -1,3 +1,8 @@
+using System;
+using System.ClientModel.Primitives;
+using System.Collections;
+using System.Collections.Generic;
+
 namespace OpenAI.Official.Chat;
 
 /// <summary>
@@ -52,23 +57,51 @@ namespace OpenAI.Official.Chat;
 public abstract partial class ChatRequestMessage
 {
     /// <summary>
-    /// The content associated with the message. The interpretation of this content will vary depending on the message type.
-    /// </summary>
-    public ChatMessageContent Content { get; }
-
-    /// <summary>
     /// The <c>role</c> associated with the message.
     /// </summary>
     public ChatRole Role { get; }
 
     /// <summary>
-    /// Initializes base instance data for <see cref="ChatRequestMessage"/>.
+    /// The content associated with the message. The interpretation of this content will vary depending on the message type.
     /// </summary>
-    /// <param name="role"> The <c>role</c> associated with the message. </param>
-    /// <param name="content"> The <c>content</c> associated with the message. </param>
-    protected ChatRequestMessage(ChatRole role, ChatMessageContent content)
+    public ReadOnlyMemory<ChatMessageContent> Content => _contentItems.AsMemory();
+    private readonly ChatMessageContent[] _contentItems;
+
+    internal ChatRequestMessage(ChatRole role, ChatMessageContent content)
+        : this(role, [content])
+    { }
+
+    internal ChatRequestMessage(ChatRole role, ChatMessageContent[] content)
     {
         Role = role;
-        Content = content;
+        _contentItems = content;
     }
+
+    /// <inheritdoc cref="ChatRequestSystemMessage.ChatRequestSystemMessage(string)"/>
+    public static ChatRequestSystemMessage CreateSystemMessage(string content)
+        => new ChatRequestSystemMessage(content);
+
+    /// <inheritdoc cref="ChatRequestUserMessage.ChatRequestUserMessage(string)"/>
+    public static ChatRequestUserMessage CreateUserMessage(string content)
+        => new ChatRequestUserMessage(content);
+
+    /// <inheritdoc cref="ChatRequestUserMessage.ChatRequestUserMessage(IEnumerable{ChatMessageContent})"/>
+    public static ChatRequestUserMessage CreateUserMessage(IEnumerable<ChatMessageContent> contentItems)
+        => new ChatRequestUserMessage(contentItems);
+
+    /// <inheritdoc cref="ChatRequestUserMessage.ChatRequestUserMessage(IEnumerable{ChatMessageContent})"/>
+    public static ChatRequestUserMessage CreateUserMessage(params ChatMessageContent[] contentItems)
+        => new ChatRequestUserMessage(contentItems);
+
+    /// <inheritdoc cref="ChatRequestAssistantMessage.ChatRequestAssistantMessage(string)"/>
+    public static ChatRequestAssistantMessage CreateAssistantMessage(string content)
+        => new ChatRequestAssistantMessage(content);
+
+    /// <inheritdoc cref="ChatRequestToolMessage.ChatRequestToolMessage(string, string)"/>
+    public static ChatRequestToolMessage CreateToolMessage(string toolCallId, string content)
+        => new ChatRequestToolMessage(toolCallId, content);
+
+    /// <inheritdoc cref="ChatRequestFunctionMessage.ChatRequestFunctionMessage(string, string)"/>
+    public static ChatRequestFunctionMessage CreateFunctionMessage(string toolCallId, string content)
+        => new ChatRequestFunctionMessage(toolCallId, content);
 }

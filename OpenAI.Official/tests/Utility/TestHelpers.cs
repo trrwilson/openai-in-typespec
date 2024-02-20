@@ -33,6 +33,12 @@ internal static class TestHelpers
             options.PerTryPolicies = AddDumpPolicy(options.PerTryPolicies);
             return (T)((object)new ChatClient(overrideModel ?? "gpt-3.5-turbo", options));
         }
+        else if (scenario == TestScenario.VisionChat)
+        {
+            ChatClientOptions options = new();
+            options.PerTryPolicies = AddDumpPolicy(options.PerTryPolicies);
+            return (T)((object)new ChatClient(overrideModel ?? "gpt-4-vision-preview", options));
+        }
         throw new NotImplementedException();
     }
 

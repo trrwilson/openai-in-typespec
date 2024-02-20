@@ -25,8 +25,8 @@ public partial class CombinationExamples
                 Quality = ImageQuality.High,
                 Size = ImageSize.Size1792x1024,
             });
-        string absoluteUri = imageResult.Value.ImageBlobUri.AbsoluteUri;
-        Console.WriteLine($"Majestic alpaca available at:\n{absoluteUri}");
+        ImageGeneration imageGeneration = imageResult.Value;
+        Console.WriteLine($"Majestic alpaca available at:\n{imageGeneration.ImageBlobUri.AbsoluteUri}");
 
         // Now, we'll ask a cranky art critic to evaluate the image using gpt-4-vision-preview:
         ChatClient chatClient = new("gpt-4-vision-preview");
@@ -36,7 +36,7 @@ public partial class CombinationExamples
                     + "evaluate imagery, focus on criticizing elements of subject, composition, and other details."),
                 new ChatRequestUserMessage(
                     "describe the following image in a few sentences",
-                    new ChatMessageImageUrlContent(absoluteUri)),
+                    ChatMessageContent.CreateImage(imageGeneration.ImageBlobUri)),
             ],
             new ChatCompletionOptions()
             {
@@ -111,8 +111,8 @@ public partial class CombinationExamples
                 Size = ImageSize.Size1792x1024,
                 Quality = ImageQuality.High,
             });
-        string imageLocation = imageGenerationResult.Value.ImageBlobUri.AbsoluteUri;
-        Console.WriteLine($"Creature image available at:\n{imageLocation}");
+        Uri imageLocation = imageGenerationResult.Value.ImageBlobUri;
+        Console.WriteLine($"Creature image available at:\n{imageLocation.AbsoluteUri}");
 
         // Now, we'll use gpt-4-vision-preview to get a hopelessly taken assessment from a usually exigent art connoisseur
         ChatClient imageCriticClient = new("gpt-4-vision-preview");
@@ -121,7 +121,7 @@ public partial class CombinationExamples
                 new ChatRequestSystemMessage("Assume the role of an art critic. Although usually cranky and occasionally even referred to as a 'curmudgeon', you're somehow entirely smitten with the subject presented to you and, despite your best efforts, can't help but lavish praise when you're asked to appraise a provided image."),
                 new ChatRequestUserMessage(
                     "Evaluate this image for me. What is it, and what do you think of it?",
-                    new ChatMessageImageUrlContent(imageLocation)),
+                    ChatMessageContent.CreateImage(imageLocation)),
             ],
             new ChatCompletionOptions()
             {

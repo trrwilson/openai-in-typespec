@@ -46,7 +46,7 @@ public class ChatRequestAssistantMessage : ChatRequestMessage
     /// does not feature tool or function calls.
     /// </summary>
     /// <param name="content"> The text content of the message. </param>
-    public ChatRequestAssistantMessage(ChatMessageTextContent content)
+    public ChatRequestAssistantMessage(string content)
         : base(ChatRole.Assistant, content)
     { }
 
@@ -56,7 +56,7 @@ public class ChatRequestAssistantMessage : ChatRequestMessage
     /// </summary>
     /// <param name="toolCalls"> The <c>tool_calls</c> made by the model. </param>
     /// <param name="content"> Optional text content associated with the message. </param>
-    public ChatRequestAssistantMessage(IEnumerable<ChatToolCall> toolCalls, ChatMessageTextContent content = null)
+    public ChatRequestAssistantMessage(IEnumerable<ChatToolCall> toolCalls, string content = null)
         : base(ChatRole.Assistant, content)
     {
         ToolCalls = new List<ChatToolCall>(toolCalls);
@@ -68,7 +68,7 @@ public class ChatRequestAssistantMessage : ChatRequestMessage
     /// </summary>
     /// <param name="functionCall"> The <c>function_call</c> made by the model. </param>
     /// <param name="content"> Optional text content associated with the message. </param>
-    public ChatRequestAssistantMessage(ChatFunctionCall functionCall, ChatMessageTextContent content = null)
+    public ChatRequestAssistantMessage(ChatFunctionCall functionCall, string content = null)
         : base(ChatRole.Assistant, content)
     {
         FunctionCall = functionCall;

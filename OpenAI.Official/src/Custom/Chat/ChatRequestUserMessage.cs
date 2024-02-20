@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Text.Json;
 using System.ClientModel.Primitives;
+using System.Linq;
 
 namespace OpenAI.Official.Chat;
 
@@ -23,8 +24,8 @@ public class ChatRequestUserMessage : ChatRequestMessage
     /// Creates a new instance of <see cref="ChatRequestUserMessage"/> with ordinary text <c>content</c>.
     /// </summary>
     /// <param name="content"> The textual content associated with the message. </param>
-    public ChatRequestUserMessage(ChatMessageTextContent content)
-        : base(ChatRole.User, content)
+    public ChatRequestUserMessage(string content)
+        : base(ChatRole.User, ChatMessageContent.CreateText(content))
     { }
 
     /// <summary>
@@ -36,7 +37,7 @@ public class ChatRequestUserMessage : ChatRequestMessage
     ///     The collection of text and image content items associated with the message.
     /// </param>
     public ChatRequestUserMessage(IEnumerable<ChatMessageContent> contentItems)
-        : base(ChatRole.User, new ChatMessageContentCollection(contentItems))
+        : base(ChatRole.User, contentItems.ToArray())
     { }
 
     /// <summary>

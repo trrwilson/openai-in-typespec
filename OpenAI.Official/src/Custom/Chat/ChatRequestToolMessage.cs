@@ -38,7 +38,7 @@ public class ChatRequestToolMessage : ChatRequestMessage
     ///     that resolves the tool call and allows the logical conversation to continue. No format restrictions (e.g.
     ///     JSON) are imposed on the content emitted by tools.
     /// </param>
-    public ChatRequestToolMessage(string toolCallId, ChatMessageTextContent content)
+    public ChatRequestToolMessage(string toolCallId, string content)
         : base(ChatRole.Tool, content)
     {
         ToolCallId = toolCallId;

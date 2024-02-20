@@ -26,7 +26,7 @@ public class ChatRequestFunctionMessage : ChatRequestMessage
     ///     The textual content that represents the output or result from the called function. There is no format
     ///     restriction (e.g. JSON) imposed on this content.
     /// </param>
-    public ChatRequestFunctionMessage(string functionName, ChatMessageTextContent content)
+    public ChatRequestFunctionMessage(string functionName, string content)
         : base(ChatRole.Function, content)
     {
         FunctionName = functionName;

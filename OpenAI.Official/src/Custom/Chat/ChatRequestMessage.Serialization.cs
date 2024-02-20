@@ -1,6 +1,7 @@
 using System;
 using System.ClientModel.Internal;
 using System.ClientModel.Primitives;
+using System.ComponentModel.Design;
 using System.Text.Json;
 
 namespace OpenAI.Official.Chat;
@@ -19,7 +20,48 @@ public abstract partial class ChatRequestMessage : IUtf8JsonWriteable, IJsonMode
         if (OptionalProperty.IsDefined(Content))
         {
             writer.WritePropertyName("content"u8);
-            (Content as IJsonModel<ChatMessageContent>).Write(writer, options);
+            if (Content.Span.Length == 0)
+            {
+                writer.WriteNullValue();
+            }
+            else if (Content.Span.Length == 1)
+            {
+                if (Content.Span[0].ContentKind == ChatMessageContentKind.Text)
+                {
+                    writer.WriteStringValue(Content.Span[0].ToText());
+                }
+                else
+                {
+                    throw new InvalidOperationException();
+                }
+            }
+            else if (Content.Span.Length > 1)
+            {
+                writer.WriteStartArray();
+                foreach (ChatMessageContent contentItem in Content.Span)
+                {
+                    writer.WriteStartObject();
+                    if (contentItem.ContentKind == ChatMessageContentKind.Text)
+                    {
+                        writer.WriteString("type"u8, "text"u8);
+                        writer.WriteString("text"u8, contentItem.ToText());
+                    }
+                    else if (contentItem.ContentKind == ChatMessageContentKind.Image)
+                    {
+                        writer.WriteString("type"u8, "image_url"u8);
+                        writer.WritePropertyName("image_url"u8);
+                        writer.WriteStartObject();
+                        writer.WriteString("url"u8, contentItem.ToUri().AbsoluteUri);
+                        writer.WriteEndObject();
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException();
+                    }
+                    writer.WriteEndObject();
+                }
+                writer.WriteEndArray();
+            }
         }
         WriteDerivedAdditions(writer, options);
         writer.WriteEndObject();

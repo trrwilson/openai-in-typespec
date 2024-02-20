@@ -24,7 +24,7 @@ public class ChatRequestSystemMessage : ChatRequestMessage
     /// Creates a new instance of <see cref="ChatRequestSystemMessage"/>.
     /// </summary>
     /// <param name="content"> The <c>system</c> message text that guides the model's behavior. </param>
-    public ChatRequestSystemMessage(ChatMessageTextContent content) : base(ChatRole.System, content) { }
+    public ChatRequestSystemMessage(string content) : base(ChatRole.System, content) { }
 
     internal override void WriteDerivedAdditions(Utf8JsonWriter writer, ModelReaderWriterOptions options)
     {
