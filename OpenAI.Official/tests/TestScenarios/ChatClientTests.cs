@@ -24,6 +24,15 @@ public partial class ChatClientTests
     }
 
     [Test]
+    public void HelloWorldWithTopLevelClient()
+    {
+        OpenAIClient client = new(credential: new(Environment.GetEnvironmentVariable("OPENAI_API_KEY")));
+        ChatClient chatClient = client.GetChatClient("gpt-3.5-turbo");
+        ClientResult<ChatCompletion> result = chatClient.CompleteChat("Hello, world!");
+        Assert.That(result, Is.InstanceOf<ClientResult<ChatCompletion>>());
+        Assert.That(result.Value.Content.ToString().Length, Is.GreaterThan(0));
+    }
+    [Test]
     public void MultiMessageChat()
     {
         ChatClient client = new("gpt-3.5-turbo");

@@ -25,4 +25,9 @@ public partial class OpenAIClientOptions : RequestOptions
         internalOptions ??= new();
         InternalOptions = internalOptions;
     }
+
+    internal void CopyTo(OpenAIClientOptions other)
+    {
+        // TODO
+    }
 }
