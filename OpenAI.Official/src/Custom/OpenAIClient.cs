@@ -18,7 +18,7 @@ namespace OpenAI.Official;
 /// A top-level client factory that enables convenient creation of scenario-specific sub-clients while reusing shared
 /// configuration details like endpoint, authentication, and pipeline customization.
 /// </summary>
-public partial class OpenAIClient : RequestOptions
+public partial class OpenAIClient
 {
     private readonly Uri _cachedEndpoint = null;
     private readonly ApiKeyCredential _cachedCredential = null;
