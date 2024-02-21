@@ -4,7 +4,7 @@ using System;
 using OpenAI.ClientShared.Internal;
 using System.Collections.Generic;
 
-namespace OpenAI.Official.Internal.Models
+namespace OpenAI.Internal.Models
 {
     /// <summary> Represents a step in execution of a run. </summary>
     internal partial class RunStepObject

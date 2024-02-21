@@ -3,7 +3,7 @@
 using System;
 using System.ComponentModel;
 
-namespace OpenAI.Official.Internal.Models
+namespace OpenAI.Internal.Models
 {
     /// <summary> The RunStepDetailsMessageCreationObject_type. </summary>
     internal readonly partial struct RunStepDetailsMessageCreationObjectType : IEquatable<RunStepDetailsMessageCreationObjectType>

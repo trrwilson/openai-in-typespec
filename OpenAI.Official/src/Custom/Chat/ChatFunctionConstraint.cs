@@ -1,6 +1,6 @@
 using System;
 
-namespace OpenAI.Official.Chat;
+namespace OpenAI.Chat;
 
 /// <summary>
 /// Represents a desired manner in which the model should use the functions defined in a chat completion request.

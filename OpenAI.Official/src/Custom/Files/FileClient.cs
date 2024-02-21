@@ -7,7 +7,7 @@ using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace OpenAI.Official.Files;
+namespace OpenAI.Files;
 
 /// <summary>
 ///     The service client for OpenAI file operations.

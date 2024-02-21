@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace OpenAI.Official.Moderations;
+namespace OpenAI.Moderations;
 
 /// <summary>
 ///     The service client for OpenAI moderation operations.

@@ -3,7 +3,7 @@
 using System;
 using System.ComponentModel;
 
-namespace OpenAI.Official.Internal.Models
+namespace OpenAI.Internal.Models
 {
     public readonly partial struct ListOrder : IEquatable<ListOrder>
     {

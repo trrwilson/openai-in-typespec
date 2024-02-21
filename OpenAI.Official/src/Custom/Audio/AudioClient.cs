@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace OpenAI.Official.Audio;
+namespace OpenAI.Audio;
 
 /// <summary> The service client for OpenAI audio operations. </summary>
 public partial class AudioClient

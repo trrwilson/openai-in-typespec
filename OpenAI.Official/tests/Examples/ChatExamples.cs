@@ -1,10 +1,10 @@
 ﻿using NUnit.Framework;
-using OpenAI.Official.Chat;
+using OpenAI.Chat;
 using System;
 using System.ClientModel;
 using System.Threading.Tasks;
 
-namespace OpenAI.Official.Tests.Examples;
+namespace OpenAI.Tests.Examples;
 
 public partial class ChatExamples
 {

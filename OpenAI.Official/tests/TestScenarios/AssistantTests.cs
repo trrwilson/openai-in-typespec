@@ -1,11 +1,11 @@
 ﻿using NUnit.Framework;
-using OpenAI.Official.Assistants;
+using OpenAI.Assistants;
 using System;
 using System.ClientModel;
 using System.Threading.Tasks;
-using static OpenAI.Official.Tests.TestHelpers;
+using static OpenAI.Tests.TestHelpers;
 
-namespace OpenAI.Official.Tests.Assistants;
+namespace OpenAI.Tests.Assistants;
 
 public partial class AssistantTests
 {

@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
-using OpenAI.Official.Assistants;
+using OpenAI.Assistants;
 using System;
 
-namespace OpenAI.Official.Tests.Examples;
+namespace OpenAI.Tests.Examples;
 
 public partial class AssistantExamples
 {

@@ -1,6 +1,6 @@
 using System;
 
-namespace OpenAI.Official.Embeddings;
+namespace OpenAI.Embeddings;
 
 /// <summary>
 /// Represents an embedding vector returned by embedding endpoint.

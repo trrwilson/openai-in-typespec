@@ -3,7 +3,7 @@ using System.ClientModel.Internal;
 
 using System.Collections.Generic;
 
-namespace OpenAI.Official.Assistants;
+namespace OpenAI.Assistants;
 
 /// <summary>
 /// Represents additional options available when creating a new <see cref="ThreadMessage"/>.

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace OpenAI.Official.Embeddings;
+namespace OpenAI.Embeddings;
 
 public class EmbeddingCollection : ReadOnlyCollection<Embedding>
 {

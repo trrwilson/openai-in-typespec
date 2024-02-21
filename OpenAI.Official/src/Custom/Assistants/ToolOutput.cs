@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
-namespace OpenAI.Official.Assistants;
+namespace OpenAI.Assistants;
 
 public partial class ToolOutput
 {

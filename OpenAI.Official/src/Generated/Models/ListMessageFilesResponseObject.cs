@@ -3,7 +3,7 @@
 using System;
 using System.ComponentModel;
 
-namespace OpenAI.Official.Internal.Models
+namespace OpenAI.Internal.Models
 {
     /// <summary> The ListMessageFilesResponse_object. </summary>
     public readonly partial struct ListMessageFilesResponseObject : IEquatable<ListMessageFilesResponseObject>

@@ -1,4 +1,4 @@
-namespace OpenAI.Official.Assistants;
+namespace OpenAI.Assistants;
 
 public enum MessageRole
 {

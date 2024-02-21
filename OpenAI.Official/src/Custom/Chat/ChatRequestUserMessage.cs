@@ -9,7 +9,7 @@ using System.ClientModel.Primitives;
 using System.Linq;
 using OpenAI.ClientShared.Internal;
 
-namespace OpenAI.Official.Chat;
+namespace OpenAI.Chat;
 
 /// <summary>
 /// Represents a chat message of the <c>user</c> role as supplied to a chat completion request. A user message contains

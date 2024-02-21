@@ -1,14 +1,14 @@
 ﻿using NUnit.Framework;
-using OpenAI.Official.Chat;
+using OpenAI.Chat;
 using System;
 using System.ClientModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using static OpenAI.Official.Tests.TestHelpers;
+using static OpenAI.Tests.TestHelpers;
 
-namespace OpenAI.Official.Tests.Chat;
+namespace OpenAI.Tests.Chat;
 
 public partial class ChatClientTests
 {

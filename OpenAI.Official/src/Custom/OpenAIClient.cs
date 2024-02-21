@@ -1,17 +1,17 @@
-using OpenAI.Official.Assistants;
-using OpenAI.Official.Audio;
-using OpenAI.Official.Chat;
-using OpenAI.Official.Embeddings;
-using OpenAI.Official.Files;
-using OpenAI.Official.FineTuning;
-using OpenAI.Official.Images;
-using OpenAI.Official.LegacyCompletions;
-using OpenAI.Official.Models;
-using OpenAI.Official.Moderations;
+using OpenAI.Assistants;
+using OpenAI.Audio;
+using OpenAI.Chat;
+using OpenAI.Embeddings;
+using OpenAI.Files;
+using OpenAI.FineTuning;
+using OpenAI.Images;
+using OpenAI.LegacyCompletions;
+using OpenAI.Models;
+using OpenAI.Moderations;
 using System;
 using System.ClientModel;
 
-namespace OpenAI.Official;
+namespace OpenAI;
 
 /// <summary>
 /// A top-level client factory that enables convenient creation of scenario-specific sub-clients while reusing shared

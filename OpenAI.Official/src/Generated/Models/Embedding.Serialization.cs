@@ -5,7 +5,7 @@ using OpenAI.ClientShared.Internal;
 using System.ClientModel.Primitives;
 using System.Text.Json;
 
-namespace OpenAI.Official.Internal.Models
+namespace OpenAI.Internal.Models
 {
     internal partial class Embedding : IJsonModel<Embedding>
     {

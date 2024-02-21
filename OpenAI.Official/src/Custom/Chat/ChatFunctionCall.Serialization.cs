@@ -6,7 +6,7 @@ using System.ClientModel.Primitives;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 
-namespace OpenAI.Official.Chat;
+namespace OpenAI.Chat;
 
 public partial class ChatFunctionCall :  IJsonModel<ChatFunctionCall>
 {

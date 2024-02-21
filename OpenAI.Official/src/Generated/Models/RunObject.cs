@@ -5,7 +5,7 @@ using OpenAI.ClientShared.Internal;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OpenAI.Official.Internal.Models
+namespace OpenAI.Internal.Models
 {
     /// <summary> Represents an execution run on a [thread](/docs/api-reference/threads). </summary>
     internal partial class RunObject

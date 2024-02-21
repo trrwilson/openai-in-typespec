@@ -7,7 +7,7 @@ using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace OpenAI.Official.Images;
+namespace OpenAI.Images;
 
 /// <summary> The service client for OpenAI image operations. </summary>
 public partial class ImageClient

@@ -1,9 +1,9 @@
 ﻿using NUnit.Framework;
-using OpenAI.Official.Embeddings;
+using OpenAI.Embeddings;
 using System.ClientModel;
 using System.Collections.Generic;
 
-namespace OpenAI.Official.Tests.Embeddings;
+namespace OpenAI.Tests.Embeddings;
 
 public partial class EmbeddingClientTests
 {

@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace OpenAI.Official.Internal.Models
+namespace OpenAI.Internal.Models
 {
     /// <summary> Usage statistics for the completion request. </summary>
     internal partial class CompletionUsage

@@ -1,5 +1,5 @@
 using OpenAI.ClientShared.Internal;
-using OpenAI.Official.Internal;
+using OpenAI.Internal;
 using System;
 using System.ClientModel;
 using System.ClientModel.Internal;
@@ -9,7 +9,7 @@ using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace OpenAI.Official.Models;
+namespace OpenAI.Models;
 
 /// <summary>
 ///     The service client for OpenAI model operations.

@@ -1,9 +1,9 @@
 ﻿using NUnit.Framework;
-using OpenAI.Official.Audio;
+using OpenAI.Audio;
 using System;
 using System.ClientModel;
 
-namespace OpenAI.Official.Tests.Audio;
+namespace OpenAI.Tests.Audio;
 
 public partial class TextToSpeechTests
 {

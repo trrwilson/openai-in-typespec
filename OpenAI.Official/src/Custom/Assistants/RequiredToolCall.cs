@@ -3,7 +3,7 @@ using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.Text.Json;
 
-namespace OpenAI.Official.Assistants;
+namespace OpenAI.Assistants;
 
 public abstract partial class RequiredToolCall : RunRequiredAction
 {

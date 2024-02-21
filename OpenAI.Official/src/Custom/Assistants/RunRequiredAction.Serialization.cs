@@ -6,7 +6,7 @@ using System.ClientModel.Primitives;
 using System.Collections.Generic;
 using System.Text.Json;
 
-namespace OpenAI.Official.Assistants;
+namespace OpenAI.Assistants;
 
 public abstract partial class RunRequiredAction :  IJsonModel<IList<RunRequiredAction>>
 {

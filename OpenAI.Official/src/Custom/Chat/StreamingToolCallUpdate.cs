@@ -1,4 +1,4 @@
-namespace OpenAI.Official.Chat;
+namespace OpenAI.Chat;
 using System.Text.Json;
 
 /// <summary>

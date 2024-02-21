@@ -3,7 +3,7 @@
 using System;
 using System.ComponentModel;
 
-namespace OpenAI.Official.Internal.Models
+namespace OpenAI.Internal.Models
 {
     /// <summary> The ChatCompletionTool_type. </summary>
     public readonly partial struct ChatCompletionToolType : IEquatable<ChatCompletionToolType>

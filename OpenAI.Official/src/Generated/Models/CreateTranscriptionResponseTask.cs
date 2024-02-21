@@ -3,7 +3,7 @@
 using System;
 using System.ComponentModel;
 
-namespace OpenAI.Official.Internal.Models
+namespace OpenAI.Internal.Models
 {
     /// <summary> The CreateTranscriptionResponse_task. </summary>
     public readonly partial struct CreateTranscriptionResponseTask : IEquatable<CreateTranscriptionResponseTask>

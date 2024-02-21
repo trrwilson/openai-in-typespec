@@ -2,7 +2,7 @@ using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.Text.Json;
 
-namespace OpenAI.Official.Chat;
+namespace OpenAI.Chat;
 
 /// <summary>
 /// Represents a chat message of the <c>function</c> role as provided to a chat completion request. A function message

@@ -5,7 +5,7 @@ using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.Text.Json;
 
-namespace OpenAI.Official.Chat;
+namespace OpenAI.Chat;
 
 public abstract partial class ChatToolCall :  IJsonModel<ChatToolCall>
 {

@@ -5,7 +5,7 @@ using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.Threading;
 
-namespace OpenAI.Official.Internal
+namespace OpenAI.Internal
 {
     // Data plane generated client.
     /// <summary> The OpenAI service client. </summary>

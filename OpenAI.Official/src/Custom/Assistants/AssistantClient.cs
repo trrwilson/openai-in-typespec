@@ -7,11 +7,11 @@ using System.ClientModel.Primitives;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using OpenAI.Official.Internal;
+using OpenAI.Internal;
 using System.Text.Json;
 using OpenAI.ClientShared.Internal;
 
-namespace OpenAI.Official.Assistants;
+namespace OpenAI.Assistants;
 
 /// <summary>
 /// The service client for OpenAI assistants.

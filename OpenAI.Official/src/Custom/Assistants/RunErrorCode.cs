@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel;
 
-namespace OpenAI.Official.Assistants;
+namespace OpenAI.Assistants;
 
 public readonly struct RunErrorCode : IEquatable<RunErrorCode>
 {

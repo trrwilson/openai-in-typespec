@@ -1,4 +1,4 @@
-namespace OpenAI.Official.Images;
+namespace OpenAI.Images;
 
 /// <summary>
 /// Represents additional options available to control the behavior of an image generation operation.

@@ -3,7 +3,7 @@
 using System;
 using System.ComponentModel;
 
-namespace OpenAI.Official.Internal.Models
+namespace OpenAI.Internal.Models
 {
     /// <summary> The Embedding_object. </summary>
     internal readonly partial struct EmbeddingObject : IEquatable<EmbeddingObject>

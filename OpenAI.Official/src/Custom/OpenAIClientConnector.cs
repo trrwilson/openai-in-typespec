@@ -3,7 +3,7 @@ using System.ClientModel;
 using System.ClientModel.Internal;
 
 
-namespace OpenAI.Official;
+namespace OpenAI;
 
 // This internal type facilitates composition rather than inheritance for scenario clients.
 

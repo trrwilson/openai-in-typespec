@@ -1,13 +1,13 @@
 ﻿using NUnit.Framework;
-using OpenAI.Official.Audio;
-using OpenAI.Official.Chat;
-using OpenAI.Official.Images;
+using OpenAI.Audio;
+using OpenAI.Chat;
+using OpenAI.Images;
 using System;
 using System.ClientModel;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace OpenAI.Official.Tests.Examples;
+namespace OpenAI.Tests.Examples;
 
 public partial class CombinationExamples
 {

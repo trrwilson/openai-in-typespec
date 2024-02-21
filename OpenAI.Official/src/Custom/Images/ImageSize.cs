@@ -1,6 +1,6 @@
 using System;
 
-namespace OpenAI.Official.Images;
+namespace OpenAI.Images;
 
 /// <summary>
 /// Represents the available output dimensions for generated images.

@@ -1,6 +1,6 @@
 using System;
 
-namespace OpenAI.Official;
+namespace OpenAI;
 
 // SSE specification: https://html.spec.whatwg.org/multipage/server-sent-events.html#parsing-an-event-stream
 internal readonly struct SseLine

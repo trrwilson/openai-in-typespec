@@ -1,4 +1,4 @@
-namespace OpenAI.Official.Audio;
+namespace OpenAI.Audio;
 
 /// <summary>
 /// A representation of additional options available to control the behavior of a text-to-speech audio generation

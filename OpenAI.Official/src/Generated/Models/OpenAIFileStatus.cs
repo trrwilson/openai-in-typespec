@@ -3,7 +3,7 @@
 using System;
 using System.ComponentModel;
 
-namespace OpenAI.Official.Internal.Models
+namespace OpenAI.Internal.Models
 {
     /// <summary> Enum for status in OpenAIFile. </summary>
     public readonly partial struct OpenAIFileStatus : IEquatable<OpenAIFileStatus>

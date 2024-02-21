@@ -1,13 +1,13 @@
 parameters:
   "service-dir":
-    default: "OpenAI.Official"
+    default: "OpenAI"
   "dependencies":
     default: ""
 emit:
  - "@azure-tools/typespec-csharp"
 options:
   "@azure-tools/typespec-csharp":
-    namespace: "OpenAI.Official"
+    namespace: "OpenAI"
     branded: false
     clear-output-folder: true
     model-namespace: false

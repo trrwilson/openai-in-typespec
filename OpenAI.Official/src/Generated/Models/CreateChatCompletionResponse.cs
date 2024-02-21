@@ -5,7 +5,7 @@ using OpenAI.ClientShared.Internal;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OpenAI.Official.Internal.Models
+namespace OpenAI.Internal.Models
 {
     /// <summary> Represents a chat completion response returned by model, based on the provided input. </summary>
     internal partial class CreateChatCompletionResponse

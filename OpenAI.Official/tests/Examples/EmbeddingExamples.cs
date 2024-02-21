@@ -1,11 +1,11 @@
 ﻿using NUnit.Framework;
-using OpenAI.Official.Chat;
-using OpenAI.Official.Embeddings;
+using OpenAI.Chat;
+using OpenAI.Embeddings;
 using System;
 using System.ClientModel;
 using System.Collections.Generic;
 
-namespace OpenAI.Official.Tests.Examples;
+namespace OpenAI.Tests.Examples;
 
 public partial class EmbeddingExamples
 {

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using OpenAI.ClientShared.Internal;
 
-namespace OpenAI.Official.Chat;
+namespace OpenAI.Chat;
 
 /// <summary>
 /// Represents a chat message of the <c>assistant</c> role as supplied to a chat completion request. As assistant

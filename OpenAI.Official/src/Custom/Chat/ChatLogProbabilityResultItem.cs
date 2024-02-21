@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace OpenAI.Official.Chat;
+namespace OpenAI.Chat;
 
 /// <summary>
 /// Represents a single item of log probability information as requested via

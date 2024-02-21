@@ -3,7 +3,7 @@
 using System;
 using System.ComponentModel;
 
-namespace OpenAI.Official.Internal.Models
+namespace OpenAI.Internal.Models
 {
     /// <summary> Enum for finish_reason in CreateCompletionResponseChoice. </summary>
     public readonly partial struct CreateCompletionResponseChoiceFinishReason : IEquatable<CreateCompletionResponseChoiceFinishReason>

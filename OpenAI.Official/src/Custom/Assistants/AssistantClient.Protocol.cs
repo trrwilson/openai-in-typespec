@@ -4,7 +4,7 @@ using System.ClientModel.Primitives;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
-namespace OpenAI.Official.Assistants;
+namespace OpenAI.Assistants;
 
 public partial class AssistantClient
 {

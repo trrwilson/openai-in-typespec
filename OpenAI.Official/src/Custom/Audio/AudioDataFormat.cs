@@ -1,4 +1,4 @@
-namespace OpenAI.Official.Audio;
+namespace OpenAI.Audio;
 
 /// <summary>
 /// Represents an audio data format available as either input or output into an audio operation.

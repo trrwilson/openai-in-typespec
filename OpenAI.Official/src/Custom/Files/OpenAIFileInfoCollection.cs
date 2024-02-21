@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace OpenAI.Official.Files;
+namespace OpenAI.Files;
 
 public partial class OpenAIFileInfoCollection : ReadOnlyCollection<OpenAIFileInfo>
 {

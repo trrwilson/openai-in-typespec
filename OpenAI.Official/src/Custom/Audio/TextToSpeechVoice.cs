@@ -1,6 +1,6 @@
 using System;
 
-namespace OpenAI.Official.Audio;
+namespace OpenAI.Audio;
 
 /// <summary>
 /// Represents the available text-to-speech voices.

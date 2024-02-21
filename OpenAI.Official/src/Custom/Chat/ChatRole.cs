@@ -1,6 +1,6 @@
 using System;
 
-namespace OpenAI.Official.Chat;
+namespace OpenAI.Chat;
 
 /// <summary>
 /// Represents the <c>role</c> of a chat completion message.

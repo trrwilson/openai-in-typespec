@@ -1,9 +1,9 @@
 ﻿using NUnit.Framework;
-using OpenAI.Official.Chat;
+using OpenAI.Chat;
 using System;
 using System.ClientModel;
 
-namespace OpenAI.Official.Tests.Chat;
+namespace OpenAI.Tests.Chat;
 
 public partial class ChatToolConstraintTests
 {

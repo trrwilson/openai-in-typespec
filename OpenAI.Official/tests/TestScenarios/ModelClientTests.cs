@@ -1,10 +1,10 @@
 ﻿using NUnit.Framework;
-using OpenAI.Official.Models;
+using OpenAI.Models;
 using System.ClientModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OpenAI.Official.Tests.Models;
+namespace OpenAI.Tests.Models;
 
 public partial class ModelClientTests
 {

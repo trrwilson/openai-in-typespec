@@ -6,9 +6,9 @@ using System.ClientModel.Primitives;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using OpenAI.Official.Internal.Models;
+using OpenAI.Internal.Models;
 
-namespace OpenAI.Official.Internal
+namespace OpenAI.Internal
 {
     // Data plane generated sub-client.
     /// <summary> The Completions sub-client. </summary>

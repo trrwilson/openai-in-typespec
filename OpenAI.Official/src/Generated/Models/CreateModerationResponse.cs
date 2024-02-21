@@ -5,7 +5,7 @@ using OpenAI.ClientShared.Internal;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OpenAI.Official.Internal.Models
+namespace OpenAI.Internal.Models
 {
     /// <summary> Represents policy compliance report by OpenAI's content moderation model against a given input. </summary>
     internal partial class CreateModerationResponse

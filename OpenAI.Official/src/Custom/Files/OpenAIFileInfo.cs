@@ -1,6 +1,6 @@
 using System;
 
-namespace OpenAI.Official.Files;
+namespace OpenAI.Files;
 
 public partial class OpenAIFileInfo
 {

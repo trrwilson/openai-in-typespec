@@ -1,4 +1,4 @@
-namespace OpenAI.Official.Embeddings;
+namespace OpenAI.Embeddings;
 
 public class EmbeddingOptions
 {

@@ -3,7 +3,7 @@
 using System;
 using System.ComponentModel;
 
-namespace OpenAI.Official.Internal.Models
+namespace OpenAI.Internal.Models
 {
     /// <summary> Enum for response_format in CreateImageRequest. </summary>
     public readonly partial struct CreateImageRequestResponseFormat : IEquatable<CreateImageRequestResponseFormat>

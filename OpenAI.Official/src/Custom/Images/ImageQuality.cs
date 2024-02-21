@@ -1,6 +1,6 @@
 using System;
 
-namespace OpenAI.Official.Images;
+namespace OpenAI.Images;
 
 /// <summary>
 /// A representation of the quality setting for image operations that controls the level of work that the model will

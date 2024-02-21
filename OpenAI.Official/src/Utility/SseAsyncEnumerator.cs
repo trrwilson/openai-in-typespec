@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Threading;
 
-namespace OpenAI.Official;
+namespace OpenAI;
 
 internal static class SseAsyncEnumerator<T>
 {

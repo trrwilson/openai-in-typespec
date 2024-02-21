@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace OpenAI.Official.Internal
+namespace OpenAI.Internal
 {
     internal partial class OpenAIClient
     {

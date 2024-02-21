@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace OpenAI.Official.Internal.Models
+namespace OpenAI.Internal.Models
 {
     /// <summary> The CreateChatCompletionRequestResponseFormat. </summary>
     internal partial class CreateChatCompletionRequestResponseFormat

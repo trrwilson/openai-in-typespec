@@ -1,4 +1,4 @@
-namespace OpenAI.Official.Assistants;
+namespace OpenAI.Assistants;
 
 
 public abstract partial class MessageContent

@@ -3,7 +3,7 @@
 using System;
 using System.ComponentModel;
 
-namespace OpenAI.Official.Internal.Models
+namespace OpenAI.Internal.Models
 {
     /// <summary> Enum for size in CreateImageRequest. </summary>
     public readonly partial struct CreateImageRequestSize : IEquatable<CreateImageRequestSize>

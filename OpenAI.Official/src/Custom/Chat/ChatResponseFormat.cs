@@ -1,6 +1,6 @@
 using System;
 
-namespace OpenAI.Official.Chat;
+namespace OpenAI.Chat;
 
 /// <summary>
 /// Represents a requested <c>response_format</c> for the model to use, enabling "JSON mode" for guaranteed valid output.

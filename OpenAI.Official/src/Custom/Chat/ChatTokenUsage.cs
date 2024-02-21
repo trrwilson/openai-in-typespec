@@ -1,4 +1,4 @@
-namespace OpenAI.Official.Chat;
+namespace OpenAI.Chat;
 
 /// <summary>
 /// Represents computed token consumption statistics for a chat completion request.

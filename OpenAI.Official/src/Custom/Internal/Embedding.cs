@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace OpenAI.Official.Internal.Models
+namespace OpenAI.Internal.Models
 {
     internal partial class Embedding
     {

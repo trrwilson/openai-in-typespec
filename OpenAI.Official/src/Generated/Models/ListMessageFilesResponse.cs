@@ -5,7 +5,7 @@ using OpenAI.ClientShared.Internal;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OpenAI.Official.Internal.Models
+namespace OpenAI.Internal.Models
 {
     /// <summary> The ListMessageFilesResponse. </summary>
     internal partial class ListMessageFilesResponse

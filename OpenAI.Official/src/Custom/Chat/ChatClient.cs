@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenAI.Official.Chat;
+namespace OpenAI.Chat;
 
 /// <summary> The service client for the OpenAI Chat Completions endpoint. </summary>
 public partial class ChatClient

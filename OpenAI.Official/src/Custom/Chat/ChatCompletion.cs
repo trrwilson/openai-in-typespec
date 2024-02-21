@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace OpenAI.Official.Chat;
+namespace OpenAI.Chat;
 
 /// <inheritdoc cref="Internal.Models.CreateChatCompletionResponse"/>
 public class ChatCompletion

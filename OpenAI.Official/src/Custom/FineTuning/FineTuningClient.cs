@@ -5,7 +5,7 @@ using System.ClientModel.Primitives;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
-namespace OpenAI.Official.FineTuning;
+namespace OpenAI.FineTuning;
 
 /// <summary>
 ///     The service client for OpenAI operations for model fine-tuning.

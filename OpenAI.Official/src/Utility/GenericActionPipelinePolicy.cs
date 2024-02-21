@@ -4,7 +4,7 @@ using System.ClientModel.Primitives;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace OpenAI.Official;
+namespace OpenAI;
 
 internal partial class GenericActionPipelinePolicy : PipelinePolicy
 {

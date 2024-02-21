@@ -1,6 +1,6 @@
 using System;
 
-namespace OpenAI.Official.Chat;
+namespace OpenAI.Chat;
 
 /// <summary>
 /// Represents <c>tool_choice</c>, the desired manner in which the model should use the <c>tools</c> defined in a

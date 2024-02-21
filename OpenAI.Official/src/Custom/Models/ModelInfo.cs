@@ -1,5 +1,5 @@
 using System;
-namespace OpenAI.Official.Models;
+namespace OpenAI.Models;
 
 /// <summary>
 /// Represents information about a single available model entry.

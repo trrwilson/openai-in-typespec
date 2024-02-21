@@ -3,7 +3,7 @@ using System.ClientModel.Primitives;
 using System.Collections.Generic;
 using System.Text.Json;
 
-namespace OpenAI.Official.Assistants;
+namespace OpenAI.Assistants;
 
 public class MessageTextContent : MessageContent
 {

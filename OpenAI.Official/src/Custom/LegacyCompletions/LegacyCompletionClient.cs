@@ -5,7 +5,7 @@ using System.ClientModel.Primitives;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
-namespace OpenAI.Official.LegacyCompletions;
+namespace OpenAI.LegacyCompletions;
 
 /// <summary>
 ///     The basic, protocol-level service client for OpenAI legacy completion operations.

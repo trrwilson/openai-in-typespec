@@ -7,7 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using OpenAI.ClientShared.Internal;
 
-namespace OpenAI.Official.Assistants;
+namespace OpenAI.Assistants;
 
 public partial class FunctionToolDefinition : ToolDefinition
 {

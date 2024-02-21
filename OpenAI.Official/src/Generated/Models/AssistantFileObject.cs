@@ -4,7 +4,7 @@ using System;
 using OpenAI.ClientShared.Internal;
 using System.Collections.Generic;
 
-namespace OpenAI.Official.Internal.Models
+namespace OpenAI.Internal.Models
 {
     /// <summary> A list of [Files](/docs/api-reference/files) attached to an `assistant`. </summary>
     internal partial class AssistantFileObject

@@ -4,7 +4,7 @@ using System.ClientModel.Primitives;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace OpenAI.Official.Tests;
+namespace OpenAI.Tests;
 
 internal partial class TestPipelinePolicy : PipelinePolicy
 {

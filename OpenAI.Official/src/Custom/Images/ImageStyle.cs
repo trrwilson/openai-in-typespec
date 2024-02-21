@@ -1,6 +1,6 @@
 using System;
 
-namespace OpenAI.Official.Images;
+namespace OpenAI.Images;
 
 /// <summary>
 /// The style of the generated images. Must be one of vivid or natural. Vivid causes the model to lean towards

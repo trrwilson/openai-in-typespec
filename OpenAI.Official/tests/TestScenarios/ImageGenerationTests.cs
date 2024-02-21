@@ -1,9 +1,9 @@
 ﻿using NUnit.Framework;
-using OpenAI.Official.Images;
+using OpenAI.Images;
 using System;
 using System.ClientModel;
 
-namespace OpenAI.Official.Tests.Images;
+namespace OpenAI.Tests.Images;
 
 public partial class ImageGenerationTests
 {

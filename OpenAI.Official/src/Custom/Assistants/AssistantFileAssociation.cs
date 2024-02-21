@@ -1,6 +1,6 @@
 using System;
 
-namespace OpenAI.Official.Assistants;
+namespace OpenAI.Assistants;
 
 public partial class AssistantFileAssociation
 {

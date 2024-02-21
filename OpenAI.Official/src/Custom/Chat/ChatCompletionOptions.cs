@@ -5,7 +5,7 @@ using System.ClientModel.Internal;
 using System.Collections.Generic;
 using System.Text.Json;
 
-namespace OpenAI.Official.Chat;
+namespace OpenAI.Chat;
 
 /// <summary>
 /// Request-level options for chat completion.

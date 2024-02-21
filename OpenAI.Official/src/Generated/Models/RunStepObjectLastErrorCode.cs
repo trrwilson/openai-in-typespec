@@ -3,7 +3,7 @@
 using System;
 using System.ComponentModel;
 
-namespace OpenAI.Official.Internal.Models
+namespace OpenAI.Internal.Models
 {
     /// <summary> Enum for code in RunStepObjectLastError. </summary>
     public readonly partial struct RunStepObjectLastErrorCode : IEquatable<RunStepObjectLastErrorCode>

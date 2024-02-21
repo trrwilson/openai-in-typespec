@@ -1,12 +1,12 @@
-﻿using OpenAI.Official.Assistants;
-using OpenAI.Official.Chat;
+﻿using OpenAI.Assistants;
+using OpenAI.Chat;
 using System;
 using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.Collections.Generic;
 using System.IO;
 
-namespace OpenAI.Official.Tests;
+namespace OpenAI.Tests;
 
 internal static class TestHelpers
 {

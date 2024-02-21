@@ -1,9 +1,9 @@
 ﻿using NUnit.Framework;
-using OpenAI.Official.Files;
+using OpenAI.Files;
 using System;
 using System.ClientModel;
 
-namespace OpenAI.Official.Tests.Files;
+namespace OpenAI.Tests.Files;
 
 public partial class FileClientTests
 {

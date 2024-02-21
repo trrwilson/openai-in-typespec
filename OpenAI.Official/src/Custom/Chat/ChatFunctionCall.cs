@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace OpenAI.Official.Chat;
+namespace OpenAI.Chat;
 
 /// <summary>
 /// Represents an <c>assistant</c> call against a supplied <see cref="ChatFunctionDefinition"/> that is needed by the

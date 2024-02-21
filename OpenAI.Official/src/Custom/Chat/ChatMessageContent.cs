@@ -1,6 +1,6 @@
 using System;
 
-namespace OpenAI.Official.Chat;
+namespace OpenAI.Chat;
 
 /// <summary>
 /// Represents the common base type for a piece of message content used for chat completions.

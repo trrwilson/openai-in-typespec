@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using OpenAI.Official.LegacyCompletions;
+using OpenAI.LegacyCompletions;
 using System;
 using System.ClientModel;
 using System.ClientModel;
@@ -7,7 +7,7 @@ using System.ClientModel.Primitives;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
-namespace OpenAI.Official.Tests.LegacyCompletions;
+namespace OpenAI.Tests.LegacyCompletions;
 
 public partial class LegacyCompletionTests
 {

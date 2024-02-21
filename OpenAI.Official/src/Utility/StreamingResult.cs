@@ -5,7 +5,7 @@ using System.Threading;
 using System.Collections.Generic;
 using System;
 
-namespace OpenAI.Official;
+namespace OpenAI;
 
 /// <summary>
 /// Represents an operation response with streaming content that can be deserialized and enumerated while the response

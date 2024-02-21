@@ -3,7 +3,7 @@
 using System;
 using System.ComponentModel;
 
-namespace OpenAI.Official.Internal.Models
+namespace OpenAI.Internal.Models
 {
     /// <summary> Enum for encoding_format in GenerateEmbeddingsOptions. </summary>
     public readonly partial struct GenerateEmbeddingsOptionsEncodingFormat : IEquatable<GenerateEmbeddingsOptionsEncodingFormat>

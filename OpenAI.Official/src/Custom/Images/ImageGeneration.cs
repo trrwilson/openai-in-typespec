@@ -1,6 +1,6 @@
 using System;
 
-namespace OpenAI.Official.Images;
+namespace OpenAI.Images;
 
 /// <summary>
 /// Represents the result data for an image generation request.

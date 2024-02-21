@@ -1,4 +1,4 @@
-namespace OpenAI.Official.Chat;
+namespace OpenAI.Chat;
 
 /// <summary>
 /// A base representation of a tool supplied to a chat completion request. Tools inform the model about additional,

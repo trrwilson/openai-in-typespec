@@ -4,7 +4,7 @@ using System.ClientModel.Internal;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace OpenAI.Official;
+namespace OpenAI;
 
 internal sealed class SseReader : IDisposable
     {

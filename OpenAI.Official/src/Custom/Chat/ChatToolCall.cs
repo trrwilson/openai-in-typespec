@@ -1,4 +1,4 @@
-namespace OpenAI.Official.Chat;
+namespace OpenAI.Chat;
 
 /// <summary>
 /// A base representation of an item in an <c>assistant</c> role response's <c>tool_calls</c> that specifies
