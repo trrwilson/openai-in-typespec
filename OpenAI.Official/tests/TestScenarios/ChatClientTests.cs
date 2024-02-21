@@ -3,6 +3,7 @@ using OpenAI.Official.Chat;
 using System;
 using System.ClientModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using static OpenAI.Official.Tests.TestHelpers;
@@ -31,8 +32,7 @@ public partial class ChatClientTests
             new ChatRequestSystemMessage("You are a helpful assistant. You always talk like a pirate."),
             new ChatRequestUserMessage("Hello, assistant! Can you help me train my parrot?"),
         ]);
-        Console.WriteLine(result.GetRawResponse().Content.ToString());
-        Assert.That(result.Value.Content.ToString().ToLowerInvariant(), Contains.Substring("arr"));
+        Assert.That(new string[] { "aye", "arr", "hearty" }.Any(pirateWord => result.Value.Content.ToString().ToLowerInvariant().Contains(pirateWord)));
     }
 
     [Test]

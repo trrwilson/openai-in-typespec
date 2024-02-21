@@ -135,7 +135,7 @@ public partial class StreamingChatUpdate
     /// </para>
     /// <para>
     /// Unless a value greater than <c>1</c> was provided as the <c>choiceCount</c> to
-    /// <see cref="ChatClient.CompleteChatStreaming(IEnumerable{ChatRequestMessage}, int?, ChatCompletionOptions, System.Threading.CancellationToken)"/>,
+    /// <see cref="ChatClient.CompleteChatStreaming(IEnumerable{ChatRequestMessage}, int?, ChatCompletionOptions)"/>,
     /// only one choice will be generated. In that case, this value will always be 0 and may not need to be considered.
     /// </para>
     /// <para>

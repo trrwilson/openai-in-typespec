@@ -32,7 +32,7 @@ public partial class ChatExamples
 
     [Test]
     [Ignore("Compilation validation only")]
-    public void ChatWithImage(Uri imageUri)
+    public void ChatWithImage(Uri imageUri = null)
     {
         ChatClient client = new("gpt-4-vision-preview");
         ClientResult<ChatCompletion> result = client.CompleteChat(

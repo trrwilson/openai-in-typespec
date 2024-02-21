@@ -15,6 +15,7 @@ internal partial class OpenAIClientConnector
 
     internal Internal.OpenAIClient InternalClient { get; }
     internal string Model { get; }
+    internal Uri Endpoint { get; }
 
     internal OpenAIClientConnector(
         string model,
@@ -22,10 +23,11 @@ internal partial class OpenAIClientConnector
         ApiKeyCredential credential = null,
         OpenAIClientOptions options = null)
     {
-        if (model is null) throw new ArgumentNullException(nameof(model));        Model = model;
-        endpoint ??= new(Environment.GetEnvironmentVariable(s_OpenAIEndpointEnvironmentVariable) ?? s_defaultOpenAIV1Endpoint);
+        if (model is null) throw new ArgumentNullException(nameof(model));
+        Model = model;
+        Endpoint ??= new(Environment.GetEnvironmentVariable(s_OpenAIEndpointEnvironmentVariable) ?? s_defaultOpenAIV1Endpoint);
         credential ??= new(Environment.GetEnvironmentVariable(s_OpenAIApiKeyEnvironmentVariable) ?? string.Empty);
         options ??= new();
-        InternalClient = new(endpoint, credential, options.InternalOptions);
+        InternalClient = new(Endpoint, credential, options.InternalOptions);
     }
 }

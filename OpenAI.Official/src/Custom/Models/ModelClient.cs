@@ -121,9 +121,9 @@ public partial class ModelClient
         return Shim.RetrieveAsync(modelId, context);
     }
 
-    public virtual ClientResult<ModelInfoCollection> GetModels(CancellationToken cancellationToken = default)
+    public virtual ClientResult<ModelInfoCollection> GetModels()
     {
-        ClientResult<Internal.Models.ListModelsResponse> internalResult = Shim.GetModels(cancellationToken);
+        ClientResult<Internal.Models.ListModelsResponse> internalResult = Shim.GetModels();
         OptionalList<ModelInfo> modelEntries = [];
         foreach (Internal.Models.Model internalModel in internalResult.Value.Data)
         {
@@ -132,10 +132,10 @@ public partial class ModelClient
         return ClientResult.FromValue(new ModelInfoCollection(modelEntries), internalResult.GetRawResponse());
     }
 
-    public virtual async Task<ClientResult<ModelInfoCollection>> GetModelsAsync(CancellationToken cancellationToken = default)
+    public virtual async Task<ClientResult<ModelInfoCollection>> GetModelsAsync()
     {
         ClientResult<Internal.Models.ListModelsResponse> internalResult
-            = await Shim.GetModelsAsync(cancellationToken).ConfigureAwait(false);
+            = await Shim.GetModelsAsync().ConfigureAwait(false);
         OptionalList<ModelInfo> modelEntries = [];
         foreach (Internal.Models.Model internalModel in internalResult.Value.Data)
         {

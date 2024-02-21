@@ -43,9 +43,9 @@ namespace OpenAI.Official.Internal
         /// Lists the currently available models, and provides basic information about each one such as the
         /// owner and availability.
         /// </summary>
-        public virtual async Task<ClientResult<ListModelsResponse>> GetModelsAsync(CancellationToken cancellationToken = default)
+        public virtual async Task<ClientResult<ListModelsResponse>> GetModelsAsync()
         {
-            ClientResult result = await GetModelsAsync().ConfigureAwait(false);
+            ClientResult result = await GetModelsAsync(new RequestOptions()).ConfigureAwait(false);
             return ClientResult.FromValue(ListModelsResponse.FromResponse(result.GetRawResponse()), result.GetRawResponse());
         }
 
@@ -53,9 +53,9 @@ namespace OpenAI.Official.Internal
         /// Lists the currently available models, and provides basic information about each one such as the
         /// owner and availability.
         /// </summary>
-        public virtual ClientResult<ListModelsResponse> GetModels(CancellationToken cancellationToken = default)
+        public virtual ClientResult<ListModelsResponse> GetModels()
         {
-            ClientResult result = GetModels();
+            ClientResult result = GetModels(new RequestOptions());
             return ClientResult.FromValue(ListModelsResponse.FromResponse(result.GetRawResponse()), result.GetRawResponse());
         }
 
@@ -70,7 +70,7 @@ namespace OpenAI.Official.Internal
         /// </item>
         /// <item>
         /// <description>
-        /// Please try the simpler <see cref="GetModelsAsync(CancellationToken)"/> convenience overload with strongly typed models first.
+        /// Please try the simpler <see cref="GetModelsAsync()"/> convenience overload with strongly typed models first.
         /// </description>
         /// </item>
         /// </list>
@@ -104,7 +104,7 @@ namespace OpenAI.Official.Internal
         /// </item>
         /// <item>
         /// <description>
-        /// Please try the simpler <see cref="GetModels(CancellationToken)"/> convenience overload with strongly typed models first.
+        /// Please try the simpler <see cref="GetModels()"/> convenience overload with strongly typed models first.
         /// </description>
         /// </item>
         /// </list>
@@ -139,7 +139,7 @@ namespace OpenAI.Official.Internal
             if (model is null) throw new ArgumentNullException(nameof(model));
             if (string.IsNullOrEmpty(model)) throw new ArgumentException(nameof(model));
 
-            ClientResult result = await RetrieveAsync(model).ConfigureAwait(false);
+            ClientResult result = await RetrieveAsync(model, new RequestOptions()).ConfigureAwait(false);
             return ClientResult.FromValue(Model.FromResponse(result.GetRawResponse()), result.GetRawResponse());
         }
 
@@ -155,7 +155,7 @@ namespace OpenAI.Official.Internal
             if (model is null) throw new ArgumentNullException(nameof(model));
             if (string.IsNullOrEmpty(model)) throw new ArgumentException(nameof(model));
 
-            ClientResult result = Retrieve(model);
+            ClientResult result = Retrieve(model, new RequestOptions());
             return ClientResult.FromValue(Model.FromResponse(result.GetRawResponse()), result.GetRawResponse());
         }
 
@@ -363,7 +363,6 @@ namespace OpenAI.Official.Internal
             UriBuilder uriBuilder = new(_endpoint.ToString());
             StringBuilder path = new();
             path.Append("/models/");
-            uriBuilder.Path += path.ToString();
             path.Append(model);
             uriBuilder.Path += path.ToString();
             request.Uri = uriBuilder.Uri;
@@ -380,7 +379,6 @@ namespace OpenAI.Official.Internal
             UriBuilder uriBuilder = new(_endpoint.ToString());
             StringBuilder path = new();
             path.Append("/models/");
-            uriBuilder.Path += path.ToString();
             path.Append(model);
             uriBuilder.Path += path.ToString();
             request.Uri = uriBuilder.Uri;
