@@ -15,20 +15,20 @@ public partial class EmbeddingClient
     private OpenAIClientConnector _clientConnector;
     private Internal.Embeddings Shim => _clientConnector.InternalClient.GetEmbeddingsClient();
 
-    public EmbeddingClient(Uri endpoint, string model, ApiKeyCredential credential, EmbeddingClientOptions options = null)
+    public EmbeddingClient(Uri endpoint, string model, ApiKeyCredential credential, OpenAIClientOptions options = null)
     {
         _clientConnector = new(model, endpoint, credential, options);
     }
 
-    public EmbeddingClient(Uri endpoint, string model, EmbeddingClientOptions options = null)
+    public EmbeddingClient(Uri endpoint, string model, OpenAIClientOptions options = null)
         : this(endpoint, model, credential: null, options)
     { }
 
-    public EmbeddingClient(string model, ApiKeyCredential credential, EmbeddingClientOptions options = null)
+    public EmbeddingClient(string model, ApiKeyCredential credential, OpenAIClientOptions options = null)
         : this(endpoint: null, model, credential, options)
     { }
 
-    public EmbeddingClient(string model, EmbeddingClientOptions options = null)
+    public EmbeddingClient(string model, OpenAIClientOptions options = null)
         : this(endpoint: null, model, credential: null, options)
     { }
 

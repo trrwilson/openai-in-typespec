@@ -32,7 +32,7 @@ public partial class FineTuningClient
     /// <param name="endpoint">The connection endpoint to use.</param>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public FineTuningClient(Uri endpoint, ApiKeyCredential credential, FineTuningClientOptions options = null)
+    public FineTuningClient(Uri endpoint, ApiKeyCredential credential, OpenAIClientOptions options = null)
     {
         _clientConnector = new("none", endpoint, credential, options);
     }
@@ -52,7 +52,7 @@ public partial class FineTuningClient
     /// </remarks>
     /// <param name="endpoint">The connection endpoint to use.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public FineTuningClient(Uri endpoint, FineTuningClientOptions options = null)
+    public FineTuningClient(Uri endpoint, OpenAIClientOptions options = null)
         : this(endpoint, credential: null, options)
     { }
 
@@ -71,7 +71,7 @@ public partial class FineTuningClient
     /// </remarks>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public FineTuningClient(ApiKeyCredential credential, FineTuningClientOptions options = null)
+    public FineTuningClient(ApiKeyCredential credential, OpenAIClientOptions options = null)
         : this(endpoint: null, credential, options)
     { }
 
@@ -89,7 +89,7 @@ public partial class FineTuningClient
     /// </para>
     /// </remarks>
     /// <param name="options">Additional options to customize the client.</param>
-    public FineTuningClient(FineTuningClientOptions options = null)
+    public FineTuningClient(OpenAIClientOptions options = null)
         : this(endpoint: null, credential: null, options)
     { }
 

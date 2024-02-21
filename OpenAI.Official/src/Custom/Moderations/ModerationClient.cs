@@ -32,7 +32,7 @@ public partial class ModerationClient
     /// <param name="endpoint">The connection endpoint to use.</param>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public ModerationClient(Uri endpoint, ApiKeyCredential credential, ModerationClientOptions options = null)
+    public ModerationClient(Uri endpoint, ApiKeyCredential credential, OpenAIClientOptions options = null)
     {
         _clientConnector = new("none", endpoint, credential, options);
     }
@@ -52,7 +52,7 @@ public partial class ModerationClient
     /// </remarks>
     /// <param name="endpoint">The connection endpoint to use.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public ModerationClient(Uri endpoint, ModerationClientOptions options = null)
+    public ModerationClient(Uri endpoint, OpenAIClientOptions options = null)
         : this(endpoint, credential: null, options)
     { }
 
@@ -71,7 +71,7 @@ public partial class ModerationClient
     /// </remarks>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public ModerationClient(ApiKeyCredential credential, ModerationClientOptions options = null)
+    public ModerationClient(ApiKeyCredential credential, OpenAIClientOptions options = null)
         : this(endpoint: null, credential, options)
     { }
 
@@ -89,7 +89,7 @@ public partial class ModerationClient
     /// </para>
     /// </remarks>
     /// <param name="options">Additional options to customize the client.</param>
-    public ModerationClient(ModerationClientOptions options = null)
+    public ModerationClient(OpenAIClientOptions options = null)
         : this(endpoint: null, credential: null, options)
     { }
 

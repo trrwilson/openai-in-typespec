@@ -31,7 +31,7 @@ public partial class AudioClient
     /// <param name="model">The model name for audio operations that the client should use.</param>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public AudioClient(Uri endpoint, string model, ApiKeyCredential credential, AudioClientOptions options = null)
+    public AudioClient(Uri endpoint, string model, ApiKeyCredential credential, OpenAIClientOptions options = null)
     {
         _clientConnector = new(model, endpoint, credential, options);
     }
@@ -52,7 +52,7 @@ public partial class AudioClient
     /// <param name="endpoint">The connection endpoint to use.</param>
     /// <param name="model">The model name for audio operations that the client should use.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public AudioClient(Uri endpoint, string model, AudioClientOptions options = null)
+    public AudioClient(Uri endpoint, string model, OpenAIClientOptions options = null)
         : this(endpoint, model, credential: null, options)
     { }
 
@@ -72,7 +72,7 @@ public partial class AudioClient
     /// <param name="model">The model name for audio operations that the client should use.</param>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public AudioClient(string model, ApiKeyCredential credential, AudioClientOptions options = null)
+    public AudioClient(string model, ApiKeyCredential credential, OpenAIClientOptions options = null)
         : this(endpoint: null, model, credential, options)
     { }
 
@@ -91,7 +91,7 @@ public partial class AudioClient
     /// </remarks>
     /// <param name="model">The model name for audio operations that the client should use.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public AudioClient(string model, AudioClientOptions options = null)
+    public AudioClient(string model, OpenAIClientOptions options = null)
         : this(endpoint: null, model, credential: null, options)
     { }
 

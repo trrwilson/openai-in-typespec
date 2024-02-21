@@ -28,25 +28,15 @@ internal static class TestHelpers
 
     public static T GetTestClient<T>(TestScenario scenario, string overrideModel = null)
     {
-        if (scenario == TestScenario.Chat)
+        OpenAIClientOptions options = new();
+        options.AddPolicy(GetDumpPolicy(), PipelinePosition.PerTry);
+        return scenario switch
         {
-            ChatClientOptions options = new();
-            options.AddPolicy(GetDumpPolicy(), PipelinePosition.PerTry);
-            return (T)((object)new ChatClient(overrideModel ?? "gpt-3.5-turbo", options));
-        }
-        else if (scenario == TestScenario.VisionChat)
-        {
-            ChatClientOptions options = new();
-            options.AddPolicy(GetDumpPolicy(), PipelinePosition.PerTry);
-            return (T)((object)new ChatClient(overrideModel ?? "gpt-4-vision-preview", options));
-        }
-        else if (scenario == TestScenario.Assistants)
-        {
-            AssistantClientOptions options = new();
-            options.AddPolicy(GetDumpPolicy(), PipelinePosition.PerTry);
-            return (T)(object)new AssistantClient(options);
-        }
-        throw new NotImplementedException();
+            TestScenario.Chat => (T)((object)new ChatClient(overrideModel ?? "gpt-3.5-turbo", options)),
+            TestScenario.VisionChat => (T)((object)new ChatClient(overrideModel ?? "gpt-4-vision-preview", options)),
+            TestScenario.Assistants => (T)((object)new AssistantClient(options)),
+            _ => throw new NotImplementedException(),
+        };
     }
 
     private static PipelinePolicy GetDumpPolicy()

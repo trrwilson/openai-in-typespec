@@ -14,19 +14,19 @@ public class ChatCompletion
     /// <inheritdoc cref="Internal.Models.CreateChatCompletionResponse.SystemFingerprint"/>
     public string SystemFingerprint => _internalResponse.SystemFingerprint;
     /// <inheritdoc cref="Internal.Models.CreateChatCompletionResponse.Created"/>
-    public DateTimeOffset Created => _internalResponse.Created;
+    public DateTimeOffset CreatedAt => _internalResponse.Created;
     /// <inheritdoc cref="Internal.Models.CreateChatCompletionResponse.Usage"/>
-    public ChatTokenUsage Usage { get; set; }
+    public ChatTokenUsage Usage { get; }
     /// <inheritdoc cref="Internal.Models.CreateChatCompletionResponseChoice.FinishReason"/>
-    public ChatFinishReason FinishReason { get; set; }
+    public ChatFinishReason FinishReason { get; }
     /// <inheritdoc cref="Internal.Models.ChatCompletionResponseMessage.Content"/>
-    public ChatMessageContent Content { get; set; }
+    public ChatMessageContent Content { get; }
     /// <inheritdoc cref="Internal.Models.ChatCompletionResponseMessage.ToolCalls"/>
     public IReadOnlyList<ChatToolCall> ToolCalls { get; }
     /// <inheritdoc cref="Internal.Models.ChatCompletionResponseMessage.FunctionCall"/>
     public ChatFunctionCall FunctionCall { get; }
     /// <inheritdoc cref="Internal.Models.ChatCompletionResponseMessage.Role"/>
-    public ChatRole Role { get; set; }
+    public ChatRole Role { get; }
     /// <inheritdoc cref="Internal.Models.CreateChatCompletionResponseChoice.Logprobs"/>
     public ChatLogProbabilityCollection LogProbabilities { get; }
     /// <inheritdoc cref="Internal.Models.CreateChatCompletionResponseChoice.Index"/>

@@ -10,7 +10,6 @@ using OpenAI.Official.Models;
 using OpenAI.Official.Moderations;
 using System;
 using System.ClientModel;
-using System.ClientModel.Primitives;
 
 namespace OpenAI.Official;
 
@@ -24,6 +23,17 @@ public partial class OpenAIClient
     private readonly ApiKeyCredential _cachedCredential = null;
     private readonly OpenAIClientOptions _cachedOptions = null;
 
+    /// <summary>
+    /// Creates a new instance of <see cref="OpenAIClient"/> will store common client configuration details to permit
+    /// easy reuse and propagation to multiple, scenario-specific subclients.
+    /// </summary>
+    /// <remarks>
+    /// This client does not provide any model functionality directly and is purely a helper to facilitate the creation
+    /// of the scenario-specific subclients like <see cref="ChatClient"/>.
+    /// </remarks>
+    /// <param name="endpoint"> An explicitly defined endpoint that all clients created by this <see cref="OpenAIClient"/> should use. </param>
+    /// <param name="credential"> An explicitly defined credential that all clients created by this <see cref="OpenAIClient"/> should use. </param>
+    /// <param name="clientOptions"> A common client options definition that all clients created by this <see cref="OpenAIClient"/> should use. </param>
     public OpenAIClient(Uri endpoint = null, ApiKeyCredential credential = null, OpenAIClientOptions clientOptions = null)
     {
         _cachedEndpoint = endpoint;
@@ -31,73 +41,123 @@ public partial class OpenAIClient
         _cachedOptions = clientOptions;
     }
 
+    /// <summary>
+    /// Gets a new instance of <see cref="AssistantClient"/> that reuses the client configuration details provided to
+    /// the <see cref="OpenAIClient"/> instance.
+    /// </summary>
+    /// <remarks>
+    /// This method is functionally equivalent to using the <see cref="AssistantClient"/> constructor directly with
+    /// the same configuration details.
+    /// </remarks>
+    /// <returns> A new <see cref="AssistantClient"/>. </returns>
     public AssistantClient GetAssistantClient()
-    {
-        AssistantClientOptions assistantOptions = new();
-        _cachedOptions.CopyTo(assistantOptions);
-        return new AssistantClient(assistantOptions);
-    }
+        => new AssistantClient(_cachedEndpoint, _cachedCredential, _cachedOptions);
 
+    /// <summary>
+    /// Gets a new instance of <see cref="AudioClient"/> that reuses the client configuration details provided to
+    /// the <see cref="OpenAIClient"/> instance.
+    /// </summary>
+    /// <remarks>
+    /// This method is functionally equivalent to using the <see cref="AudioClient"/> constructor directly with
+    /// the same configuration details.
+    /// </remarks>
+    /// <returns> A new <see cref="AudioClient"/>. </returns>
     public AudioClient GetAudio(string model)
-    {
-        AudioClientOptions audioOptions = new();
-        _cachedOptions.CopyTo(audioOptions);
-        return new AudioClient(_cachedEndpoint, model, _cachedCredential, audioOptions);
-    }
+        => new AudioClient(_cachedEndpoint, model, _cachedCredential, _cachedOptions);
 
+    /// <summary>
+    /// Gets a new instance of <see cref="ChatClient"/> that reuses the client configuration details provided to
+    /// the <see cref="OpenAIClient"/> instance.
+    /// </summary>
+    /// <remarks>
+    /// This method is functionally equivalent to using the <see cref="ChatClient"/> constructor directly with
+    /// the same configuration details.
+    /// </remarks>
+    /// <returns> A new <see cref="ChatClient"/>. </returns>
     public ChatClient GetChatClient(string model)
-    {
-        ChatClientOptions chatOptions = new();
-        _cachedOptions?.CopyTo(chatOptions);
-        return new ChatClient(_cachedEndpoint, model, _cachedCredential, chatOptions);
-    }
+        => new ChatClient(_cachedEndpoint, model, _cachedCredential, _cachedOptions);
 
+    /// <summary>
+    /// Gets a new instance of <see cref="EmbeddingClient"/> that reuses the client configuration details provided to
+    /// the <see cref="OpenAIClient"/> instance.
+    /// </summary>
+    /// <remarks>
+    /// This method is functionally equivalent to using the <see cref="EmbeddingClient"/> constructor directly with
+    /// the same configuration details.
+    /// </remarks>
+    /// <returns> A new <see cref="EmbeddingClient"/>. </returns>
     public EmbeddingClient GetEmbeddingClient(string model)
-    {
-        EmbeddingClientOptions embeddingOptions = new();
-        _cachedOptions?.CopyTo(embeddingOptions);
-        return new EmbeddingClient(_cachedEndpoint, model, _cachedCredential, embeddingOptions);
-    }
+        => new EmbeddingClient(_cachedEndpoint, model, _cachedCredential, _cachedOptions);
 
+    /// <summary>
+    /// Gets a new instance of <see cref="FileClient"/> that reuses the client configuration details provided to
+    /// the <see cref="OpenAIClient"/> instance.
+    /// </summary>
+    /// <remarks>
+    /// This method is functionally equivalent to using the <see cref="FileClient"/> constructor directly with
+    /// the same configuration details.
+    /// </remarks>
+    /// <returns> A new <see cref="FileClient"/>. </returns>
     public FileClient GetFileClient()
-    {
-        FileClientOptions fileOptions = new();
-        _cachedOptions?.CopyTo(fileOptions);
-        return new FileClient(_cachedEndpoint, _cachedCredential, fileOptions);
-    }
+        => new FileClient(_cachedEndpoint, _cachedCredential, _cachedOptions);
 
+    /// <summary>
+    /// Gets a new instance of <see cref="FineTuningClient"/> that reuses the client configuration details provided to
+    /// the <see cref="OpenAIClient"/> instance.
+    /// </summary>
+    /// <remarks>
+    /// This method is functionally equivalent to using the <see cref="FineTuningClient"/> constructor directly with
+    /// the same configuration details.
+    /// </remarks>
+    /// <returns> A new <see cref="FineTuningClient"/>. </returns>
     public FineTuningClient GetFineTuningClient()
-    {
-        FineTuningClientOptions fineTuningClientOptions = new();
-        _cachedOptions.CopyTo(fineTuningClientOptions);
-        return new FineTuningClient(_cachedEndpoint, _cachedCredential, fineTuningClientOptions);
-    }
+        => new FineTuningClient(_cachedEndpoint, _cachedCredential, _cachedOptions);
 
+    /// <summary>
+    /// Gets a new instance of <see cref="ImageClient"/> that reuses the client configuration details provided to
+    /// the <see cref="OpenAIClient"/> instance.
+    /// </summary>
+    /// <remarks>
+    /// This method is functionally equivalent to using the <see cref="ImageClient"/> constructor directly with
+    /// the same configuration details.
+    /// </remarks>
+    /// <returns> A new <see cref="ImageClient"/>. </returns>
     public ImageClient GetImageClient(string model)
-    {
-        ImageClientOptions imageOptions = new();
-        _cachedOptions?.CopyTo(imageOptions);
-        return new ImageClient(_cachedEndpoint, model, _cachedCredential, imageOptions);
-    }
+        => new ImageClient(_cachedEndpoint, model, _cachedCredential, _cachedOptions);
 
+    /// <summary>
+    /// Gets a new instance of <see cref="LegacyCompletionClient"/> that reuses the client configuration details provided to
+    /// the <see cref="OpenAIClient"/> instance.
+    /// </summary>
+    /// <remarks>
+    /// This method is functionally equivalent to using the <see cref="LegacyCompletionClient"/> constructor directly with
+    /// the same configuration details.
+    /// </remarks>
+    /// <returns> A new <see cref="LegacyCompletionClient"/>. </returns>
     public LegacyCompletionClient GetLegacyCompletionClient()
-    {
-        LegacyCompletionClientOptions legacyCompletionClientOptions = new();
-        _cachedOptions.CopyTo(legacyCompletionClientOptions);
-        return new LegacyCompletionClient(_cachedEndpoint, _cachedCredential, legacyCompletionClientOptions);
-    }
+        => new LegacyCompletionClient(_cachedEndpoint, _cachedCredential, _cachedOptions);
 
+    /// <summary>
+    /// Gets a new instance of <see cref="ModelClient"/> that reuses the client configuration details provided to
+    /// the <see cref="OpenAIClient"/> instance.
+    /// </summary>
+    /// <remarks>
+    /// This method is functionally equivalent to using the <see cref="ModelClient"/> constructor directly with
+    /// the same configuration details.
+    /// </remarks>
+    /// <returns> A new <see cref="ModelClient"/>. </returns>
     public ModelClient GetModelClient()
-    {
-        ModelClientOptions modelOptions = new();
-        _cachedOptions.CopyTo(modelOptions);
-        return new ModelClient(_cachedEndpoint, _cachedCredential, modelOptions);
-    }
+        => new ModelClient(_cachedEndpoint, _cachedCredential, _cachedOptions);
 
+    /// <summary>
+    /// Gets a new instance of <see cref="ModerationClient"/> that reuses the client configuration details provided to
+    /// the <see cref="OpenAIClient"/> instance.
+    /// </summary>
+    /// <remarks>
+    /// This method is functionally equivalent to using the <see cref="ModerationClient"/> constructor directly with
+    /// the same configuration details.
+    /// </remarks>
+    /// <returns> A new <see cref="ModerationClient"/>. </returns>
     public ModerationClient GetModerationClient()
-    {
-        ModerationClientOptions moderationClientOptions = new();
-        _cachedOptions.CopyTo(moderationClientOptions);
-        return new ModerationClient(_cachedEndpoint, _cachedCredential, moderationClientOptions);
-    }
+        => new ModerationClient(_cachedEndpoint, _cachedCredential, _cachedOptions);
 }

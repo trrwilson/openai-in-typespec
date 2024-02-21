@@ -33,7 +33,7 @@ public partial class FileClient
     /// <param name="endpoint">The connection endpoint to use.</param>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public FileClient(Uri endpoint, ApiKeyCredential credential, FileClientOptions options = null)
+    public FileClient(Uri endpoint, ApiKeyCredential credential, OpenAIClientOptions options = null)
     {
         _clientConnector = new("none", endpoint, credential, options);
     }
@@ -53,7 +53,7 @@ public partial class FileClient
     /// </remarks>
     /// <param name="endpoint">The connection endpoint to use.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public FileClient(Uri endpoint, FileClientOptions options = null)
+    public FileClient(Uri endpoint, OpenAIClientOptions options = null)
         : this(endpoint, credential: null, options)
     { }
 
@@ -72,7 +72,7 @@ public partial class FileClient
     /// </remarks>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public FileClient(ApiKeyCredential credential, FileClientOptions options = null)
+    public FileClient(ApiKeyCredential credential, OpenAIClientOptions options = null)
         : this(endpoint: null, credential, options)
     { }
 
@@ -90,7 +90,7 @@ public partial class FileClient
     /// </para>
     /// </remarks>
     /// <param name="options">Additional options to customize the client.</param>
-    public FileClient(FileClientOptions options = null)
+    public FileClient(OpenAIClientOptions options = null)
         : this(endpoint: null, credential: null, options)
     { }
 

@@ -31,14 +31,7 @@ public partial class ChatToolConstraintTests
     [Test]
     public void ConstraintsWork()
     {
-        ChatClientOptions clientOptions = new()
-        {
-            //PerCallPolicies = new IPipelinePolicy<PipelineMessage>[]
-            //{
-            //    new TestPipelinePolicy(),
-            //}
-        };
-        ChatClient client = new("gpt-3.5-turbo", clientOptions);
+        ChatClient client = new("gpt-3.5-turbo");
         ChatCompletionOptions options = new()
         {
             Tools = { s_numberForWordTool },

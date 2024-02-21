@@ -40,7 +40,7 @@ public partial class AssistantClient
     /// <param name="endpoint">The connection endpoint to use.</param>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public AssistantClient(Uri endpoint, ApiKeyCredential credential, AssistantClientOptions options = null)
+    public AssistantClient(Uri endpoint, ApiKeyCredential credential, OpenAIClientOptions options = null)
     {
         options ??= new();
         options.AddPolicy(
@@ -64,7 +64,7 @@ public partial class AssistantClient
     /// </remarks>
     /// <param name="endpoint">The connection endpoint to use.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public AssistantClient(Uri endpoint, AssistantClientOptions options = null)
+    public AssistantClient(Uri endpoint, OpenAIClientOptions options = null)
         : this(endpoint, credential: null, options)
     { }
 
@@ -83,7 +83,7 @@ public partial class AssistantClient
     /// </remarks>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public AssistantClient(ApiKeyCredential credential, AssistantClientOptions options = null)
+    public AssistantClient(ApiKeyCredential credential, OpenAIClientOptions options = null)
         : this(endpoint: null, credential, options)
     { }
 
@@ -101,7 +101,7 @@ public partial class AssistantClient
     /// </para>
     /// </remarks>
     /// <param name="options">Additional options to customize the client.</param>
-    public AssistantClient(AssistantClientOptions options = null)
+    public AssistantClient(OpenAIClientOptions options = null)
         : this(endpoint: null, credential: null, options)
     { }
 

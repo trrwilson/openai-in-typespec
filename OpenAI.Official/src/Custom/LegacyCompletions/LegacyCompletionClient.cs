@@ -35,7 +35,7 @@ public partial class LegacyCompletionClient
     /// <param name="endpoint">The connection endpoint to use.</param>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public LegacyCompletionClient(Uri endpoint, ApiKeyCredential credential, LegacyCompletionClientOptions options = null)
+    public LegacyCompletionClient(Uri endpoint, ApiKeyCredential credential, OpenAIClientOptions options = null)
     {
         _clientConnector = new("protocol", endpoint, credential, options);
     }
@@ -55,7 +55,7 @@ public partial class LegacyCompletionClient
     /// </remarks>
     /// <param name="endpoint">The connection endpoint to use.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public LegacyCompletionClient(Uri endpoint, LegacyCompletionClientOptions options = null)
+    public LegacyCompletionClient(Uri endpoint, OpenAIClientOptions options = null)
         : this(endpoint, credential: null, options)
     { }
 
@@ -74,7 +74,7 @@ public partial class LegacyCompletionClient
     /// </remarks>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public LegacyCompletionClient(ApiKeyCredential credential, LegacyCompletionClientOptions options = null)
+    public LegacyCompletionClient(ApiKeyCredential credential, OpenAIClientOptions options = null)
         : this(endpoint: null, credential, options)
     { }
 
@@ -92,7 +92,7 @@ public partial class LegacyCompletionClient
     /// </para>
     /// </remarks>
     /// <param name="options">Additional options to customize the client.</param>
-    public LegacyCompletionClient(LegacyCompletionClientOptions options = null)
+    public LegacyCompletionClient(OpenAIClientOptions options = null)
         : this(endpoint: null, credential: null, options)
     { }
 

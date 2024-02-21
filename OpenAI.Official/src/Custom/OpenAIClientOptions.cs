@@ -20,14 +20,13 @@ public partial class OpenAIClientOptions : RequestOptions
         InternalOptions.AddPolicy(policy, position);
     }
 
+    public OpenAIClientOptions()
+        : this(internalOptions: null)
+    { }
+
     internal OpenAIClientOptions(Internal.OpenAIClientOptions internalOptions = null)
     {
         internalOptions ??= new();
         InternalOptions = internalOptions;
-    }
-
-    internal void CopyTo(OpenAIClientOptions other)
-    {
-        // TODO
     }
 }
