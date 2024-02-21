@@ -1,5 +1,6 @@
 using System;
 using System.ClientModel;
+using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,7 +15,7 @@ public partial class EmbeddingClient
     private OpenAIClientConnector _clientConnector;
     private Internal.Embeddings Shim => _clientConnector.InternalClient.GetEmbeddingsClient();
 
-    public EmbeddingClient(Uri endpoint, string model, KeyCredential credential, EmbeddingClientOptions options = null)
+    public EmbeddingClient(Uri endpoint, string model, ApiKeyCredential credential, EmbeddingClientOptions options = null)
     {
         _clientConnector = new(model, endpoint, credential, options);
     }
@@ -23,7 +24,7 @@ public partial class EmbeddingClient
         : this(endpoint, model, credential: null, options)
     { }
 
-    public EmbeddingClient(string model, KeyCredential credential, EmbeddingClientOptions options = null)
+    public EmbeddingClient(string model, ApiKeyCredential credential, EmbeddingClientOptions options = null)
         : this(endpoint: null, model, credential, options)
     { }
 
@@ -31,69 +32,69 @@ public partial class EmbeddingClient
         : this(endpoint: null, model, credential: null, options)
     { }
 
-    public virtual Result<Embedding> GenerateEmbedding(string input, EmbeddingOptions options = null, CancellationToken cancellationToken = default)
+     public virtual ClientResult<Embedding> GenerateEmbedding(string input, EmbeddingOptions options = null)
     {
-        Internal.CreateEmbeddingRequest request = new(
+        Internal.Models.GenerateEmbeddingsOptions request = new(
             BinaryData.FromObjectAsJson(new string[] { input }),
             new(_clientConnector.Model),
-            Internal.CreateEmbeddingRequestEncodingFormat.Base64,
+            Internal.Models.GenerateEmbeddingsOptionsEncodingFormat.Base64,
             options?.Dimensions,
             options?.User,
             serializedAdditionalRawData: null);
-        Result<Internal.CreateEmbeddingResponse> response = Shim.CreateEmbedding(request, cancellationToken);
+        ClientResult<Internal.Models.EmbeddingCollection> response = Shim.CreateEmbedding(request);
         Embedding embeddingResult = new(response.Value, internalDataIndex: 0);
-        return Result.FromValue(embeddingResult, response.GetRawResponse());
+        return ClientResult.FromValue(embeddingResult, response.GetRawResponse());
     }
 
-    public virtual async Task<Result<Embedding>> GenerateEmbeddingAsync(string input, EmbeddingOptions options = null, CancellationToken cancellationToken = default)
+     public virtual async Task<ClientResult<Embedding>> GenerateEmbeddingAsync(string input, EmbeddingOptions options = null)
     {
-        Internal.CreateEmbeddingRequest request = new(
+        Internal.Models.GenerateEmbeddingsOptions request = new(
             BinaryData.FromObjectAsJson(new string[] { input }),
             new(_clientConnector.Model),
-            Internal.CreateEmbeddingRequestEncodingFormat.Base64,
+            Internal.Models.GenerateEmbeddingsOptionsEncodingFormat.Base64,
             options?.Dimensions,
             options?.User,
             serializedAdditionalRawData: null);
-        Result<Internal.CreateEmbeddingResponse> response = await Shim.CreateEmbeddingAsync(request, cancellationToken);
+        ClientResult<Internal.Models.EmbeddingCollection> response = await Shim.CreateEmbeddingAsync(request);
         Embedding embeddingResult = new(response.Value, internalDataIndex: 0);
-        return Result.FromValue(embeddingResult, response.GetRawResponse());
+        return ClientResult.FromValue(embeddingResult, response.GetRawResponse());
     }
 
-    public virtual Result<EmbeddingCollection> GenerateEmbeddings(IEnumerable<string> inputs, EmbeddingOptions options = null, CancellationToken cancellationToken = default)
+     public virtual ClientResult<EmbeddingCollection> GenerateEmbeddings(IEnumerable<string> inputs, EmbeddingOptions options = null)
     {
-        Internal.CreateEmbeddingRequest request = new(
+        Internal.Models.GenerateEmbeddingsOptions request = new(
             BinaryData.FromObjectAsJson(inputs),
             new(_clientConnector.Model),
-            Internal.CreateEmbeddingRequestEncodingFormat.Base64,
+            Internal.Models.GenerateEmbeddingsOptionsEncodingFormat.Base64,
             options?.Dimensions,
             options?.User,
             serializedAdditionalRawData: null);
-        Result<Internal.CreateEmbeddingResponse> response = Shim.CreateEmbedding(request, cancellationToken);
+        ClientResult<Internal.Models.EmbeddingCollection> response = Shim.CreateEmbedding(request);
         EmbeddingCollection resultCollection = EmbeddingCollection.CreateFromInternalResponse(response.Value);
-        return Result.FromValue(resultCollection, response.GetRawResponse());
+        return ClientResult.FromValue(resultCollection, response.GetRawResponse());
     }
 
-    public virtual async Task<Result<EmbeddingCollection>> GenerateEmbeddingsAsync(IEnumerable<string> inputs, EmbeddingOptions options = null, CancellationToken cancellationToken = default)
+     public virtual async Task<ClientResult<EmbeddingCollection>> GenerateEmbeddingsAsync(IEnumerable<string> inputs, EmbeddingOptions options = null)
     {
-        Internal.CreateEmbeddingRequest request = new(
+        Internal.Models.GenerateEmbeddingsOptions request = new(
             BinaryData.FromObjectAsJson(inputs),
             new(_clientConnector.Model),
-            Internal.CreateEmbeddingRequestEncodingFormat.Base64,
+            Internal.Models.GenerateEmbeddingsOptionsEncodingFormat.Base64,
             options?.Dimensions,
             options?.User,
             serializedAdditionalRawData: null);
-        Result<Internal.CreateEmbeddingResponse> response = await Shim.CreateEmbeddingAsync(request, cancellationToken);
+        ClientResult<Internal.Models.EmbeddingCollection> response = await Shim.CreateEmbeddingAsync(request);
         EmbeddingCollection resultCollection = EmbeddingCollection.CreateFromInternalResponse(response.Value);
-        return Result.FromValue(resultCollection, response.GetRawResponse());
+        return ClientResult.FromValue(resultCollection, response.GetRawResponse());
     }
 
-    /// <inheritdoc cref="Internal.Embeddings.CreateEmbedding(RequestBody, RequestOptions)"/>
+    /// <inheritdoc cref="Internal.Models.Embeddings.CreateEmbedding(BinaryContent, RequestOptions)"/>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result GenerateEmbeddings(RequestBody content, RequestOptions context = null)
+    public virtual ClientResult GenerateEmbeddings(BinaryContent content, RequestOptions context = null)
         => Shim.CreateEmbedding(content, context);
 
-    /// <inheritdoc cref="Internal.Embeddings.CreateEmbeddingAsync(RequestBody, RequestOptions)"/>
+    /// <inheritdoc cref="Internal.Models.Embeddings.CreateEmbeddingAsync(BinaryContent, RequestOptions)"/>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> GenerateEmbeddingsAsync(RequestBody content, RequestOptions context = null)
+    public virtual Task<ClientResult> GenerateEmbeddingsAsync(BinaryContent content, RequestOptions context = null)
         => Shim.CreateEmbeddingAsync(content, context);
 }

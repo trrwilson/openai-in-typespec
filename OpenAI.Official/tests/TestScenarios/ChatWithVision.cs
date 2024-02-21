@@ -18,7 +18,7 @@ public partial class ChatWithVision
 
         ChatClient client = GetTestClient<ChatClient>(TestScenario.VisionChat);
 
-        Result<ChatCompletion> result = client.CompleteChat(
+        ClientResult<ChatCompletion> result = client.CompleteChat(
             [
                 new ChatRequestUserMessage(
                     "Describe this image for me",

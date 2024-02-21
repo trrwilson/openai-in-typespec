@@ -1,4 +1,5 @@
 using System.ClientModel;
+using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -9,31 +10,31 @@ public partial class AssistantClient
 {
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result CreateAssistant(RequestBody content, RequestOptions context = null)
+    public virtual ClientResult CreateAssistant(BinaryContent content, RequestOptions context = null)
     {
         return Shim.CreateAssistant(content, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> CreateAssistantAsync(RequestBody content, RequestOptions context = null)
+    public virtual Task<ClientResult> CreateAssistantAsync(BinaryContent content, RequestOptions context = null)
     {
         return Shim.CreateAssistantAsync(content, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result GetAssistant(string assistantId, RequestOptions context)
+    public virtual ClientResult GetAssistant(string assistantId, RequestOptions context)
     {
         return Shim.GetAssistant(assistantId, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> GetAssistantAsync(string assistantId, RequestOptions context)
+    public virtual Task<ClientResult> GetAssistantAsync(string assistantId, RequestOptions context)
     {
         return Shim.GetAssistantAsync(assistantId, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result GetAssistants(
+    public virtual ClientResult GetAssistants(
         int? maxResults,
         string createdSortOrder,
         string previousAssistantId,
@@ -44,7 +45,7 @@ public partial class AssistantClient
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> GetAssistantsAsync(
+    public virtual Task<ClientResult> GetAssistantsAsync(
         int? maxResults,
         string createdSortOrder,
         string previousAssistantId,
@@ -56,43 +57,43 @@ public partial class AssistantClient
 
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result ModifyAssistant(string assistantId, RequestBody content, RequestOptions context = null)
+    public virtual ClientResult ModifyAssistant(string assistantId, BinaryContent content, RequestOptions context = null)
     {
         return Shim.ModifyAssistant(assistantId, content, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> ModifyAssistantAsync(string assistantId, RequestBody content, RequestOptions context = null)
+    public virtual Task<ClientResult> ModifyAssistantAsync(string assistantId, BinaryContent content, RequestOptions context = null)
     {
         return Shim.ModifyAssistantAsync(assistantId, content, context);
     }
 
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result DeleteAssistant(string assistantId, RequestOptions context)
+    public virtual ClientResult DeleteAssistant(string assistantId, RequestOptions context)
     {
         return Shim.DeleteAssistant(assistantId, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> DeleteAssistantAsync(string assistantId, RequestOptions context)
+    public virtual Task<ClientResult> DeleteAssistantAsync(string assistantId, RequestOptions context)
     {
         return Shim.DeleteAssistantAsync(assistantId, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result CreateAssistantFileAssociation(
+    public virtual ClientResult CreateAssistantFileAssociation(
         string assistantId,
-        RequestBody content,
+        BinaryContent content,
         RequestOptions context = null)
     {
         return Shim.CreateAssistantFile(assistantId, content, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> CreateAssistantFileAssociationAsync(
+    public virtual Task<ClientResult> CreateAssistantFileAssociationAsync(
         string assistantId,
-        RequestBody content,
+        BinaryContent content,
         RequestOptions context = null)
     {
         return Shim.CreateAssistantFileAsync(assistantId, content, context);
@@ -100,19 +101,19 @@ public partial class AssistantClient
 
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result GetAssistantFileAssociation(string assistantId, string fileId, RequestOptions context)
+    public virtual ClientResult GetAssistantFileAssociation(string assistantId, string fileId, RequestOptions context)
     {
         return Shim.GetAssistantFile(assistantId, fileId, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> GetAssistantFileAssociationAsync(string assistantId, string fileId, RequestOptions context)
+    public virtual Task<ClientResult> GetAssistantFileAssociationAsync(string assistantId, string fileId, RequestOptions context)
     {
         return Shim.GetAssistantFileAsync(assistantId, fileId, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public Result GetAssistantFileAssociations(
+    public virtual ClientResult GetAssistantFileAssociations(
         string assistantId,
         int? maxResults,
         string createdSortOrder,
@@ -124,7 +125,7 @@ public partial class AssistantClient
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public Task<Result> GetAssistantFileAssociationsAsync(
+    public virtual Task<ClientResult> GetAssistantFileAssociationsAsync(
         string assistantId,
         int? maxResults,
         string createdSortOrder,
@@ -137,91 +138,91 @@ public partial class AssistantClient
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result RemoveAssistantFileAssociation(string assistantId, string fileId, RequestOptions context)
+    public virtual ClientResult RemoveAssistantFileAssociation(string assistantId, string fileId, RequestOptions context)
     {
         return Shim.DeleteAssistantFile(assistantId, fileId, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> RemoveAssistantFileAssociationAsync(string assistantId, string fileId, RequestOptions context)
+    public virtual Task<ClientResult> RemoveAssistantFileAssociationAsync(string assistantId, string fileId, RequestOptions context)
     {
         return Shim.DeleteAssistantFileAsync(assistantId, fileId, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result CreateThread(RequestBody content, RequestOptions context = null)
+    public virtual ClientResult CreateThread(BinaryContent content, RequestOptions context = null)
     {
         return ThreadShim.CreateThread(content, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> CreateThreadAsync(RequestBody content, RequestOptions context = null)
+    public virtual Task<ClientResult> CreateThreadAsync(BinaryContent content, RequestOptions context = null)
     {
         return ThreadShim.CreateThreadAsync(content, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result GetThread(string threadId, RequestOptions context)
+    public virtual ClientResult GetThread(string threadId, RequestOptions context)
     {
         return ThreadShim.GetThread(threadId, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> GetThreadAsync(string threadId, RequestOptions context)
+    public virtual Task<ClientResult> GetThreadAsync(string threadId, RequestOptions context)
     {
         return ThreadShim.GetThreadAsync(threadId, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result ModifyThread(string threadId, RequestBody content, RequestOptions context = null)
+    public virtual ClientResult ModifyThread(string threadId, BinaryContent content, RequestOptions context = null)
     {
         return ThreadShim.ModifyThread(threadId, content, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> ModifyThreadAsync(string threadId, RequestBody content, RequestOptions context = null)
+    public virtual Task<ClientResult> ModifyThreadAsync(string threadId, BinaryContent content, RequestOptions context = null)
     {
         return ThreadShim.ModifyThreadAsync(threadId, content, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result DeleteThread(string threadId, RequestOptions context)
+    public virtual ClientResult DeleteThread(string threadId, RequestOptions context)
     {
         return ThreadShim.DeleteThread(threadId, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> DeleteThreadAsync(string threadId, RequestOptions context)
+    public virtual Task<ClientResult> DeleteThreadAsync(string threadId, RequestOptions context)
     {
         return ThreadShim.DeleteThreadAsync(threadId, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result CreateMessage(string threadId, RequestBody content, RequestOptions context = null)
+    public virtual ClientResult CreateMessage(string threadId, BinaryContent content, RequestOptions context = null)
     {
         return MessageShim.CreateMessage(threadId, content, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> CreateMessageAsync(string threadId, RequestBody content, RequestOptions context = null)
+    public virtual Task<ClientResult> CreateMessageAsync(string threadId, BinaryContent content, RequestOptions context = null)
     {
         return MessageShim.CreateMessageAsync(threadId, content, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result GetMessage(string threadId, string messageId, RequestOptions context)
+    public virtual ClientResult GetMessage(string threadId, string messageId, RequestOptions context)
     {
         return MessageShim.GetMessage(threadId, messageId, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> GetMessageAsync(string threadId, string messageId, RequestOptions context)
+    public virtual Task<ClientResult> GetMessageAsync(string threadId, string messageId, RequestOptions context)
     {
         return MessageShim.GetMessageAsync(threadId, messageId, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result GetMessages(
+    public virtual ClientResult GetMessages(
         string threadId,
         int? maxResults,
         string createdSortOrder,
@@ -234,7 +235,7 @@ public partial class AssistantClient
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> GetMessagesAsync(
+    public virtual Task<ClientResult> GetMessagesAsync(
         string threadId,
         int? maxResults,
         string createdSortOrder,
@@ -247,13 +248,13 @@ public partial class AssistantClient
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result GetMessageFileAssociation(string threadId, string messageId, string fileId, RequestOptions context)
+    public virtual ClientResult GetMessageFileAssociation(string threadId, string messageId, string fileId, RequestOptions context)
     {
         return MessageShim.GetMessageFile(threadId, messageId, fileId, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> GetMessageFileAssociationAsync(
+    public virtual Task<ClientResult> GetMessageFileAssociationAsync(
         string threadId,
         string messageId,
         string fileId,
@@ -263,7 +264,7 @@ public partial class AssistantClient
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result GetMessageFileAssociations(
+    public virtual ClientResult GetMessageFileAssociations(
         string threadId,
         string messageId,
         int? maxResults,
@@ -277,7 +278,7 @@ public partial class AssistantClient
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> GetMessageFileAssociationsAsync(
+    public virtual Task<ClientResult> GetMessageFileAssociationsAsync(
         string threadId,
         string messageId,
         int? maxResults,
@@ -291,43 +292,43 @@ public partial class AssistantClient
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result CreateRun(string threadId, RequestBody content, RequestOptions context = null)
+    public virtual ClientResult CreateRun(string threadId, BinaryContent content, RequestOptions context = null)
     {
         return RunShim.CreateRun(threadId, content, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> CreateRunAsync(string threadId, RequestBody content, RequestOptions context = null)
+    public virtual Task<ClientResult> CreateRunAsync(string threadId, BinaryContent content, RequestOptions context = null)
     {
         return RunShim.CreateRunAsync(threadId, content, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result CreateThreadAndRun(RequestBody content, RequestOptions context = null)
+    public virtual ClientResult CreateThreadAndRun(BinaryContent content, RequestOptions context = null)
     {
         return RunShim.CreateThreadAndRun(content, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> CreateThreadAndRunAsync(RequestBody content, RequestOptions context = null)
+    public virtual Task<ClientResult> CreateThreadAndRunAsync(BinaryContent content, RequestOptions context = null)
     {
         return RunShim.CreateThreadAndRunAsync(content, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result GetRun(string threadId, string runId, RequestOptions context)
+    public virtual ClientResult GetRun(string threadId, string runId, RequestOptions context)
     {
         return RunShim.GetRun(threadId, runId, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> GetRunAsync(string threadId, string runId, RequestOptions context)
+    public virtual Task<ClientResult> GetRunAsync(string threadId, string runId, RequestOptions context)
     {
         return RunShim.GetRunAsync(threadId, runId, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public Result GetRuns(
+    public virtual ClientResult GetRuns(
         string threadId,
         int? maxResults,
         string createdSortOrder,
@@ -339,7 +340,7 @@ public partial class AssistantClient
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> GetRunsAsync(
+    public virtual Task<ClientResult> GetRunsAsync(
         string threadId,
         int? maxResults,
         string createdSortOrder,
@@ -351,59 +352,59 @@ public partial class AssistantClient
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result ModifyRun(string threadId, string runId, RequestBody content, RequestOptions context = null)
+    public virtual ClientResult ModifyRun(string threadId, string runId, BinaryContent content, RequestOptions context = null)
     {
         return RunShim.ModifyRun(threadId, runId, content, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> ModifyRunAsync(
+    public virtual Task<ClientResult> ModifyRunAsync(
         string threadId,
         string runId,
-        RequestBody content,
+        BinaryContent content,
         RequestOptions context = null)
     {
         return RunShim.ModifyRunAsync(threadId, runId, content, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result CancelRun(string threadId, string runId, RequestOptions context)
+    public virtual ClientResult CancelRun(string threadId, string runId, RequestOptions context)
     {
         return RunShim.CancelRun(threadId, runId, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> CancelRunAsync(string threadId, string runId, RequestOptions context)
+    public virtual Task<ClientResult> CancelRunAsync(string threadId, string runId, RequestOptions context)
     {
         return RunShim.CancelRunAsync(threadId, runId, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result SubmitToolOutputs(string threadId, string runId, RequestBody content, RequestOptions context = null)
+    public virtual ClientResult SubmitToolOutputs(string threadId, string runId, BinaryContent content, RequestOptions context = null)
     {
         return RunShim.SubmitToolOuputsToRun(threadId, runId, content, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> SubmitToolOutputsAsync(string threadId, string runId, RequestBody content, RequestOptions context = null)
+    public virtual Task<ClientResult> SubmitToolOutputsAsync(string threadId, string runId, BinaryContent content, RequestOptions context = null)
     {
         return RunShim.SubmitToolOuputsToRunAsync(threadId, runId, content, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result GetRunStep(string threadId, string runId, string stepId, RequestOptions context)
+    public virtual ClientResult GetRunStep(string threadId, string runId, string stepId, RequestOptions context)
     {
         return RunShim.GetRunStep(threadId, runId, stepId, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> GetRunStepAsync(string threadId, string runId, string stepId, RequestOptions context)
+    public virtual Task<ClientResult> GetRunStepAsync(string threadId, string runId, string stepId, RequestOptions context)
     {
         return RunShim.GetRunStepAsync(threadId, runId, stepId, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result GetRunSteps(
+    public virtual ClientResult GetRunSteps(
         string threadId,
         string runId,
         int? maxResults,
@@ -417,7 +418,7 @@ public partial class AssistantClient
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> GetRunStepsAsync(
+    public virtual Task<ClientResult> GetRunStepsAsync(
         string threadId,
         string runId,
         int? maxResults,

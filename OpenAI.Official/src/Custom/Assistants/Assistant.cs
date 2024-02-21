@@ -25,7 +25,7 @@ public partial class Assistant
     /// </remarks>
     public IReadOnlyDictionary<string, string> Metadata { get; }
 
-    internal Assistant(Internal.AssistantObject internalAssistant)
+    internal Assistant(Internal.Models.AssistantObject internalAssistant)
     {
         Id = internalAssistant.Id;
         CreatedAt = internalAssistant.CreatedAt;

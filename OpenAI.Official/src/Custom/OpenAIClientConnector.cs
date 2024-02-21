@@ -2,6 +2,7 @@ using System;
 using System.ClientModel;
 using System.ClientModel.Internal;
 
+
 namespace OpenAI.Official;
 
 // This internal type facilitates composition rather than inheritance for scenario clients.
@@ -18,11 +19,10 @@ internal partial class OpenAIClientConnector
     internal OpenAIClientConnector(
         string model,
         Uri endpoint = null,
-        KeyCredential credential = null,
+        ApiKeyCredential credential = null,
         OpenAIClientOptions options = null)
     {
-        ClientUtilities.AssertNotNullOrEmpty(model, nameof(model));
-        Model = model;
+        if (model is null) throw new ArgumentNullException(nameof(model));        Model = model;
         endpoint ??= new(Environment.GetEnvironmentVariable(s_OpenAIEndpointEnvironmentVariable) ?? s_defaultOpenAIV1Endpoint);
         credential ??= new(Environment.GetEnvironmentVariable(s_OpenAIApiKeyEnvironmentVariable) ?? string.Empty);
         options ??= new();

@@ -1,11 +1,13 @@
 using System;
 using System.ClientModel.Internal;
+
+using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.Text.Json;
 
 namespace OpenAI.Official.Assistants;
 
-public abstract partial class ToolDefinition : IUtf8JsonWriteable, IJsonModel<ToolDefinition>
+public abstract partial class ToolDefinition :  IJsonModel<ToolDefinition>
 {
     ToolDefinition IJsonModel<ToolDefinition>.Create(ref Utf8JsonReader reader, ModelReaderWriterOptions options)
     {
@@ -35,8 +37,6 @@ public abstract partial class ToolDefinition : IUtf8JsonWriteable, IJsonModel<To
     }
 
     string IPersistableModel<ToolDefinition>.GetFormatFromOptions(ModelReaderWriterOptions options) => "J";
-
-    void IUtf8JsonWriteable.Write(Utf8JsonWriter writer) => ((IJsonModel<ToolDefinition>)this).Write(writer, new ModelReaderWriterOptions("W"));
 
     void IJsonModel<ToolDefinition>.Write(Utf8JsonWriter writer, ModelReaderWriterOptions options)
     {

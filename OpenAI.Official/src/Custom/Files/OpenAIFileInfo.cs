@@ -9,7 +9,7 @@ public partial class OpenAIFileInfo
     public DateTimeOffset CreatedAt { get; }
     public string Filename { get; }
 
-    internal OpenAIFileInfo(Internal.OpenAIFile internalFile)
+    internal OpenAIFileInfo(Internal.Models.OpenAIFile internalFile)
     {
         Id = internalFile.Id;
         Size = internalFile.Bytes;

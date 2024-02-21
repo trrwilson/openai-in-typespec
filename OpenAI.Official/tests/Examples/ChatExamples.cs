@@ -13,7 +13,7 @@ public partial class ChatExamples
     public void HelloWorldChat()
     {
         ChatClient client = new("gpt-3.5-turbo");
-        Result<ChatCompletion> result = client.CompleteChat("Hello, world!");
+        ClientResult<ChatCompletion> result = client.CompleteChat("Hello, world!");
         Console.WriteLine(result.Value.Content);
     }
 
@@ -22,7 +22,7 @@ public partial class ChatExamples
     public async Task HelloWorldStreamingChat()
     {
         ChatClient client = new("gpt-3.5-turbo");
-        StreamingResult<StreamingChatUpdate> result
+        StreamingClientResult<StreamingChatUpdate> result
             = client.CompleteChatStreaming("Hi, assistant, please introduce yourself.");
         await foreach (StreamingChatUpdate chatUpdate in result)
         {
@@ -35,7 +35,7 @@ public partial class ChatExamples
     public void ChatWithImage(Uri imageUri)
     {
         ChatClient client = new("gpt-4-vision-preview");
-        Result<ChatCompletion> result = client.CompleteChat(
+        ClientResult<ChatCompletion> result = client.CompleteChat(
         [
             new ChatRequestUserMessage(
                 "Describe this image for me",

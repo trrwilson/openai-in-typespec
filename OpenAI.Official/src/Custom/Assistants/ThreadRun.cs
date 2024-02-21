@@ -38,7 +38,7 @@ public partial class ThreadRun
     public IReadOnlyDictionary<string, string> Metadata { get; }
     public RunTokenUsage Usage { get; }
 
-    internal ThreadRun(Internal.RunObject internalRun)
+    internal ThreadRun(Internal.Models.RunObject internalRun)
     {
         Id = internalRun.Id;
         ThreadId = internalRun.ThreadId;
@@ -76,12 +76,12 @@ public partial class ThreadRun
             Tools = tools;
         }
 
-        IReadOnlyList<Internal.RunToolCallObject> internalFunctionCalls
+        IReadOnlyList<Internal.Models.RunToolCallObject> internalFunctionCalls
             = internalRun.RequiredAction?.SubmitToolOutputs?.ToolCalls;
         if (internalFunctionCalls != null)
         {
             List<RunRequiredAction> actions = [];
-            foreach (Internal.RunToolCallObject internalToolCall in internalFunctionCalls)
+            foreach (Internal.Models.RunToolCallObject internalToolCall in internalFunctionCalls)
             {
                 actions.Add(new RequiredFunctionToolCall(
                     internalToolCall.Id,

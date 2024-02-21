@@ -1,11 +1,12 @@
 using System;
+using System.ClientModel;
 using System.ClientModel.Primitives;
-using System.ClientModel.Primitives.Pipeline;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace OpenAI.Official;
 
-internal partial class GenericActionPipelinePolicy : IPipelinePolicy<PipelineMessage>
+internal partial class GenericActionPipelinePolicy : PipelinePolicy
 {
     private Action<PipelineMessage> _processMessageAction;
 
@@ -14,15 +15,21 @@ internal partial class GenericActionPipelinePolicy : IPipelinePolicy<PipelineMes
         _processMessageAction = processMessageAction;
     }
 
-    public void Process(PipelineMessage message, IPipelineEnumerator pipeline)
+    public override void Process(PipelineMessage message, IReadOnlyList<PipelinePolicy> pipeline, int currentIndex)
     {
         _processMessageAction(message);
-        _ = pipeline.ProcessNext();
+        if (currentIndex < pipeline.Count - 1)
+        {
+            pipeline[currentIndex + 1].Process(message, pipeline, currentIndex + 1);
+        }
     }
 
-    public async ValueTask ProcessAsync(PipelineMessage message, IPipelineEnumerator pipeline)
+    public override async ValueTask ProcessAsync(PipelineMessage message, IReadOnlyList<PipelinePolicy> pipeline, int currentIndex)
     {
         _processMessageAction(message);
-        _ = await pipeline.ProcessNextAsync();
+        if (currentIndex < pipeline.Count - 1)
+        {
+            await pipeline[currentIndex + 1].ProcessAsync(message, pipeline, currentIndex + 1);
+        }
     }
 }

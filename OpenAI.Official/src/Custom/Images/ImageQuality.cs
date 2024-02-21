@@ -8,17 +8,17 @@ namespace OpenAI.Official.Images;
 /// </summary>
 public readonly struct ImageQuality : IEquatable<ImageQuality>
 {
-    private readonly Internal.CreateImageRequestQuality _internalQuality;
+    private readonly Internal.Models.CreateImageRequestQuality _internalQuality;
 
     /// <summary>
     /// Creates a new instance of <see cref="ImageQuality"/>.
     /// </summary>
     /// <param name="value"> The textual representation of the value to use. </param>
     public ImageQuality(string value)
-        : this(new Internal.CreateImageRequestQuality(value))
+        : this(new Internal.Models.CreateImageRequestQuality(value))
     { }
 
-    internal ImageQuality(Internal.CreateImageRequestQuality internalQuality)
+    internal ImageQuality(Internal.Models.CreateImageRequestQuality internalQuality)
     {
         _internalQuality = internalQuality;
     }
@@ -26,17 +26,17 @@ public readonly struct ImageQuality : IEquatable<ImageQuality>
     /// <summary>
     /// The <c>hd</c> image quality that provides finer details and greater consistency but may be slower.
     /// </summary>
-    public static ImageQuality High { get; } = new(Internal.CreateImageRequestQuality.Hd);
+    public static ImageQuality High { get; } = new(Internal.Models.CreateImageRequestQuality.Hd);
     /// <summary>
     /// The <c>standard</c> image quality that provides a balanced mix of detailing, consistency, and speed.
     /// </summary>
-    public static ImageQuality Balanced { get; } = new(Internal.CreateImageRequestQuality.Standard);
+    public static ImageQuality Balanced { get; } = new(Internal.Models.CreateImageRequestQuality.Standard);
     /// <inheritdoc/>
     public static bool operator ==(ImageQuality left, ImageQuality right)
         => left._internalQuality == right._internalQuality;
     /// <inheritdoc/>
     public static implicit operator ImageQuality(string value)
-        => new ImageQuality(new Internal.CreateImageRequestQuality(value));
+        => new ImageQuality(new Internal.Models.CreateImageRequestQuality(value));
     /// <inheritdoc/>
     public static bool operator !=(ImageQuality left, ImageQuality right)
         => left._internalQuality != right._internalQuality;

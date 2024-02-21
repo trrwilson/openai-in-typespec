@@ -1,11 +1,13 @@
 using System;
 using System.ClientModel.Internal;
+
+using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.Text.Json;
 
 namespace OpenAI.Official.Chat;
 
-public abstract partial class ChatToolCall : IUtf8JsonWriteable, IJsonModel<ChatToolCall>
+public abstract partial class ChatToolCall :  IJsonModel<ChatToolCall>
 {
     ChatToolCall IJsonModel<ChatToolCall>.Create(ref Utf8JsonReader reader, ModelReaderWriterOptions options)
     {
@@ -18,11 +20,6 @@ public abstract partial class ChatToolCall : IUtf8JsonWriteable, IJsonModel<Chat
     }
 
     string IPersistableModel<ChatToolCall>.GetFormatFromOptions(ModelReaderWriterOptions options) => "J";
-
-    void IUtf8JsonWriteable.Write(Utf8JsonWriter writer)
-    {
-        throw new NotImplementedException();
-    }
 
     void IJsonModel<ChatToolCall>.Write(Utf8JsonWriter writer, ModelReaderWriterOptions options)
     {

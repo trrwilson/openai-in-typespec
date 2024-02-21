@@ -13,7 +13,7 @@ public partial class RunTokenUsage
         TotalTokens = totalTokens;
     }
 
-    internal RunTokenUsage(Internal.RunCompletionUsage internalUsage)
+    internal RunTokenUsage(Internal.Models.RunCompletionUsage internalUsage)
         : this(internalUsage.PromptTokens, internalUsage.CompletionTokens, internalUsage.TotalTokens)
     {
     }

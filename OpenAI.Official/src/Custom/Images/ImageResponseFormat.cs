@@ -18,17 +18,17 @@ namespace OpenAI.Official.Images;
 /// </summary>
 public readonly struct ImageResponseFormat : IEquatable<ImageResponseFormat>
 {
-    private readonly Internal.CreateImageRequestResponseFormat _internalFormat;
+    private readonly Internal.Models.CreateImageRequestResponseFormat _internalFormat;
 
     /// <summary>
     /// Creates a new instance of <see cref="ImageResponseFormat"/>.
     /// </summary>
     /// <param name="value"> The text representation of a <c>response_format</c> value. </param>
     public ImageResponseFormat(string value)
-        : this(new Internal.CreateImageRequestResponseFormat(value))
+        : this(new Internal.Models.CreateImageRequestResponseFormat(value))
     { }
 
-    internal ImageResponseFormat(Internal.CreateImageRequestResponseFormat internalFormat)
+    internal ImageResponseFormat(Internal.Models.CreateImageRequestResponseFormat internalFormat)
     {
         _internalFormat = internalFormat;
     }
@@ -38,12 +38,12 @@ public readonly struct ImageResponseFormat : IEquatable<ImageResponseFormat>
     /// JSON. This minimizes availability time but drastically increases the size of responses, required bandwidth, and
     /// immediate memory needs.
     /// </summary>
-    public static ImageResponseFormat Base64 { get; } = new ImageResponseFormat(Internal.CreateImageRequestResponseFormat.B64Json);
+    public static ImageResponseFormat Base64 { get; } = new ImageResponseFormat(Internal.Models.CreateImageRequestResponseFormat.B64Json);
     /// <summary>
     /// The default setting that instructs the request to return a temporary internet location from which the image can
     /// be retrieved.
     /// </summary>
-    public static ImageResponseFormat Url { get; } = new ImageResponseFormat(Internal.CreateImageRequestResponseFormat.Url);
+    public static ImageResponseFormat Url { get; } = new ImageResponseFormat(Internal.Models.CreateImageRequestResponseFormat.Url);
     /// <inheritdoc/>
     public static bool operator ==(ImageResponseFormat left, ImageResponseFormat right)
         => left._internalFormat == right._internalFormat;

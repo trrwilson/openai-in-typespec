@@ -1,18 +1,16 @@
 using System;
 using System.ClientModel.Internal;
+
+using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.ComponentModel.Design;
 using System.Text.Json;
+using OpenAI.ClientShared.Internal;
 
 namespace OpenAI.Official.Chat;
 
-public abstract partial class ChatRequestMessage : IUtf8JsonWriteable, IJsonModel<ChatRequestMessage>
+public abstract partial class ChatRequestMessage :  IJsonModel<ChatRequestMessage>
 {
-    void IUtf8JsonWriteable.Write(Utf8JsonWriter writer)
-    {
-        throw new NotImplementedException();
-    }
-
     void IJsonModel<ChatRequestMessage>.Write(Utf8JsonWriter writer, ModelReaderWriterOptions options)
     {
         writer.WriteStartObject();

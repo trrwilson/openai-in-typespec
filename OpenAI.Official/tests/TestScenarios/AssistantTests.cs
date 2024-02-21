@@ -3,6 +3,7 @@ using OpenAI.Official.Assistants;
 using System;
 using System.ClientModel;
 using System.Threading.Tasks;
+using static OpenAI.Official.Tests.TestHelpers;
 
 namespace OpenAI.Official.Tests.Assistants;
 
@@ -12,18 +13,18 @@ public partial class AssistantTests
     public void ListingAssistantsWorks()
     {
         AssistantClient client = new();
-        Result<ListQueryPage<Assistant>> result = client.GetAssistants();
+        ClientResult<ListQueryPage<Assistant>> result = client.GetAssistants();
         Assert.That(result.Value, Is.Not.Null.Or.Empty);
     }
 
     [Test]
     public void CreatingAndDeletingAssistantsWorks()
     {
-        AssistantClient client = new();
-        Result<Assistant> result = client.CreateAssistant("gpt-3.5-turbo");
+        AssistantClient client = GetTestClient<AssistantClient>(TestScenario.Assistants);
+        ClientResult<Assistant> result = client.CreateAssistant("gpt-3.5-turbo");
         Assert.That(result.Value, Is.Not.Null);
         Assert.That(result.Value.Id, Is.Not.Null.Or.Empty);
-        Result<bool> deletionResult = client.DeleteAssistant(result.Value.Id);
+        ClientResult<bool> deletionResult = client.DeleteAssistant(result.Value.Id);
         Assert.That(deletionResult.Value, Is.True);
     }
 
@@ -31,7 +32,7 @@ public partial class AssistantTests
     public async Task AddingMessagesWorks()
     {
         AssistantClient client = new();
-        Result<AssistantThread> threadResult = await client.CreateThreadAsync(new ThreadCreationOptions()
+        ClientResult<AssistantThread> threadResult = await client.CreateThreadAsync(new ThreadCreationOptions()
         {
             Messages =
             {
@@ -44,7 +45,7 @@ public partial class AssistantTests
                 [s_cleanupMetadataKey] = "true",
             }
         });
-        Result<ListQueryPage<ThreadMessage>> messagesResult = await client.GetMessagesAsync(threadResult.Value.Id);
+        ClientResult<ListQueryPage<ThreadMessage>> messagesResult = await client.GetMessagesAsync(threadResult.Value.Id);
         Assert.That(messagesResult.Value?.Count, Is.EqualTo(2));
         ThreadMessage latestMessage = messagesResult.Value[0];
         ThreadMessage oldestMessage = messagesResult.Value[1];
@@ -59,8 +60,8 @@ public partial class AssistantTests
     [Test]
     public async Task BasicFunctionToolWorks()
     {
-        AssistantClient client = new();
-        Result<Assistant> assistantResult = await client.CreateAssistantAsync(
+        AssistantClient client = GetTestClient();
+        ClientResult<Assistant> assistantResult = await client.CreateAssistantAsync(
             "gpt-3.5-turbo",
             new AssistantCreationOptions()
             {
@@ -94,7 +95,7 @@ public partial class AssistantTests
         Assert.That(functionTool, Is.Not.Null);
         Assert.That(functionTool.Parameters, Is.Not.Null);
 
-        Result<AssistantThread> threadResult = await client.CreateThreadAsync(
+        ClientResult<AssistantThread> threadResult = await client.CreateThreadAsync(
             new ThreadCreationOptions()
             {
                 Messages =
@@ -106,7 +107,7 @@ public partial class AssistantTests
                     [s_cleanupMetadataKey ] = "true",
                 }
             });
-        Result<ThreadRun> runResult = await client.CreateRunAsync(threadResult.Value.Id, assistantResult.Value.Id);
+        ClientResult<ThreadRun> runResult = await client.CreateRunAsync(threadResult.Value.Id, assistantResult.Value.Id);
         Assert.That(runResult.Value.Id, Is.Not.Null.Or.Empty);
         do
         {
@@ -128,7 +129,7 @@ public partial class AssistantTests
     private async Task<Assistant> CreateCommonTestAssistantAsync()
     {
         AssistantClient client = new();
-        Result<Assistant> newAssistantResult = await client.CreateAssistantAsync("gpt-3.5-turbo", new()
+        ClientResult<Assistant> newAssistantResult = await client.CreateAssistantAsync("gpt-3.5-turbo", new()
         {
             Name = s_testAssistantName,
             Metadata =
@@ -152,6 +153,8 @@ public partial class AssistantTests
             }
         }
     }
+
+    private static AssistantClient GetTestClient() => GetTestClient<AssistantClient>(TestScenario.Assistants);
 
     private static readonly string s_testAssistantName = $".NET SDK Test Assistant - Please Delete Me";
     private static readonly string s_cleanupMetadataKey = $"test_metadata_cleanup_eligible";

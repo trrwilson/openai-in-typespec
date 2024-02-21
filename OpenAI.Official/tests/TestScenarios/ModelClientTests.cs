@@ -12,7 +12,7 @@ public partial class ModelClientTests
     public async Task CanListModels()
     {
         ModelClient client = new();
-        Result<ModelInfoCollection> result = await client.GetModelsAsync();
+        ClientResult<ModelInfoCollection> result = await client.GetModelsAsync();
         Assert.That(result.Value, Is.Not.Null.Or.Empty);
         Assert.That(result.Value.Any(modelInfo => modelInfo.Id.ToLowerInvariant().Contains("whisper")));
     }
@@ -21,7 +21,7 @@ public partial class ModelClientTests
     public async Task CanRetrieveModelInfo()
     {
         ModelClient client = new();
-        Result<ModelInfo> result = await client.GetModelInfoAsync("gpt-3.5-turbo");
+        ClientResult<ModelInfo> result = await client.GetModelInfoAsync("gpt-3.5-turbo");
         Assert.That(result.Value, Is.Not.Null);
         Assert.That(result.Value.OwnerOrganization.ToLowerInvariant(), Contains.Substring("openai"));
     }

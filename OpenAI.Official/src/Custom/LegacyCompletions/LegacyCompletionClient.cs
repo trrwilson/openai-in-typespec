@@ -1,5 +1,6 @@
 using System;
 using System.ClientModel;
+using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -34,7 +35,7 @@ public partial class LegacyCompletionClient
     /// <param name="endpoint">The connection endpoint to use.</param>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public LegacyCompletionClient(Uri endpoint, KeyCredential credential, LegacyCompletionClientOptions options = null)
+    public LegacyCompletionClient(Uri endpoint, ApiKeyCredential credential, LegacyCompletionClientOptions options = null)
     {
         _clientConnector = new("protocol", endpoint, credential, options);
     }
@@ -73,7 +74,7 @@ public partial class LegacyCompletionClient
     /// </remarks>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public LegacyCompletionClient(KeyCredential credential, LegacyCompletionClientOptions options = null)
+    public LegacyCompletionClient(ApiKeyCredential credential, LegacyCompletionClientOptions options = null)
         : this(endpoint: null, credential, options)
     { }
 
@@ -95,13 +96,13 @@ public partial class LegacyCompletionClient
         : this(endpoint: null, credential: null, options)
     { }
 
-    /// <inheritdoc cref="Internal.Completions.CreateCompletion(RequestBody, RequestOptions)"/>
+    /// <inheritdoc cref="Internal.Models.Completions.CreateCompletion(BinaryContent, RequestOptions)"/>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result GenerateLegacyCompletions(RequestBody content, RequestOptions context = null)
+    public virtual ClientResult GenerateLegacyCompletions(BinaryContent content, RequestOptions context = null)
         => Shim.CreateCompletion(content, context);
 
-    /// <inheritdoc cref="Internal.Completions.CreateCompletionAsync(RequestBody, RequestOptions)"/>
+    /// <inheritdoc cref="Internal.Models.Completions.CreateCompletionAsync(BinaryContent, RequestOptions)"/>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> GenerateLegacyCompletionsAsync(RequestBody content, RequestOptions context = null)
+    public virtual Task<ClientResult> GenerateLegacyCompletionsAsync(BinaryContent content, RequestOptions context = null)
         => Shim.CreateCompletionAsync(content, context);
 }

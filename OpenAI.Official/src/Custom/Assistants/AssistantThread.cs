@@ -21,7 +21,7 @@ public partial class AssistantThread
     public IReadOnlyDictionary<string, string> Metadata { get; }
 
 
-    internal AssistantThread(Internal.ThreadObject internalThread)
+    internal AssistantThread(Internal.Models.ThreadObject internalThread)
     {
         Id = internalThread.Id;
         Metadata = internalThread.Metadata;

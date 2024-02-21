@@ -53,7 +53,7 @@ public partial class ChatToolConstraintTests
         })
         {
             options.ToolConstraint = constraint;
-            Result<ChatCompletion> result = client.CompleteChat("What's the number for the word 'banana'?", options);
+            ClientResult<ChatCompletion> result = client.CompleteChat("What's the number for the word 'banana'?", options);
             Assert.That(result.Value.FinishReason, Is.EqualTo(reason));
         }
     }

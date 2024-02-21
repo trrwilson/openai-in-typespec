@@ -1,5 +1,6 @@
 using System;
 using System.ClientModel;
+using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,7 +32,7 @@ public partial class ImageClient
     /// <param name="model">The model name for image operations that the client should use.</param>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public ImageClient(Uri endpoint, string model, KeyCredential credential, ImageClientOptions options = null)
+    public ImageClient(Uri endpoint, string model, ApiKeyCredential credential, ImageClientOptions options = null)
     {
         _clientConnector = new(model, endpoint, credential, options);
     }
@@ -72,7 +73,7 @@ public partial class ImageClient
     /// <param name="model">The model name for image operations that the client should use.</param>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public ImageClient(string model, KeyCredential credential, ImageClientOptions options = null)
+    public ImageClient(string model, ApiKeyCredential credential, ImageClientOptions options = null)
         : this(endpoint: null, model, credential, options)
     { }
 
@@ -102,10 +103,10 @@ public partial class ImageClient
     /// <param name="options"> Additional options for the image generation request. </param>
     /// <param name="cancellationToken"> The cancellation token for the operation. </param>
     /// <returns> A result for a single image generation. </returns>
-    public virtual Result<ImageGeneration> GenerateImage(string prompt, ImageGenerationOptions options = null, CancellationToken cancellationToken = default)
+     public virtual ClientResult<ImageGeneration> GenerateImage(string prompt, ImageGenerationOptions options = null)
     {
-        Result<ImageGenerationCollection> multiResult = GenerateImages(prompt, imageCount: null, options, cancellationToken);
-        return Result.FromValue(multiResult.Value[0], multiResult.GetRawResponse());
+         ClientResult<ImageGenerationCollection> multiResult = GenerateImages(prompt, imageCount: null, options);
+        return ClientResult.FromValue(multiResult.Value[0], multiResult.GetRawResponse());
     }
 
     /// <summary>
@@ -115,10 +116,10 @@ public partial class ImageClient
     /// <param name="options"> Additional options for the image generation request. </param>
     /// <param name="cancellationToken"> The cancellation token for the operation. </param>
     /// <returns> A result for a single image generation. </returns>
-    public virtual async Task<Result<ImageGeneration>> GenerateImageAsync(string prompt, ImageGenerationOptions options = null, CancellationToken cancellationToken = default)
+     public virtual async Task<ClientResult<ImageGeneration>> GenerateImageAsync(string prompt, ImageGenerationOptions options = null)
     {
-        Result<ImageGenerationCollection> multiResult = await GenerateImagesAsync(prompt, imageCount: null, options, cancellationToken).ConfigureAwait(false);
-        return Result.FromValue(multiResult.Value[0], multiResult.GetRawResponse());
+         ClientResult<ImageGenerationCollection> multiResult = await GenerateImagesAsync(prompt, imageCount: null, options).ConfigureAwait(false);
+        return ClientResult.FromValue(multiResult.Value[0], multiResult.GetRawResponse());
     }
 
     /// <summary>
@@ -131,20 +132,19 @@ public partial class ImageClient
     /// <param name="options"> Additional options for the image generation request. </param>
     /// <param name="cancellationToken"> The cancellation token for the operation. </param>
     /// <returns> A result for a single image generation. </returns>
-    public virtual Result<ImageGenerationCollection> GenerateImages(
+    public virtual ClientResult<ImageGenerationCollection> GenerateImages(
         string prompt,
         int? imageCount = null,
-        ImageGenerationOptions options = null,
-        CancellationToken cancellationToken = default)
+        ImageGenerationOptions options = null)
     {
-        Internal.CreateImageRequest request = CreateInternalRequest(prompt, imageCount, options);
-        Result<Internal.ImagesResponse> response = Shim.CreateImage(request, cancellationToken);
+        Internal.Models.CreateImageRequest request = CreateInternalRequest(prompt, imageCount, options);
+        ClientResult<Internal.Models.ImagesResponse> response = Shim.CreateImage(request);
         List<ImageGeneration> ImageGenerations = [];
         for (int i = 0; i < response.Value.Data.Count; i++)
         {
             ImageGenerations.Add(new(response.Value, i));
         }
-        return Result.FromValue(new ImageGenerationCollection(ImageGenerations), response.GetRawResponse());
+        return ClientResult.FromValue(new ImageGenerationCollection(ImageGenerations), response.GetRawResponse());
     }
 
     /// <summary>
@@ -157,59 +157,58 @@ public partial class ImageClient
     /// <param name="options"> Additional options for the image generation request. </param>
     /// <param name="cancellationToken"> The cancellation token for the operation. </param>
     /// <returns> A result for a single image generation. </returns>
-    public virtual async Task<Result<ImageGenerationCollection>> GenerateImagesAsync(
+    public virtual async Task<ClientResult<ImageGenerationCollection>> GenerateImagesAsync(
         string prompt,
         int? imageCount = null,
-        ImageGenerationOptions options = null,
-        CancellationToken cancellationToken = default)
+        ImageGenerationOptions options = null)
     {
-        Internal.CreateImageRequest request = CreateInternalRequest(prompt, imageCount, options);
-        Result<Internal.ImagesResponse> response = await Shim.CreateImageAsync(request, cancellationToken).ConfigureAwait(false);
+        Internal.Models.CreateImageRequest request = CreateInternalRequest(prompt, imageCount, options);
+        ClientResult<Internal.Models.ImagesResponse> response = await Shim.CreateImageAsync(request).ConfigureAwait(false);
         List<ImageGeneration> ImageGenerations = [];
         for (int i = 0; i < response.Value.Data.Count; i++)
         {
             ImageGenerations.Add(new(response.Value, i));
         }
-        return Result.FromValue(new ImageGenerationCollection(ImageGenerations), response.GetRawResponse());
+        return ClientResult.FromValue(new ImageGenerationCollection(ImageGenerations), response.GetRawResponse());
     }
 
-    /// <inheritdoc cref="Internal.Images.CreateImage(RequestBody, RequestOptions)"/>
+    /// <inheritdoc cref="Internal.Models.Images.CreateImage(BinaryContent, RequestOptions)"/>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result GenerateImage(RequestBody content, RequestOptions context = null)
+    public virtual ClientResult GenerateImage(BinaryContent content, RequestOptions context = null)
         => Shim.CreateImage(content, context);
 
-    /// <inheritdoc cref="Internal.Images.CreateImageAsync(RequestBody, RequestOptions)"/>
+    /// <inheritdoc cref="Internal.Models.Images.CreateImageAsync(BinaryContent, RequestOptions)"/>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> GenerateImageAsync(RequestBody content, RequestOptions context = null)
+    public virtual Task<ClientResult> GenerateImageAsync(BinaryContent content, RequestOptions context = null)
         => Shim.CreateImageAsync(content, context);
 
-    private Internal.CreateImageRequest CreateInternalRequest(
+    private Internal.Models.CreateImageRequest CreateInternalRequest(
         string prompt,
         int? imageCount = null,
         ImageGenerationOptions options = null)
     {
         options ??= new();
-        Internal.CreateImageRequestQuality? internalQuality = null;
+        Internal.Models.CreateImageRequestQuality? internalQuality = null;
         if (options.Quality != null)
         {
             internalQuality = options.Quality.ToString();
         }
-        Internal.CreateImageRequestResponseFormat? internalFormat = null;
+        Internal.Models.CreateImageRequestResponseFormat? internalFormat = null;
         if (options.ResponseFormat != null)
         {
             internalFormat = options.ResponseFormat.ToString();
         }
-        Internal.CreateImageRequestSize? internalSize = null;
+        Internal.Models.CreateImageRequestSize? internalSize = null;
         if (options.Size != null)
         {
             internalSize = options.Size.ToString();
         }
-        Internal.CreateImageRequestStyle? internalStyle = null;
+        Internal.Models.CreateImageRequestStyle? internalStyle = null;
         if (options.Style != null)
         {
             internalStyle = options.Style.ToString();
         }
-        return new Internal.CreateImageRequest(
+        return new Internal.Models.CreateImageRequest(
             prompt,
             _clientConnector.Model,
             imageCount,

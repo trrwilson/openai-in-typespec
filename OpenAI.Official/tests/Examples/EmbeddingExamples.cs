@@ -14,7 +14,7 @@ public partial class EmbeddingExamples
     public void SimpleEmbedding()
     {
         EmbeddingClient client = new("text-embedding-ada-002");
-        Result<Embedding> result = client.GenerateEmbedding("some text I'd like lots of floats for");
+        ClientResult<Embedding> result = client.GenerateEmbedding("some text I'd like lots of floats for");
         float[] values = result.Value.Vector.ToArray();
         Console.WriteLine($"The embedding has {values.Length} values");
     }
@@ -34,7 +34,7 @@ public partial class EmbeddingExamples
         {
             Dimensions = 456,
         };
-        Result<EmbeddingCollection> response = client.GenerateEmbeddings(prompts, options);
+        ClientResult<EmbeddingCollection> response = client.GenerateEmbeddings(prompts, options);
         for (int i = 0; i < response.Value.Count; i++)
         {
             Embedding embedding = response.Value[i];

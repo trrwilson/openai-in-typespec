@@ -1,12 +1,14 @@
 using System;
 using System.ClientModel.Internal;
+
+using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.Collections.Generic;
 using System.Text.Json;
 
 namespace OpenAI.Official.Assistants;
 
-public abstract partial class RunRequiredAction : IUtf8JsonWriteable, IJsonModel<IList<RunRequiredAction>>
+public abstract partial class RunRequiredAction :  IJsonModel<IList<RunRequiredAction>>
 {
     IList<RunRequiredAction> IJsonModel<IList<RunRequiredAction>>.Create(ref Utf8JsonReader reader, ModelReaderWriterOptions options)
     {
@@ -36,8 +38,6 @@ public abstract partial class RunRequiredAction : IUtf8JsonWriteable, IJsonModel
     }
 
     string IPersistableModel<IList<RunRequiredAction>>.GetFormatFromOptions(ModelReaderWriterOptions options) => "J";
-
-    void IUtf8JsonWriteable.Write(Utf8JsonWriter writer) => ((IJsonModel<IList<RunRequiredAction>>)this).Write(writer, new ModelReaderWriterOptions("W"));
 
     void IJsonModel<IList<RunRequiredAction>>.Write(Utf8JsonWriter writer, ModelReaderWriterOptions options)
     {

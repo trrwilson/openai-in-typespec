@@ -11,7 +11,7 @@ public partial class TextToSpeechTests
     public void BasicTTSWorks()
     {
         AudioClient client = new("tts-1");
-        Result<BinaryData> result = client.GenerateSpeechFromText("hello, world, this is a test", TextToSpeechVoice.Shimmer);
+        ClientResult<BinaryData> result = client.GenerateSpeechFromText("hello, world, this is a test", TextToSpeechVoice.Shimmer);
         Assert.That(result.Value, Is.Not.Null);
     }
 
@@ -29,7 +29,7 @@ public partial class TextToSpeechTests
         {
             options.ResponseFormat = responseFormat;
         }
-        Result<BinaryData> result = client.GenerateSpeechFromText("Hello, world!", TextToSpeechVoice.Alloy, options);
+        ClientResult<BinaryData> result = client.GenerateSpeechFromText("Hello, world!", TextToSpeechVoice.Alloy, options);
         Assert.That(result.Value, Is.Not.Null);
     }
 }

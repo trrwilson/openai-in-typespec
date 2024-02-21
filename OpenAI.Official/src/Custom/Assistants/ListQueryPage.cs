@@ -1,5 +1,7 @@
+using OpenAI.ClientShared.Internal;
 using System;
 using System.ClientModel.Internal;
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,50 +21,50 @@ public abstract partial class ListQueryPage
         HasMore = hasMore;
     }
 
-    internal static ListQueryPage<Assistant> Create(Internal.ListAssistantsResponse internalResponse)
+    internal static ListQueryPage<Assistant> Create(Internal.Models.ListAssistantsResponse internalResponse)
     {
         OptionalList<Assistant> assistants = new();
-        foreach (Internal.AssistantObject internalAssistant in internalResponse.Data)
+        foreach (Internal.Models.AssistantObject internalAssistant in internalResponse.Data)
         {
             assistants.Add(new(internalAssistant));
         }
         return new(assistants, internalResponse.FirstId, internalResponse.LastId, internalResponse.HasMore);
     }
 
-    internal static ListQueryPage<AssistantFileAssociation> Create(Internal.ListAssistantFilesResponse internalResponse)
+    internal static ListQueryPage<AssistantFileAssociation> Create(Internal.Models.ListAssistantFilesResponse internalResponse)
     {
         OptionalList<AssistantFileAssociation> assistantFileAssociations = new();
-        foreach (Internal.AssistantFileObject internalFile in internalResponse.Data)
+        foreach (Internal.Models.AssistantFileObject internalFile in internalResponse.Data)
         {
             assistantFileAssociations.Add(new(internalFile));
         }
         return new(assistantFileAssociations, internalResponse.FirstId, internalResponse.LastId, internalResponse.HasMore);
     }
 
-    internal static ListQueryPage<ThreadMessage> Create(Internal.ListMessagesResponse internalResponse)
+    internal static ListQueryPage<ThreadMessage> Create(Internal.Models.ListMessagesResponse internalResponse)
     {
         OptionalList<ThreadMessage> messages = new();
-        foreach (Internal.MessageObject internalMessage in internalResponse.Data)
+        foreach (Internal.Models.MessageObject internalMessage in internalResponse.Data)
         {
             messages.Add(new(internalMessage));
         }
         return new(messages, internalResponse.FirstId, internalResponse.LastId, internalResponse.HasMore);
     }
 
-    internal static ListQueryPage<MessageFileAssociation> Create(Internal.ListMessageFilesResponse internalResponse)
+    internal static ListQueryPage<MessageFileAssociation> Create(Internal.Models.ListMessageFilesResponse internalResponse)
     {
         OptionalList<MessageFileAssociation> messageFileAssociations = new();
-        foreach (Internal.MessageFileObject internalFile in internalResponse.Data)
+        foreach (Internal.Models.MessageFileObject internalFile in internalResponse.Data)
         {
             messageFileAssociations.Add(new(internalFile));
         }
         return new(messageFileAssociations, internalResponse.FirstId, internalResponse.LastId, internalResponse.HasMore);
     }
 
-    internal static ListQueryPage<ThreadRun> Create(Internal.ListRunsResponse internalResponse)
+    internal static ListQueryPage<ThreadRun> Create(Internal.Models.ListRunsResponse internalResponse)
     {
         OptionalList<ThreadRun> runs = new();
-        foreach (Internal.RunObject internalRun in internalResponse.Data)
+        foreach (Internal.Models.RunObject internalRun in internalResponse.Data)
         {
             runs.Add(new(internalRun));
         }
@@ -74,11 +76,11 @@ public abstract partial class ListQueryPage
     {
         return internalResponse switch
         {
-            Internal.ListAssistantsResponse internalAssistantsResponse => Create(internalAssistantsResponse),
-            Internal.ListAssistantFilesResponse internalFilesResponse => Create(internalFilesResponse),
-            Internal.ListMessagesResponse internalMessagesResponse => Create(internalMessagesResponse),
-            Internal.ListMessageFilesResponse internalMessageFilesResponse => Create(internalMessageFilesResponse),
-            Internal.ListRunsResponse internalRunsResponse => Create(internalRunsResponse),
+            Internal.Models.ListAssistantsResponse internalAssistantsResponse => Create(internalAssistantsResponse),
+            Internal.Models.ListAssistantFilesResponse internalFilesResponse => Create(internalFilesResponse),
+            Internal.Models.ListMessagesResponse internalMessagesResponse => Create(internalMessagesResponse),
+            Internal.Models.ListMessageFilesResponse internalMessageFilesResponse => Create(internalMessageFilesResponse),
+            Internal.Models.ListRunsResponse internalRunsResponse => Create(internalRunsResponse),
             _ => throw new ArgumentException(
                 $"Unknown type for generic {nameof(ListQueryPage)} conversion: {internalResponse.GetType()}"),
         };

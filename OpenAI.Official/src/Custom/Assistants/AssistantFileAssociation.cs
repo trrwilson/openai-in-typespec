@@ -8,7 +8,7 @@ public partial class AssistantFileAssociation
     public string FileId { get; }
     public DateTimeOffset CreatedAt { get; }
 
-    internal AssistantFileAssociation(Internal.AssistantFileObject internalFile)
+    internal AssistantFileAssociation(Internal.Models.AssistantFileObject internalFile)
     {
         AssistantId = internalFile.AssistantId;
         FileId = internalFile.Id;

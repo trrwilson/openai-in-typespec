@@ -2,6 +2,7 @@
 using OpenAI.Official.Chat;
 using System;
 using System.ClientModel;
+using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
 using static OpenAI.Official.Tests.TestHelpers;
@@ -15,8 +16,8 @@ public partial class ChatClientTests
     {
         ChatClient client = GetTestClient<ChatClient>(TestScenario.Chat); // new("gpt-3.5-turbo");
         Assert.That(client, Is.InstanceOf<ChatClient>());
-        Result<ChatCompletion> result = client.CompleteChat("Hello, world!");
-        Assert.That(result, Is.InstanceOf<Result<ChatCompletion>>());
+        ClientResult<ChatCompletion> result = client.CompleteChat("Hello, world!");
+        Assert.That(result, Is.InstanceOf<ClientResult<ChatCompletion>>());
         Assert.That(result.Value.Content?.ContentKind, Is.EqualTo(ChatMessageContentKind.Text));
         Assert.That(result.Value.Content.ToText().Length, Is.GreaterThan(0));
     }
@@ -25,7 +26,7 @@ public partial class ChatClientTests
     public void MultiMessageChat()
     {
         ChatClient client = new("gpt-3.5-turbo");
-        Result<ChatCompletion> result = client.CompleteChat(
+        ClientResult<ChatCompletion> result = client.CompleteChat(
         [
             new ChatRequestSystemMessage("You are a helpful assistant. You always talk like a pirate."),
             new ChatRequestUserMessage("Hello, assistant! Can you help me train my parrot?"),
@@ -38,21 +39,31 @@ public partial class ChatClientTests
     public async Task StreamingChat()
     {
         ChatClient client = new("gpt-3.5-turbo");
-        StreamingResult<StreamingChatUpdate> streamingResult
-            = client.CompleteChatStreaming("What are the best pizza toppings?");
-        Assert.That(streamingResult, Is.InstanceOf<StreamingResult<StreamingChatUpdate>>());
+
+        TimeSpan? firstTokenReceiptTime = null;
+        TimeSpan? latestTokenReceiptTime = null;
+        Stopwatch stopwatch = Stopwatch.StartNew();
+
+        StreamingClientResult<StreamingChatUpdate> streamingResult
+            = client.CompleteChatStreaming("What are the best pizza toppings? Give me a breakdown on the reasons.");
+        Assert.That(streamingResult, Is.InstanceOf<StreamingClientResult<StreamingChatUpdate>>());
         int updateCount = 0;
+
         await foreach (StreamingChatUpdate chatUpdate in streamingResult)
         {
+            firstTokenReceiptTime ??= stopwatch.Elapsed;
+            latestTokenReceiptTime = stopwatch.Elapsed;
+            Console.WriteLine(stopwatch.Elapsed.TotalMilliseconds);
             updateCount++;
         }
         Assert.That(updateCount, Is.GreaterThan(1));
+        Assert.That(latestTokenReceiptTime - firstTokenReceiptTime > TimeSpan.FromMilliseconds(500));
     }
 
     [Test]
     public void AuthFailure()
     {
-        ChatClient client = new("gpt-3.5-turbo", new KeyCredential("not-a-real-key"));
+        ChatClient client = new("gpt-3.5-turbo", new ApiKeyCredential("not-a-real-key"));
         Exception caughtException = null;
         try
         {
@@ -62,8 +73,8 @@ public partial class ChatClientTests
         {
             caughtException = ex;
         }
-        var messageFailedException = caughtException as MessageFailedException;
-        Assert.That(messageFailedException, Is.Not.Null);
-        Assert.That(messageFailedException.Status, Is.EqualTo((int)HttpStatusCode.Unauthorized));
+        var clientResultException = caughtException as ClientResultException;
+        Assert.That(clientResultException, Is.Not.Null);
+        Assert.That(clientResultException.Status, Is.EqualTo((int)HttpStatusCode.Unauthorized));
     }
 }

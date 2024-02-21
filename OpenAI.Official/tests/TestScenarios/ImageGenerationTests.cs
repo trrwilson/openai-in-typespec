@@ -11,8 +11,8 @@ public partial class ImageGenerationTests
     public void BasicGenerationWorks()
     {
         ImageClient client = new("dall-e-3");
-        Result<ImageGeneration> result = client.GenerateImage("an isolated stop sign");
-        Assert.That(result, Is.InstanceOf<Result<ImageGeneration>>());
+        ClientResult<ImageGeneration> result = client.GenerateImage("an isolated stop sign");
+        Assert.That(result, Is.InstanceOf<ClientResult<ImageGeneration>>());
         Assert.That(result.Value.ImageBlobUri, Is.Not.Null);
         Console.WriteLine(result.Value.ImageBlobUri.AbsoluteUri);
         Assert.That(result.Value.ImageBytes, Is.Null);

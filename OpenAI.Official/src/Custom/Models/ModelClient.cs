@@ -1,6 +1,10 @@
+using OpenAI.ClientShared.Internal;
+using OpenAI.Official.Internal;
 using System;
 using System.ClientModel;
 using System.ClientModel.Internal;
+
+using System.ClientModel.Primitives;
 using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,7 +35,7 @@ public partial class ModelClient
     /// <param name="endpoint">The connection endpoint to use.</param>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public ModelClient(Uri endpoint, KeyCredential credential, ModelClientOptions options = null)
+    public ModelClient(Uri endpoint, ApiKeyCredential credential, ModelClientOptions options = null)
     {
         _clientConnector = new("none", endpoint, credential, options);
     }
@@ -70,7 +74,7 @@ public partial class ModelClient
     /// </remarks>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public ModelClient(KeyCredential credential, ModelClientOptions options = null)
+    public ModelClient(ApiKeyCredential credential, ModelClientOptions options = null)
         : this(endpoint: null, credential, options)
     { }
 
@@ -92,77 +96,76 @@ public partial class ModelClient
         : this(endpoint: null, credential: null, options)
     { }
 
-    public virtual Result<ModelInfo> GetModelInfo(string modelId, CancellationToken cancellationToken = default)
+     public virtual ClientResult<ModelInfo> GetModelInfo(string modelId)
     {
-        Result<Internal.Model> internalResult = Shim.Retrieve(modelId, cancellationToken);
-        return Result.FromValue(new ModelInfo(internalResult.Value), internalResult.GetRawResponse());
+        ClientResult<Internal.Models.Model> internalResult = Shim.Retrieve(modelId);
+        return ClientResult.FromValue(new ModelInfo(internalResult.Value), internalResult.GetRawResponse());
     }
 
-    public virtual async Task<Result<ModelInfo>> GetModelInfoAsync(
-        string modelId,
-        CancellationToken cancellationToken = default)
+    public virtual async Task<ClientResult<ModelInfo>> GetModelInfoAsync(
+        string modelId)
     {
-        Result<Internal.Model> internalResult = await Shim.RetrieveAsync(modelId, cancellationToken).ConfigureAwait(false);
-        return Result.FromValue(new ModelInfo(internalResult.Value), internalResult.GetRawResponse());
+        ClientResult<Internal.Models.Model> internalResult = await Shim.RetrieveAsync(modelId).ConfigureAwait(false);
+        return ClientResult.FromValue(new ModelInfo(internalResult.Value), internalResult.GetRawResponse());
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result GetModelInfo(string modelId, RequestOptions context)
+    public virtual ClientResult GetModelInfo(string modelId, RequestOptions context)
     {
         return Shim.Retrieve(modelId, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> GetModelInfoAsync(string modelId, RequestOptions context)
+    public virtual Task<ClientResult> GetModelInfoAsync(string modelId, RequestOptions context)
     {
         return Shim.RetrieveAsync(modelId, context);
     }
 
-    public virtual Result<ModelInfoCollection> GetModels(CancellationToken cancellationToken = default)
+    public virtual ClientResult<ModelInfoCollection> GetModels(CancellationToken cancellationToken = default)
     {
-        Result<Internal.ListModelsResponse> internalResult = Shim.GetModels(cancellationToken);
+        ClientResult<Internal.Models.ListModelsResponse> internalResult = Shim.GetModels(cancellationToken);
         OptionalList<ModelInfo> modelEntries = [];
-        foreach (Internal.Model internalModel in internalResult.Value.Data)
+        foreach (Internal.Models.Model internalModel in internalResult.Value.Data)
         {
             modelEntries.Add(new(internalModel));
         }
-        return Result.FromValue(new ModelInfoCollection(modelEntries), internalResult.GetRawResponse());
+        return ClientResult.FromValue(new ModelInfoCollection(modelEntries), internalResult.GetRawResponse());
     }
 
-    public virtual async Task<Result<ModelInfoCollection>> GetModelsAsync(CancellationToken cancellationToken = default)
+    public virtual async Task<ClientResult<ModelInfoCollection>> GetModelsAsync(CancellationToken cancellationToken = default)
     {
-        Result<Internal.ListModelsResponse> internalResult
+        ClientResult<Internal.Models.ListModelsResponse> internalResult
             = await Shim.GetModelsAsync(cancellationToken).ConfigureAwait(false);
         OptionalList<ModelInfo> modelEntries = [];
-        foreach (Internal.Model internalModel in internalResult.Value.Data)
+        foreach (Internal.Models.Model internalModel in internalResult.Value.Data)
         {
             modelEntries.Add(new(internalModel));
         }
-        return Result.FromValue(new ModelInfoCollection(modelEntries), internalResult.GetRawResponse());
+        return ClientResult.FromValue(new ModelInfoCollection(modelEntries), internalResult.GetRawResponse());
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result GetModels(RequestOptions context) => Shim.GetModels(context);
+    public virtual ClientResult GetModels(RequestOptions context) => Shim.GetModels(context);
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> GetModelsAsync(RequestOptions context) => Shim.GetModelsAsync(context);
+    public virtual Task<ClientResult> GetModelsAsync(RequestOptions context) => Shim.GetModelsAsync(context);
 
-    public virtual Result<bool> DeleteModel(string modelId, CancellationToken cancellationToken = default)
+     public virtual ClientResult<bool> DeleteModel(string modelId)
     {
-        Result<Internal.DeleteModelResponse> internalResult = Shim.Delete(modelId, cancellationToken);
-        return Result.FromValue(internalResult.Value.Deleted, internalResult.GetRawResponse());
+        ClientResult<Internal.Models.DeleteModelResponse> internalResult = Shim.Delete(modelId);
+        return ClientResult.FromValue(internalResult.Value.Deleted, internalResult.GetRawResponse());
     }
 
-    public virtual async Task<Result<bool>> DeleteModelAsync(string modelId, CancellationToken cancellationToken = default)
+     public virtual async Task<ClientResult<bool>> DeleteModelAsync(string modelId)
     {
-        Result<Internal.DeleteModelResponse> internalResult
-            = await Shim.DeleteAsync(modelId, cancellationToken).ConfigureAwait(false);
-        return Result.FromValue(internalResult.Value.Deleted, internalResult.GetRawResponse());
+        ClientResult<Internal.Models.DeleteModelResponse> internalResult
+            = await Shim.DeleteAsync(modelId).ConfigureAwait(false);
+        return ClientResult.FromValue(internalResult.Value.Deleted, internalResult.GetRawResponse());
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result DeleteModel(string modelId, RequestOptions context) => Shim.Delete(modelId, context);
+    public virtual ClientResult DeleteModel(string modelId, RequestOptions context) => Shim.Delete(modelId, context);
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> DeleteModelAsync(string modelId, RequestOptions context) => Shim.DeleteAsync(modelId, context);
+    public virtual Task<ClientResult> DeleteModelAsync(string modelId, RequestOptions context) => Shim.DeleteAsync(modelId, context);
 }

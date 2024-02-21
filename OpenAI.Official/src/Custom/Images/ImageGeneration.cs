@@ -38,7 +38,7 @@ public class ImageGeneration
     /// </summary>
     public DateTimeOffset CreatedAt { get; }
 
-    internal ImageGeneration(Internal.ImagesResponse internalResponse, long internalDataIndex)
+    internal ImageGeneration(Internal.Models.ImagesResponse internalResponse, long internalDataIndex)
     {
         CreatedAt = internalResponse.Created;
         ImageBytes = internalResponse.Data[(int)internalDataIndex].B64Json;

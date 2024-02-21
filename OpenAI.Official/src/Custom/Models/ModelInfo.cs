@@ -19,7 +19,7 @@ public partial class ModelInfo
     /// </summary>
     public string OwnerOrganization { get; }
 
-    internal ModelInfo(Internal.Model internalModel)
+    internal ModelInfo(Internal.Models.Model internalModel)
     {
         Id = internalModel.Id;
         CreatedAt = internalModel.Created;

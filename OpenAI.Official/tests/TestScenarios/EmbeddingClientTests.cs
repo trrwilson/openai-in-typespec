@@ -11,7 +11,7 @@ public partial class EmbeddingClientTests
     public void OneEmbedding()
     {
         EmbeddingClient client = new("text-embedding-ada-002");
-        Result<Embedding> response = client.GenerateEmbedding("hello, world");
+        ClientResult<Embedding> response = client.GenerateEmbedding("hello, world");
         Assert.That(response.Value, Is.Not.Null);
         Assert.That(response.Value.Index, Is.EqualTo(0));
         Assert.That(response.Value.Usage, Is.Not.Null);
@@ -35,7 +35,7 @@ public partial class EmbeddingClientTests
         {
             Dimensions = 456,
         };
-        Result<EmbeddingCollection> response = client.GenerateEmbeddings(prompts, options);
+        ClientResult<EmbeddingCollection> response = client.GenerateEmbeddings(prompts, options);
         Assert.That(response.Value, Is.Not.Null);
         Assert.That(response.Value.Count, Is.EqualTo(3));
         for (int i = 0; i < response.Value.Count; i++)

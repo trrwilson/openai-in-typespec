@@ -1,11 +1,13 @@
 using System;
 using System.ClientModel.Internal;
+
+using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.Text.Json;
 
 namespace OpenAI.Official.Assistants;
 
-public abstract partial class TextContentAnnotation : IUtf8JsonWriteable, IJsonModel<TextContentAnnotation>
+public abstract partial class TextContentAnnotation :  IJsonModel<TextContentAnnotation>
 {
     TextContentAnnotation IJsonModel<TextContentAnnotation>.Create(ref Utf8JsonReader reader, ModelReaderWriterOptions options)
     {
@@ -35,8 +37,6 @@ public abstract partial class TextContentAnnotation : IUtf8JsonWriteable, IJsonM
     }
 
     string IPersistableModel<TextContentAnnotation>.GetFormatFromOptions(ModelReaderWriterOptions options) => "J";
-
-    void IUtf8JsonWriteable.Write(Utf8JsonWriter writer) => ((IJsonModel<TextContentAnnotation>)this).Write(writer, new ModelReaderWriterOptions("W"));
 
     void IJsonModel<TextContentAnnotation>.Write(Utf8JsonWriter writer, ModelReaderWriterOptions options)
     {

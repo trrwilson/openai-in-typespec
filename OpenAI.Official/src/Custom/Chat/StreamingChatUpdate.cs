@@ -280,8 +280,8 @@ public partial class StreamingChatUpdate
                         }
                         if (choiceProperty.NameEquals("logprobs"u8))
                         {
-                            Internal.CreateChatCompletionResponseChoiceLogprobs internalLogprobs
-                                = Internal.CreateChatCompletionResponseChoiceLogprobs.DeserializeCreateChatCompletionResponseChoiceLogprobs(
+                            Internal.Models.CreateChatCompletionResponseChoiceLogprobs internalLogprobs
+                                = Internal.Models.CreateChatCompletionResponseChoiceLogprobs.DeserializeCreateChatCompletionResponseChoiceLogprobs(
                                     choiceProperty.Value);
                             logProbabilities = ChatLogProbabilityCollection.FromInternalData(internalLogprobs);
                         }

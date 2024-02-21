@@ -7,14 +7,14 @@ public readonly struct RunStatus : IEquatable<RunStatus>
 {
     private readonly string _value;
 
-    public static RunStatus Queued { get; } = new(Internal.RunObjectStatus.Queued.ToString());
-    public static RunStatus InProgress { get; } = new(Internal.RunObjectStatus.InProgress.ToString());
-    public static RunStatus RequiresAction { get; } = new(Internal.RunObjectStatus.RequiresAction.ToString());
-    public static RunStatus Cancelling { get; } = new(Internal.RunObjectStatus.Cancelling.ToString());
-    public static RunStatus CompletedSuccessfully { get; } = new(Internal.RunObjectStatus.Completed.ToString());
-    public static RunStatus Cancelled { get; } = new(Internal.RunObjectStatus.Cancelled.ToString());
-    public static RunStatus Failed { get; } = new(Internal.RunObjectStatus.Failed.ToString());
-    public static RunStatus Expired { get; } = new(Internal.RunObjectStatus.Expired.ToString());
+    public static RunStatus Queued { get; } = new(Internal.Models.RunObjectStatus.Queued.ToString());
+    public static RunStatus InProgress { get; } = new(Internal.Models.RunObjectStatus.InProgress.ToString());
+    public static RunStatus RequiresAction { get; } = new(Internal.Models.RunObjectStatus.RequiresAction.ToString());
+    public static RunStatus Cancelling { get; } = new(Internal.Models.RunObjectStatus.Cancelling.ToString());
+    public static RunStatus CompletedSuccessfully { get; } = new(Internal.Models.RunObjectStatus.Completed.ToString());
+    public static RunStatus Cancelled { get; } = new(Internal.Models.RunObjectStatus.Cancelled.ToString());
+    public static RunStatus Failed { get; } = new(Internal.Models.RunObjectStatus.Failed.ToString());
+    public static RunStatus Expired { get; } = new(Internal.Models.RunObjectStatus.Expired.ToString());
 
     public RunStatus(string status)
     {

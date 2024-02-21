@@ -11,20 +11,20 @@ public class ChatLogProbabilityCollection : ReadOnlyCollection<ChatLogProbabilit
 {
     internal ChatLogProbabilityCollection(IList<ChatLogProbabilityResult> list) : base(list) { }
     internal static ChatLogProbabilityCollection FromInternalData(
-        Internal.CreateChatCompletionResponseChoiceLogprobs internalLogprobs)
+        Internal.Models.CreateChatCompletionResponseChoiceLogprobs internalLogprobs)
     {
         if (internalLogprobs == null)
         {
             return null;
         }
         List<ChatLogProbabilityResult> logProbabilities = [];
-        foreach (Internal.ChatCompletionTokenLogprob internalLogprob in internalLogprobs.Content)
+        foreach (Internal.Models.ChatCompletionTokenLogprob internalLogprob in internalLogprobs.Content)
         {
             List<ChatLogProbabilityResultItem> alternateLogProbabilities = null;
             if (internalLogprob.TopLogprobs != null)
             {
                 alternateLogProbabilities = [];
-                foreach (Internal.ChatCompletionTokenLogprobTopLogprob internalTopLogprob in internalLogprob.TopLogprobs)
+                foreach (Internal.Models.ChatCompletionTokenLogprobTopLogprob internalTopLogprob in internalLogprob.TopLogprobs)
                 {
                     alternateLogProbabilities.Add(new(
                         internalLogprob.Token,

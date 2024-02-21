@@ -1,5 +1,6 @@
 using System;
 using System.ClientModel;
+using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,7 +33,7 @@ public partial class FileClient
     /// <param name="endpoint">The connection endpoint to use.</param>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public FileClient(Uri endpoint, KeyCredential credential, FileClientOptions options = null)
+    public FileClient(Uri endpoint, ApiKeyCredential credential, FileClientOptions options = null)
     {
         _clientConnector = new("none", endpoint, credential, options);
     }
@@ -71,7 +72,7 @@ public partial class FileClient
     /// </remarks>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public FileClient(KeyCredential credential, FileClientOptions options = null)
+    public FileClient(ApiKeyCredential credential, FileClientOptions options = null)
         : this(endpoint: null, credential, options)
     { }
 
@@ -93,55 +94,55 @@ public partial class FileClient
         : this(endpoint: null, credential: null, options)
     { }
 
-    public virtual Result<OpenAIFileInfo> UploadFile(BinaryData file, OpenAIFilePurpose purpose, CancellationToken cancellationToken = default)
+     public virtual ClientResult<OpenAIFileInfo> UploadFile(BinaryData file, OpenAIFilePurpose purpose)
     {
-        Internal.CreateFileRequest request = new(file, ToInternalFilePurpose(purpose).ToString());
-        Result<Internal.OpenAIFile> result = Shim.CreateFile(request, cancellationToken);
-        return Result.FromValue(new OpenAIFileInfo(result.Value), result.GetRawResponse());
+        Internal.Models.CreateFileRequest request = new(file, ToInternalFilePurpose(purpose).ToString());
+        ClientResult<Internal.Models.OpenAIFile> result = Shim.CreateFile(request);
+        return ClientResult.FromValue(new OpenAIFileInfo(result.Value), result.GetRawResponse());
     }
 
-    public virtual async Task<Result<OpenAIFileInfo>> UploadFileAsync(BinaryData file, OpenAIFilePurpose purpose, CancellationToken cancellationToken = default)
+     public virtual async Task<ClientResult<OpenAIFileInfo>> UploadFileAsync(BinaryData file, OpenAIFilePurpose purpose)
     {
-        Internal.CreateFileRequest request = new(file, ToInternalFilePurpose(purpose).ToString());
-        Result<Internal.OpenAIFile> result = await Shim.CreateFileAsync(request, cancellationToken).ConfigureAwait(false);
-        return Result.FromValue(new OpenAIFileInfo(result.Value), result.GetRawResponse());
+        Internal.Models.CreateFileRequest request = new(file, ToInternalFilePurpose(purpose).ToString());
+        ClientResult<Internal.Models.OpenAIFile> result = await Shim.CreateFileAsync(request).ConfigureAwait(false);
+        return ClientResult.FromValue(new OpenAIFileInfo(result.Value), result.GetRawResponse());
     }
 
-    public virtual Result<OpenAIFileInfoCollection> GetFileInfoItems(OpenAIFilePurpose? purpose = null, CancellationToken cancellationToken = default)
+     public virtual ClientResult<OpenAIFileInfoCollection> GetFileInfoItems(OpenAIFilePurpose? purpose = null)
     {
-        Internal.OpenAIFilePurpose? internalPurpose = ToInternalFilePurpose(purpose);
+        Internal.Models.OpenAIFilePurpose? internalPurpose = ToInternalFilePurpose(purpose);
         string internalPurposeText = null;
         if (internalPurpose != null)
         {
             internalPurposeText = internalPurpose.ToString();
         }
-        Result<Internal.ListFilesResponse> result = Shim.GetFiles(internalPurposeText, cancellationToken);
+        ClientResult<Internal.Models.ListFilesResponse> result = Shim.GetFiles(internalPurposeText);
         List<OpenAIFileInfo> infoItems = [];
-        foreach (Internal.OpenAIFile internalFile in result.Value.Data)
+        foreach (Internal.Models.OpenAIFile internalFile in result.Value.Data)
         {
             infoItems.Add(new(internalFile));
         }
-        return Result.FromValue(new OpenAIFileInfoCollection(infoItems), result.GetRawResponse());
+        return ClientResult.FromValue(new OpenAIFileInfoCollection(infoItems), result.GetRawResponse());
     }
 
-    public virtual async Task<Result<OpenAIFileInfoCollection>> GetFileInfoItemsAsync(OpenAIFilePurpose? purpose = null, CancellationToken cancellationToken = default)
+     public virtual async Task<ClientResult<OpenAIFileInfoCollection>> GetFileInfoItemsAsync(OpenAIFilePurpose? purpose = null)
     {
-        Internal.OpenAIFilePurpose? internalPurpose = ToInternalFilePurpose(purpose);
+        Internal.Models.OpenAIFilePurpose? internalPurpose = ToInternalFilePurpose(purpose);
         string internalPurposeText = null;
         if (internalPurpose != null)
         {
             internalPurposeText = internalPurpose.ToString();
         }
-        Result<Internal.ListFilesResponse> result = await Shim.GetFilesAsync(internalPurposeText, cancellationToken).ConfigureAwait(false);
+        ClientResult<Internal.Models.ListFilesResponse> result = await Shim.GetFilesAsync(internalPurposeText).ConfigureAwait(false);
         List<OpenAIFileInfo> infoItems = [];
-        foreach (Internal.OpenAIFile internalFile in result.Value.Data)
+        foreach (Internal.Models.OpenAIFile internalFile in result.Value.Data)
         {
             infoItems.Add(new(internalFile));
         }
-        return Result.FromValue(new OpenAIFileInfoCollection(infoItems), result.GetRawResponse());
+        return ClientResult.FromValue(new OpenAIFileInfoCollection(infoItems), result.GetRawResponse());
     }
 
-    internal static Internal.OpenAIFilePurpose? ToInternalFilePurpose(OpenAIFilePurpose? purpose)
+    internal static Internal.Models.OpenAIFilePurpose? ToInternalFilePurpose(OpenAIFilePurpose? purpose)
     {
         if (purpose == null)
         {
@@ -149,10 +150,10 @@ public partial class FileClient
         }
         return purpose switch
         {
-            OpenAIFilePurpose.FineTuning => Internal.OpenAIFilePurpose.FineTune,
-            OpenAIFilePurpose.FineTuningResults => Internal.OpenAIFilePurpose.FineTuneResults,
-            OpenAIFilePurpose.Assistants => Internal.OpenAIFilePurpose.Assistants,
-            OpenAIFilePurpose.AssistantOutputs => Internal.OpenAIFilePurpose.AssistantsOutput,
+            OpenAIFilePurpose.FineTuning => Internal.Models.OpenAIFilePurpose.FineTune,
+            OpenAIFilePurpose.FineTuningResults => Internal.Models.OpenAIFilePurpose.FineTuneResults,
+            OpenAIFilePurpose.Assistants => Internal.Models.OpenAIFilePurpose.Assistants,
+            OpenAIFilePurpose.AssistantOutputs => Internal.Models.OpenAIFilePurpose.AssistantsOutput,
             _ => throw new ArgumentException($"Unsupported file purpose: {purpose}"),
         };
     }

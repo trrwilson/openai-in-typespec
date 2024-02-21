@@ -9,17 +9,17 @@ namespace OpenAI.Official.Images;
 /// </summary>
 public readonly partial struct ImageStyle : IEquatable<ImageStyle>
 {
-    private readonly Internal.CreateImageRequestStyle _internalStyle;
+    private readonly Internal.Models.CreateImageRequestStyle _internalStyle;
 
     /// <summary>
     /// Creates a new instance of <see cref="ImageStyle"/>.
     /// </summary>
     /// <param name="value"> The textual value for the style. </param>
     public ImageStyle(string value)
-        : this(new Internal.CreateImageRequestStyle(value))
+        : this(new Internal.Models.CreateImageRequestStyle(value))
     { }
 
-    internal ImageStyle(Internal.CreateImageRequestStyle internalStyle)
+    internal ImageStyle(Internal.Models.CreateImageRequestStyle internalStyle)
     {
         _internalStyle = internalStyle;
     }
@@ -27,11 +27,11 @@ public readonly partial struct ImageStyle : IEquatable<ImageStyle>
     /// <summary>
     /// The <c>natural</c> style, with which the model will not tend towards hyper-realistic, dramatic imagery.
     /// </summary>
-    public static ImageStyle Natural { get; } = new(Internal.CreateImageRequestStyle.Natural);
+    public static ImageStyle Natural { get; } = new(Internal.Models.CreateImageRequestStyle.Natural);
     /// <summary>
     /// The <c>vivid</c> style, with which the model will tend towards hyper-realistic, dramatic imagery.
     /// </summary>
-    public static ImageStyle Vivid { get; } = new(Internal.CreateImageRequestStyle.Vivid);
+    public static ImageStyle Vivid { get; } = new(Internal.Models.CreateImageRequestStyle.Vivid);
     /// <inheritdoc/>
     public static bool operator ==(ImageStyle left, ImageStyle right) => left._internalStyle == right._internalStyle;
     /// <inheritdoc/>

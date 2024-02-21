@@ -7,8 +7,8 @@ public readonly struct RunErrorCode : IEquatable<RunErrorCode>
 {
     private readonly string _value;
 
-    public static RunErrorCode ServerError { get; } = new(Internal.RunObjectLastErrorCode.ServerError.ToString());
-    public static RunErrorCode RateLimitExceeded { get; } = new(Internal.RunObjectLastErrorCode.RateLimitExceeded.ToString());
+    public static RunErrorCode ServerError { get; } = new(Internal.Models.RunObjectLastErrorCode.ServerError.ToString());
+    public static RunErrorCode RateLimitExceeded { get; } = new(Internal.Models.RunObjectLastErrorCode.RateLimitExceeded.ToString());
     public static RunErrorCode InvalidPrompt { get; } = new("invalid_prompt");
 
     public RunErrorCode(string status)

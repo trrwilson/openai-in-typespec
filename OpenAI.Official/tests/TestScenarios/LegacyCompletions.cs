@@ -2,6 +2,7 @@
 using OpenAI.Official.LegacyCompletions;
 using System;
 using System.ClientModel;
+using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -21,8 +22,8 @@ public partial class LegacyCompletionTests
             max_tokens = 256,
             temperature = 0,
         });
-        RequestBody content = RequestBody.CreateFromStream(requestData.ToStream());
-        Result result = client.GenerateLegacyCompletions(content);
+        BinaryContent content = BinaryContent.Create(requestData);
+        ClientResult result = client.GenerateLegacyCompletions(content);
         Assert.That(result, Is.Not.Null);
         JsonObject responseObject = JsonSerializer.Deserialize<JsonObject>(result.GetRawResponse().Content.ToString());
         string text = responseObject["choices"].AsArray()[0].AsObject()["text"].ToString();

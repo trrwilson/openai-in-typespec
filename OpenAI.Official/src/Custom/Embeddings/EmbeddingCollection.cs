@@ -6,7 +6,7 @@ namespace OpenAI.Official.Embeddings;
 public class EmbeddingCollection : ReadOnlyCollection<Embedding>
 {
     internal EmbeddingCollection(IList<Embedding> list) : base(list) { }
-    internal static EmbeddingCollection CreateFromInternalResponse(Internal.CreateEmbeddingResponse response)
+    internal static EmbeddingCollection CreateFromInternalResponse(Internal.Models.EmbeddingCollection response)
     {
         EmbeddingTokenUsage usage = new(response.Usage);
         List<Embedding> items = [];

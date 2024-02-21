@@ -14,7 +14,7 @@ public partial class ChatToolTests
     [Test]
     public void NoParameterToolWorks()
     {
-        ChatClient client = new("gpt-3.5-turbo", new() { ErrorBehavior = ErrorBehavior.NoThrow });
+        ChatClient client = new("gpt-3.5-turbo");
         ChatFunctionToolDefinition getFavoriteColorTool = new()
         {
             Name = "get_favorite_color",
@@ -24,7 +24,7 @@ public partial class ChatToolTests
         {
             Tools = { getFavoriteColorTool },
         };
-        Result<ChatCompletion> result = client.CompleteChat("What's my favorite color?", options);
+        ClientResult<ChatCompletion> result = client.CompleteChat("What's my favorite color?", options);
         Assert.That(result.Value.FinishReason, Is.EqualTo(ChatFinishReason.ToolCalls));
         Assert.That(result.Value.ToolCalls.Count, Is.EqualTo(1));
         var functionToolCall = result.Value.ToolCalls[0] as ChatFunctionToolCall;
@@ -73,7 +73,7 @@ public partial class ChatToolTests
         [
             new ChatRequestUserMessage("What's my favorite color in February?"),
         ];
-        Result<ChatCompletion> result = client.CompleteChat(messages, options);
+        ClientResult<ChatCompletion> result = client.CompleteChat(messages, options);
         Assert.That(result.Value.FinishReason, Is.EqualTo(ChatFinishReason.ToolCalls));
         Assert.That(result.Value.ToolCalls?.Count, Is.EqualTo(1));
         var functionToolCall = result.Value.ToolCalls[0] as ChatFunctionToolCall;

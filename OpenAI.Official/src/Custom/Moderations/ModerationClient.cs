@@ -1,5 +1,6 @@
 using System;
 using System.ClientModel;
+using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.ComponentModel;
 using System.Threading;
@@ -31,7 +32,7 @@ public partial class ModerationClient
     /// <param name="endpoint">The connection endpoint to use.</param>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public ModerationClient(Uri endpoint, KeyCredential credential, ModerationClientOptions options = null)
+    public ModerationClient(Uri endpoint, ApiKeyCredential credential, ModerationClientOptions options = null)
     {
         _clientConnector = new("none", endpoint, credential, options);
     }
@@ -70,7 +71,7 @@ public partial class ModerationClient
     /// </remarks>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public ModerationClient(KeyCredential credential, ModerationClientOptions options = null)
+    public ModerationClient(ApiKeyCredential credential, ModerationClientOptions options = null)
         : this(endpoint: null, credential, options)
     { }
 
@@ -93,13 +94,13 @@ public partial class ModerationClient
     { }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result ClassifyText(RequestBody content, RequestOptions context = null)
+    public virtual ClientResult ClassifyText(BinaryContent content, RequestOptions context = null)
     {
         return Shim.CreateModeration(content, context);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> ClassifyTextAsync(RequestBody content, RequestOptions context = null)
+    public virtual Task<ClientResult> ClassifyTextAsync(BinaryContent content, RequestOptions context = null)
     {
         return Shim.CreateModerationAsync(content, context);
     }

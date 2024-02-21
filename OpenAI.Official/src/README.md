@@ -20,7 +20,7 @@ Simple case: generate a single embedding from a string:
 
 ```csharp
 EmbeddingClient client = new("text-embedding-ada-002");
-Result<Embedding> result = client.GenerateEmbedding("Hello, world!");
+ClientResult<Embedding> result = client.GenerateEmbedding("Hello, world!");
 ReadOnlyMemory<float> embeddings = result.Value.Vector;
 ```
 
@@ -41,7 +41,7 @@ EmbeddingOptions options = new()
 {
     Dimensions = 456,
 };
-Result<EmbeddingCollection> response = client.GenerateEmbeddings(prompts, options);
+ClientResult<EmbeddingCollection> response = client.GenerateEmbeddings(prompts, options);
 foreach (Embedding embedding in result.Value)
 {
     float[] array = embedding.Vector.ToArray();

@@ -1,9 +1,12 @@
 using System;
 using System.ClientModel.Internal;
+
+using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.Dynamic;
 using System.Runtime.InteropServices;
 using System.Text.Json;
+using OpenAI.ClientShared.Internal;
 
 namespace OpenAI.Official.Chat;
 

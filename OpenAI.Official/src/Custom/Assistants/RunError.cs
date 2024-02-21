@@ -13,7 +13,7 @@ public partial class RunError
         ErrorMessage = errorMessage;
     }
 
-    internal RunError(Internal.RunObjectLastError internalError)
+    internal RunError(Internal.Models.RunObjectLastError internalError)
     {
         if (internalError.Code != null)
         {

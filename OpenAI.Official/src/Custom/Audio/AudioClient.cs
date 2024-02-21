@@ -1,5 +1,6 @@
 using System;
 using System.ClientModel;
+using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.ComponentModel;
 using System.Threading;
@@ -30,7 +31,7 @@ public partial class AudioClient
     /// <param name="model">The model name for audio operations that the client should use.</param>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public AudioClient(Uri endpoint, string model, KeyCredential credential, AudioClientOptions options = null)
+    public AudioClient(Uri endpoint, string model, ApiKeyCredential credential, AudioClientOptions options = null)
     {
         _clientConnector = new(model, endpoint, credential, options);
     }
@@ -71,7 +72,7 @@ public partial class AudioClient
     /// <param name="model">The model name for audio operations that the client should use.</param>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public AudioClient(string model, KeyCredential credential, AudioClientOptions options = null)
+    public AudioClient(string model, ApiKeyCredential credential, AudioClientOptions options = null)
         : this(endpoint: null, model, credential, options)
     { }
 
@@ -110,14 +111,13 @@ public partial class AudioClient
     ///     Unless otherwise specified via <see cref="TextToSpeechOptions.ResponseFormat"/>, the <c>mp3</c> format of
     ///     <see cref="AudioDataFormat.Mp3"/> will be used for the generated audio.
     /// </returns>
-    public virtual Result<BinaryData> GenerateSpeechFromText(
+    public virtual ClientResult<BinaryData> GenerateSpeechFromText(
         string input,
         TextToSpeechVoice voice,
-        TextToSpeechOptions options = null,
-        CancellationToken cancellationToken = default)
+        TextToSpeechOptions options = null)
     {
-        Internal.CreateSpeechRequest request = CreateInternalTtsRequest(input, voice, options);
-        return Shim.CreateSpeech(request, cancellationToken);
+        Internal.Models.CreateSpeechRequest request = CreateInternalTtsRequest(input, voice, options);
+        return Shim.CreateSpeech(request);
     }
 
     /// <summary>
@@ -136,38 +136,37 @@ public partial class AudioClient
     ///     Unless otherwise specified via <see cref="TextToSpeechOptions.ResponseFormat"/>, the <c>mp3</c> format of
     ///     <see cref="AudioDataFormat.Mp3"/> will be used for the generated audio.
     /// </returns>
-    public virtual Task<Result<BinaryData>> GenerateSpeechFromTextAsync(
+    public virtual Task<ClientResult<BinaryData>> GenerateSpeechFromTextAsync(
         string input,
         TextToSpeechVoice voice,
-        TextToSpeechOptions options = null,
-        CancellationToken cancellationToken = default)
+        TextToSpeechOptions options = null)
     {
-        Internal.CreateSpeechRequest request = CreateInternalTtsRequest(input, voice, options);
-        return Shim.CreateSpeechAsync(request, cancellationToken);
+        Internal.Models.CreateSpeechRequest request = CreateInternalTtsRequest(input, voice, options);
+        return Shim.CreateSpeechAsync(request);
     }
 
-    /// <inheritdoc cref="Internal.Audio.CreateSpeech(RequestBody, RequestOptions)"/>
+    /// <inheritdoc cref="Internal.Models.Audio.CreateSpeech(BinaryContent, RequestOptions)"/>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Result GenerateSpeechFromText(RequestBody content, RequestOptions context = null)
+    public virtual ClientResult GenerateSpeechFromText(BinaryContent content, RequestOptions context = null)
         => Shim.CreateSpeech(content, context);
 
-    /// <inheritdoc cref="Internal.Audio.CreateSpeech(RequestBody, RequestOptions)"/>
+    /// <inheritdoc cref="Internal.Models.Audio.CreateSpeech(BinaryContent, RequestOptions)"/>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<Result> GenerateSpeechFromTextAsync(RequestBody content, RequestOptions context = null)
+    public virtual Task<ClientResult> GenerateSpeechFromTextAsync(BinaryContent content, RequestOptions context = null)
         => Shim.CreateSpeechAsync(content, context);
 
-    private Internal.CreateSpeechRequest CreateInternalTtsRequest(
+    private Internal.Models.CreateSpeechRequest CreateInternalTtsRequest(
         string input,
         TextToSpeechVoice voice,
         TextToSpeechOptions options = null)
     {
         options ??= new();
-        Internal.CreateSpeechRequestResponseFormat? internalResponseFormat = null;
+        Internal.Models.CreateSpeechRequestResponseFormat? internalResponseFormat = null;
         if (options.ResponseFormat != null)
         {
             internalResponseFormat = options.ResponseFormat.ToString().ToLowerInvariant();
         }
-        return new Internal.CreateSpeechRequest(
+        return new Internal.Models.CreateSpeechRequest(
             _clientConnector.Model,
             input,
             voice.ToString(),

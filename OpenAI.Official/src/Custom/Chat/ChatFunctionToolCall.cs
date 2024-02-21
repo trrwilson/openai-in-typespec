@@ -1,4 +1,5 @@
 using System;
+using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -10,7 +11,7 @@ namespace OpenAI.Official.Chat;
 /// </summary>
 public class ChatFunctionToolCall : ChatToolCall
 {
-    internal Internal.ChatCompletionMessageToolCallFunction InternalToolCall { get; }
+    internal Internal.Models.ChatCompletionMessageToolCallFunction InternalToolCall { get; }
 
     /// <summary>
     /// Gets the <c>name</c> of the function.

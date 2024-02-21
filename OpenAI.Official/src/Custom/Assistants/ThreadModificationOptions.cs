@@ -1,4 +1,6 @@
+using OpenAI.ClientShared.Internal;
 using System.ClientModel.Internal;
+
 using System.Collections.Generic;
 
 namespace OpenAI.Official.Assistants;

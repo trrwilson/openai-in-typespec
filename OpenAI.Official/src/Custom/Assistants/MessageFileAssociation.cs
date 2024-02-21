@@ -8,7 +8,7 @@ public partial class MessageFileAssociation
     public string FileId { get; }
     public DateTimeOffset CreatedAt { get; }
 
-    internal MessageFileAssociation(Internal.MessageFileObject internalFile)
+    internal MessageFileAssociation(Internal.Models.MessageFileObject internalFile)
     {
         MessageId = internalFile.MessageId;
         FileId = internalFile.Id;

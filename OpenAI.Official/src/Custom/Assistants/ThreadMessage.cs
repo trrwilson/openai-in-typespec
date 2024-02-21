@@ -27,7 +27,7 @@ public partial class ThreadMessage
     /// </remarks>
     public IReadOnlyDictionary<string, string> Metadata { get; }
 
-    internal ThreadMessage(Internal.MessageObject internalMessage)
+    internal ThreadMessage(Internal.Models.MessageObject internalMessage)
     {
         MessageRole convertedRole = MessageRole.User;
         if (internalMessage.Role.ToString() == "user")

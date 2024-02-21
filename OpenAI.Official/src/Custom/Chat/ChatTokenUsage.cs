@@ -5,14 +5,14 @@ namespace OpenAI.Official.Chat;
 /// </summary>
 public class ChatTokenUsage
 {
-    /// <inheritdoc cref="Internal.CompletionUsage.PromptTokens"/>
+    /// <inheritdoc cref="Internal.Models.CompletionUsage.PromptTokens"/>
     public long InputTokens { get; }
-    /// <inheritdoc cref="Internal.CompletionUsage.CompletionTokens"/>
+    /// <inheritdoc cref="Internal.Models.CompletionUsage.CompletionTokens"/>
     public long OutputTokens { get; }
-    /// <inheritdoc cref="Internal.CompletionUsage.TotalTokens"/>
+    /// <inheritdoc cref="Internal.Models.CompletionUsage.TotalTokens"/>
     public long TotalTokens { get; }
 
-    internal ChatTokenUsage(Internal.CompletionUsage internalUsage)
+    internal ChatTokenUsage(Internal.Models.CompletionUsage internalUsage)
     {
         InputTokens = internalUsage.PromptTokens;
         OutputTokens = internalUsage.CompletionTokens;
