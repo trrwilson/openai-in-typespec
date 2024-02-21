@@ -276,7 +276,7 @@ public partial class ChatClient
             genericResult,
             (responseForEnumeration) => SseAsyncEnumerator<StreamingChatUpdate>.EnumerateFromSseStream(
                 responseForEnumeration.GetRawResponse().ContentStream,
-                e => StreamingChatUpdate.DeserializeStreamingChatUpdates(e)));            
+                e => StreamingChatUpdate.DeserializeStreamingChatUpdates(e)));
     }
 
     /// <summary>
@@ -364,7 +364,7 @@ public partial class ChatClient
     {
         if (message.Request != null)
         {
-            // message.BufferResponse = false;
+            message.BufferResponse = false;
         }
     });
 }

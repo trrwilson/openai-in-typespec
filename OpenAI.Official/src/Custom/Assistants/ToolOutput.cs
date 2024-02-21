@@ -1,10 +1,13 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 
 namespace OpenAI.Official.Assistants;
 
 public partial class ToolOutput
 {
+    [JsonPropertyName("tool_call_id")]
     public required string Id { get; set; }
+    [JsonPropertyName("output")]
     public string Output { get; set; }
 
     public ToolOutput()

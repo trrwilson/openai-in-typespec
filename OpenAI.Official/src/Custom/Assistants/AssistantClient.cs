@@ -605,18 +605,30 @@ public partial class AssistantClient
 
      public virtual ClientResult<bool> SubmitToolOutputs(string threadId, string runId, IEnumerable<ToolOutput> toolOutputs)
     {
-        BinaryContent content = CreateManualSubmitToolOutputsBody(toolOutputs);
-        RequestOptions context = new();
-        ClientResult internalResult = RunShim.SubmitToolOuputsToRun(threadId, runId, content, context);
+        BinaryContent content = BinaryContent.Create(BinaryData.FromObjectAsJson(new
+            {
+                tool_outputs = toolOutputs
+            },
+            new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
+            }));
+        ClientResult internalResult = RunShim.SubmitToolOuputsToRun(threadId, runId, content, default);
         return ClientResult.FromValue(true, internalResult.GetRawResponse());
     }
 
      public virtual async Task<ClientResult<bool>> SubmitToolOutputsAsync(string threadId, string runId, IEnumerable<ToolOutput> toolOutputs)
     {
-        BinaryContent content = CreateManualSubmitToolOutputsBody(toolOutputs);
-        RequestOptions context = new();
+        BinaryContent content = BinaryContent.Create(BinaryData.FromObjectAsJson(new
+            {
+                tool_outputs = toolOutputs
+            },
+            new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
+            }));
         ClientResult internalResult
-            = await RunShim.SubmitToolOuputsToRunAsync(threadId, runId, content, context).ConfigureAwait(false);
+            = await RunShim.SubmitToolOuputsToRunAsync(threadId, runId, content, default).ConfigureAwait(false);
         return ClientResult.FromValue(true, internalResult.GetRawResponse());
     }
 
@@ -687,22 +699,6 @@ public partial class AssistantClient
             ToInternalBinaryDataList(runOptions?.OverrideTools),
             runOptions?.Metadata,
             serializedAdditionalRawData: null);
-    }
-
-    internal static BinaryContent CreateManualSubmitToolOutputsBody(IEnumerable<ToolOutput> outputs)
-    {
-        // TODO: address proper serialization
-        throw new NotImplementedException();
-
-        List<BinaryData> toolDataItems = [];
-        foreach (ToolOutput output in outputs)
-        {
-            toolDataItems.Add((output as IPersistableModel<ToolOutput>).Write(ModelReaderWriterOptions.Json));
-        }
-        return BinaryContent.Create(BinaryData.FromObjectAsJson(new
-        {
-            tool_outputs = toolDataItems,
-        }));
     }
 
     internal static OptionalList<BinaryData> ToInternalBinaryDataList<T>(IEnumerable<T> values)
