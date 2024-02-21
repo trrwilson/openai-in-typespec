@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace OpenAI.Internal.Models
 {
     /// <summary> Enum for role in MessageObject. </summary>
-    public readonly partial struct MessageObjectRole : IEquatable<MessageObjectRole>
+    internal readonly partial struct MessageObjectRole : IEquatable<MessageObjectRole>
     {
         private readonly string _value;
 

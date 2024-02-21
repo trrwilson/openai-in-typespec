@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace OpenAI.Internal.Models
 {
     /// <summary> The EmbeddingCollection_object. </summary>
-    public readonly partial struct EmbeddingCollectionObject : IEquatable<EmbeddingCollectionObject>
+    internal readonly partial struct EmbeddingCollectionObject : IEquatable<EmbeddingCollectionObject>
     {
         private readonly string _value;
 

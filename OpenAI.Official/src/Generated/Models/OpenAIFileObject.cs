@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace OpenAI.Internal.Models
 {
     /// <summary> The OpenAIFile_object. </summary>
-    public readonly partial struct OpenAIFileObject : IEquatable<OpenAIFileObject>
+    internal readonly partial struct OpenAIFileObject : IEquatable<OpenAIFileObject>
     {
         private readonly string _value;
 

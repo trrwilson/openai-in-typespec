@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace OpenAI.Internal.Models
 {
     /// <summary> The ChatCompletionResponseMessage_role. </summary>
-    public readonly partial struct ChatCompletionResponseMessageRole : IEquatable<ChatCompletionResponseMessageRole>
+    internal readonly partial struct ChatCompletionResponseMessageRole : IEquatable<ChatCompletionResponseMessageRole>
     {
         private readonly string _value;
 

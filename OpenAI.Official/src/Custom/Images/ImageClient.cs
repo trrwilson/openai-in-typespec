@@ -103,7 +103,7 @@ public partial class ImageClient
     /// <param name="options"> Additional options for the image generation request. </param>
     /// <param name="cancellationToken"> The cancellation token for the operation. </param>
     /// <returns> A result for a single image generation. </returns>
-     public virtual ClientResult<ImageGeneration> GenerateImage(string prompt, ImageGenerationOptions options = null)
+     public virtual ClientResult<GeneratedImage> GenerateImage(string prompt, ImageGenerationOptions options = null)
     {
          ClientResult<ImageGenerationCollection> multiResult = GenerateImages(prompt, imageCount: null, options);
         return ClientResult.FromValue(multiResult.Value[0], multiResult.GetRawResponse());
@@ -116,7 +116,7 @@ public partial class ImageClient
     /// <param name="options"> Additional options for the image generation request. </param>
     /// <param name="cancellationToken"> The cancellation token for the operation. </param>
     /// <returns> A result for a single image generation. </returns>
-     public virtual async Task<ClientResult<ImageGeneration>> GenerateImageAsync(string prompt, ImageGenerationOptions options = null)
+     public virtual async Task<ClientResult<GeneratedImage>> GenerateImageAsync(string prompt, ImageGenerationOptions options = null)
     {
          ClientResult<ImageGenerationCollection> multiResult = await GenerateImagesAsync(prompt, imageCount: null, options).ConfigureAwait(false);
         return ClientResult.FromValue(multiResult.Value[0], multiResult.GetRawResponse());
@@ -139,7 +139,7 @@ public partial class ImageClient
     {
         Internal.Models.CreateImageRequest request = CreateInternalRequest(prompt, imageCount, options);
         ClientResult<Internal.Models.ImagesResponse> response = Shim.CreateImage(request);
-        List<ImageGeneration> ImageGenerations = [];
+        List<GeneratedImage> ImageGenerations = [];
         for (int i = 0; i < response.Value.Data.Count; i++)
         {
             ImageGenerations.Add(new(response.Value, i));
@@ -164,7 +164,7 @@ public partial class ImageClient
     {
         Internal.Models.CreateImageRequest request = CreateInternalRequest(prompt, imageCount, options);
         ClientResult<Internal.Models.ImagesResponse> response = await Shim.CreateImageAsync(request).ConfigureAwait(false);
-        List<ImageGeneration> ImageGenerations = [];
+        List<GeneratedImage> ImageGenerations = [];
         for (int i = 0; i < response.Value.Data.Count; i++)
         {
             ImageGenerations.Add(new(response.Value, i));

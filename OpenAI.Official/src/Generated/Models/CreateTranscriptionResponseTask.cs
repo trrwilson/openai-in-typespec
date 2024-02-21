@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace OpenAI.Internal.Models
 {
     /// <summary> The CreateTranscriptionResponse_task. </summary>
-    public readonly partial struct CreateTranscriptionResponseTask : IEquatable<CreateTranscriptionResponseTask>
+    internal readonly partial struct CreateTranscriptionResponseTask : IEquatable<CreateTranscriptionResponseTask>
     {
         private readonly string _value;
 

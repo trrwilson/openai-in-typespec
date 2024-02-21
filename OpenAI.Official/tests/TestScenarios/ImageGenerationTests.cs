@@ -11,10 +11,10 @@ public partial class ImageGenerationTests
     public void BasicGenerationWorks()
     {
         ImageClient client = new("dall-e-3");
-        ClientResult<ImageGeneration> result = client.GenerateImage("an isolated stop sign");
-        Assert.That(result, Is.InstanceOf<ClientResult<ImageGeneration>>());
-        Assert.That(result.Value.ImageBlobUri, Is.Not.Null);
-        Console.WriteLine(result.Value.ImageBlobUri.AbsoluteUri);
+        ClientResult<GeneratedImage> result = client.GenerateImage("an isolated stop sign");
+        Assert.That(result, Is.InstanceOf<ClientResult<GeneratedImage>>());
+        Assert.That(result.Value.ImageUri, Is.Not.Null);
+        Console.WriteLine(result.Value.ImageUri.AbsoluteUri);
         Assert.That(result.Value.ImageBytes, Is.Null);
         Assert.That(result.Value.CreatedAt, Is.GreaterThan(new DateTimeOffset(new DateTime(year: 2020, month: 1, day: 1))));
     }

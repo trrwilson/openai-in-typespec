@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace OpenAI.Internal.Models
 {
     /// <summary> Enum for response_format in CreateImageEditRequest. </summary>
-    public readonly partial struct CreateImageEditRequestResponseFormat : IEquatable<CreateImageEditRequestResponseFormat>
+    internal readonly partial struct CreateImageEditRequestResponseFormat : IEquatable<CreateImageEditRequestResponseFormat>
     {
         private readonly string _value;
 

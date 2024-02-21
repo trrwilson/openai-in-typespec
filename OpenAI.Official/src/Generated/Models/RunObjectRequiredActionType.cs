@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace OpenAI.Internal.Models
 {
     /// <summary> The RunObjectRequiredAction_type. </summary>
-    public readonly partial struct RunObjectRequiredActionType : IEquatable<RunObjectRequiredActionType>
+    internal readonly partial struct RunObjectRequiredActionType : IEquatable<RunObjectRequiredActionType>
     {
         private readonly string _value;
 

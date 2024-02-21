@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace OpenAI.Internal.Models
 {
-    public readonly partial struct ListOrder : IEquatable<ListOrder>
+    internal readonly partial struct ListOrder : IEquatable<ListOrder>
     {
         private readonly string _value;
 

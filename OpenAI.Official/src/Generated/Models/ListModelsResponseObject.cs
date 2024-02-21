@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace OpenAI.Internal.Models
 {
     /// <summary> The ListModelsResponse_object. </summary>
-    public readonly partial struct ListModelsResponseObject : IEquatable<ListModelsResponseObject>
+    internal readonly partial struct ListModelsResponseObject : IEquatable<ListModelsResponseObject>
     {
         private readonly string _value;
 

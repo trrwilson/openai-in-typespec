@@ -391,19 +391,16 @@ public partial class AssistantClient
         return RunShim.SubmitToolOuputsToRunAsync(threadId, runId, content, context);
     }
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual ClientResult GetRunStep(string threadId, string runId, string stepId, RequestOptions context)
     {
         return RunShim.GetRunStep(threadId, runId, stepId, context);
     }
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual Task<ClientResult> GetRunStepAsync(string threadId, string runId, string stepId, RequestOptions context)
     {
         return RunShim.GetRunStepAsync(threadId, runId, stepId, context);
     }
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual ClientResult GetRunSteps(
         string threadId,
         string runId,
@@ -417,7 +414,6 @@ public partial class AssistantClient
             .GetRunSteps(threadId, runId, maxResults, createdSortOrder, previousStepId, subsequentStepId, context);
     }
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual Task<ClientResult> GetRunStepsAsync(
         string threadId,
         string runId,

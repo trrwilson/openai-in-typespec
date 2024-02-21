@@ -43,7 +43,7 @@ public class StreamingClientResult<T>
     /// A new instance of <see cref="StreamingClientResult{T}"/> that will be capable of asynchronous enumeration of
     /// <typeparamref name="T"/> items from the HTTP response.
     /// </returns>
-    public static StreamingClientResult<T> CreateFromResponse(
+    internal static StreamingClientResult<T> CreateFromResponse(
         ClientResult result,
         Func<ClientResult, IAsyncEnumerable<T>> asyncEnumerableProcessor)
     {

@@ -93,13 +93,11 @@ public partial class ModerationClient
         : this(endpoint: null, credential: null, options)
     { }
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual ClientResult ClassifyText(BinaryContent content, RequestOptions context = null)
     {
         return Shim.CreateModeration(content, context);
     }
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual Task<ClientResult> ClassifyTextAsync(BinaryContent content, RequestOptions context = null)
     {
         return Shim.CreateModerationAsync(content, context);

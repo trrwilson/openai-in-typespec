@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-namespace OpenAI.Models;
+
+namespace OpenAI.ModelManagement;
 
 /// <summary>
 /// Represents a collection of entries for available models.

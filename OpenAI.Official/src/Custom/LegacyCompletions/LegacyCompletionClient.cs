@@ -96,13 +96,11 @@ public partial class LegacyCompletionClient
         : this(endpoint: null, credential: null, options)
     { }
 
-    /// <inheritdoc cref="Internal.Models.Completions.CreateCompletion(BinaryContent, RequestOptions)"/>
-    [EditorBrowsable(EditorBrowsableState.Never)]
+    /// <inheritdoc cref="Internal.Completions.CreateCompletion(BinaryContent, RequestOptions)"/>
     public virtual ClientResult GenerateLegacyCompletions(BinaryContent content, RequestOptions context = null)
         => Shim.CreateCompletion(content, context);
 
-    /// <inheritdoc cref="Internal.Models.Completions.CreateCompletionAsync(BinaryContent, RequestOptions)"/>
-    [EditorBrowsable(EditorBrowsableState.Never)]
+    /// <inheritdoc cref="Internal.Completions.CreateCompletionAsync(BinaryContent, RequestOptions)"/>
     public virtual Task<ClientResult> GenerateLegacyCompletionsAsync(BinaryContent content, RequestOptions context = null)
         => Shim.CreateCompletionAsync(content, context);
 }

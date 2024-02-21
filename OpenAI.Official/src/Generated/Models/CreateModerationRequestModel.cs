@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace OpenAI.Internal.Models
 {
     /// <summary> Enum for model in CreateModerationRequest. </summary>
-    public readonly partial struct CreateModerationRequestModel : IEquatable<CreateModerationRequestModel>
+    internal readonly partial struct CreateModerationRequestModel : IEquatable<CreateModerationRequestModel>
     {
         private readonly string _value;
 

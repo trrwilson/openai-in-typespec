@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace OpenAI.Internal.Models
 {
     /// <summary> The DeleteModelResponse_object. </summary>
-    public readonly partial struct DeleteModelResponseObject : IEquatable<DeleteModelResponseObject>
+    internal readonly partial struct DeleteModelResponseObject : IEquatable<DeleteModelResponseObject>
     {
         private readonly string _value;
 

@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace OpenAI.Internal.Models
 {
     /// <summary> Enum for size in CreateImageRequest. </summary>
-    public readonly partial struct CreateImageRequestSize : IEquatable<CreateImageRequestSize>
+    internal readonly partial struct CreateImageRequestSize : IEquatable<CreateImageRequestSize>
     {
         private readonly string _value;
 

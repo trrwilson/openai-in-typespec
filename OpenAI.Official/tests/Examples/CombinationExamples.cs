@@ -17,7 +17,7 @@ public partial class CombinationExamples
     {
         // First, we create an image using dall-e-3:
         ImageClient imageClient = new("dall-e-3");
-        ClientResult<ImageGeneration> imageResult = imageClient.GenerateImage(
+        ClientResult<GeneratedImage> imageResult = imageClient.GenerateImage(
             "a majestic alpaca on a mountain ridge, backed by an expansive blue sky accented with sparse clouds",
             new()
             {
@@ -25,8 +25,8 @@ public partial class CombinationExamples
                 Quality = ImageQuality.High,
                 Size = ImageSize.Size1792x1024,
             });
-        ImageGeneration imageGeneration = imageResult.Value;
-        Console.WriteLine($"Majestic alpaca available at:\n{imageGeneration.ImageBlobUri.AbsoluteUri}");
+        GeneratedImage imageGeneration = imageResult.Value;
+        Console.WriteLine($"Majestic alpaca available at:\n{imageGeneration.ImageUri.AbsoluteUri}");
 
         // Now, we'll ask a cranky art critic to evaluate the image using gpt-4-vision-preview:
         ChatClient chatClient = new("gpt-4-vision-preview");
@@ -36,7 +36,7 @@ public partial class CombinationExamples
                     + "evaluate imagery, focus on criticizing elements of subject, composition, and other details."),
                 new ChatRequestUserMessage(
                     "describe the following image in a few sentences",
-                    ChatMessageContent.CreateImage(imageGeneration.ImageBlobUri)),
+                    ChatMessageContent.CreateImage(imageGeneration.ImageUri)),
             ],
             new ChatCompletionOptions()
             {
@@ -104,14 +104,14 @@ public partial class CombinationExamples
 
         // Meanwhile, we'll use dall-e-3 to generate a rendition of our LLM artist's vision
         ImageClient imageGenerationClient = new("dall-e-3");
-        ClientResult<ImageGeneration> imageGenerationResult = await imageGenerationClient.GenerateImageAsync(
+        ClientResult<GeneratedImage> imageGenerationResult = await imageGenerationClient.GenerateImageAsync(
             description,
             new ImageGenerationOptions()
             {
                 Size = ImageSize.Size1792x1024,
                 Quality = ImageQuality.High,
             });
-        Uri imageLocation = imageGenerationResult.Value.ImageBlobUri;
+        Uri imageLocation = imageGenerationResult.Value.ImageUri;
         Console.WriteLine($"Creature image available at:\n{imageLocation.AbsoluteUri}");
 
         // Now, we'll use gpt-4-vision-preview to get a hopelessly taken assessment from a usually exigent art connoisseur

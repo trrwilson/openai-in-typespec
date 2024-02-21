@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace OpenAI.Internal.Models
 {
     /// <summary> The CreateMessageRequest_role. </summary>
-    public readonly partial struct CreateMessageRequestRole : IEquatable<CreateMessageRequestRole>
+    internal readonly partial struct CreateMessageRequestRole : IEquatable<CreateMessageRequestRole>
     {
         private readonly string _value;
 

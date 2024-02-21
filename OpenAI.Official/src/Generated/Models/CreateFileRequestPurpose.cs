@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace OpenAI.Internal.Models
 {
     /// <summary> Enum for purpose in CreateFileRequest. </summary>
-    public readonly partial struct CreateFileRequestPurpose : IEquatable<CreateFileRequestPurpose>
+    internal readonly partial struct CreateFileRequestPurpose : IEquatable<CreateFileRequestPurpose>
     {
         private readonly string _value;
 

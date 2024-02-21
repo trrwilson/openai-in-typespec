@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace OpenAI.Internal.Models
 {
     /// <summary> Enum for status in OpenAIFile. </summary>
-    public readonly partial struct OpenAIFileStatus : IEquatable<OpenAIFileStatus>
+    internal readonly partial struct OpenAIFileStatus : IEquatable<OpenAIFileStatus>
     {
         private readonly string _value;
 

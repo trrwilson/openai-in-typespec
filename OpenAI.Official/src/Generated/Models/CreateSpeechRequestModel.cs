@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace OpenAI.Internal.Models
 {
     /// <summary> Enum for model in CreateSpeechRequest. </summary>
-    public readonly partial struct CreateSpeechRequestModel : IEquatable<CreateSpeechRequestModel>
+    internal readonly partial struct CreateSpeechRequestModel : IEquatable<CreateSpeechRequestModel>
     {
         private readonly string _value;
 

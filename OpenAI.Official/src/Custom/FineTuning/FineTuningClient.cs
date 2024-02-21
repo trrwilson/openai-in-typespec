@@ -93,41 +93,31 @@ public partial class FineTuningClient
         : this(endpoint: null, credential: null, options)
     { }
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual ClientResult CreateJob(BinaryContent content, RequestOptions context = null)
         => Shim.CreateFineTuningJob(content, context);
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual Task<ClientResult> CreateJobAsync(BinaryContent content, RequestOptions context = null)
         => Shim.CreateFineTuningJobAsync(content, context);
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual ClientResult GetJob(string jobId, RequestOptions context) => Shim.RetrieveFineTuningJob(jobId, context);
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual Task<ClientResult> GetJobAsync(string jobId, RequestOptions context)
         => Shim.RetrieveFineTuningJobAsync(jobId, context);
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual ClientResult GetJobs(string previousJobId, int? maxResults, RequestOptions context)
         => Shim.GetPaginatedFineTuningJobs(previousJobId, maxResults, context);
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual Task<ClientResult> GetJobsAsync(int? maxResults, string previousJobId, RequestOptions context)
         => Shim.GetPaginatedFineTuningJobsAsync(previousJobId, maxResults, context);
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual ClientResult GetJobEvents(string jobId, int? maxResults, string previousJobId, RequestOptions context)
         => Shim.GetFineTuningEvents(jobId, previousJobId, maxResults, context);
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual Task<ClientResult> GetJobEventsAsync(string jobId, int? maxResults, string previousJobId, RequestOptions context)
         => Shim.GetFineTuningEventsAsync(jobId, previousJobId, maxResults, context);
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual ClientResult CancelJob(string jobId, RequestOptions context) => Shim.CancelFineTuningJob(jobId, context);
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual Task<ClientResult> CancelJobAsync(string jobId, RequestOptions context)
         => Shim.CancelFineTuningJobAsync(jobId, context);
 }

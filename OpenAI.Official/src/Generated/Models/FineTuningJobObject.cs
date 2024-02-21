@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace OpenAI.Internal.Models
 {
     /// <summary> The FineTuningJob_object. </summary>
-    public readonly partial struct FineTuningJobObject : IEquatable<FineTuningJobObject>
+    internal readonly partial struct FineTuningJobObject : IEquatable<FineTuningJobObject>
     {
         private readonly string _value;
 

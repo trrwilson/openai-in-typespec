@@ -1,26 +1,22 @@
 using OpenAI.ClientShared.Internal;
-using OpenAI.Internal;
 using System;
 using System.ClientModel;
-using System.ClientModel.Internal;
-
 using System.ClientModel.Primitives;
 using System.ComponentModel;
-using System.Threading;
 using System.Threading.Tasks;
 
-namespace OpenAI.Models;
+namespace OpenAI.ModelManagement;
 
 /// <summary>
 ///     The service client for OpenAI model operations.
 /// </summary>
-public partial class ModelClient
+public partial class ModelManagementClient
 {
     private OpenAIClientConnector _clientConnector;
     private Internal.ModelsOps Shim => _clientConnector.InternalClient.GetModelsOpsClient();
 
     /// <summary>
-    /// Initializes a new instance of <see cref="ModelClient"/>, used for model operation requests. 
+    /// Initializes a new instance of <see cref="ModelManagementClient"/>, used for model operation requests. 
     /// </summary>
     /// <remarks>
     /// <para>
@@ -35,13 +31,13 @@ public partial class ModelClient
     /// <param name="endpoint">The connection endpoint to use.</param>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public ModelClient(Uri endpoint, ApiKeyCredential credential, OpenAIClientOptions options = null)
+    public ModelManagementClient(Uri endpoint, ApiKeyCredential credential, OpenAIClientOptions options = null)
     {
         _clientConnector = new("none", endpoint, credential, options);
     }
 
     /// <summary>
-    /// Initializes a new instance of <see cref="ModelClient"/>, used for model operation requests. 
+    /// Initializes a new instance of <see cref="ModelManagementClient"/>, used for model operation requests. 
     /// </summary>
     /// <remarks>
     /// <para>
@@ -55,12 +51,12 @@ public partial class ModelClient
     /// </remarks>
     /// <param name="endpoint">The connection endpoint to use.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public ModelClient(Uri endpoint, OpenAIClientOptions options = null)
+    public ModelManagementClient(Uri endpoint, OpenAIClientOptions options = null)
         : this(endpoint, credential: null, options)
     { }
 
     /// <summary>
-    /// Initializes a new instance of <see cref="ModelClient"/>, used for model operation requests. 
+    /// Initializes a new instance of <see cref="ModelManagementClient"/>, used for model operation requests. 
     /// </summary>
     /// <remarks>
     /// <para>
@@ -74,12 +70,12 @@ public partial class ModelClient
     /// </remarks>
     /// <param name="credential">The API key used to authenticate with the service endpoint.</param>
     /// <param name="options">Additional options to customize the client.</param>
-    public ModelClient(ApiKeyCredential credential, OpenAIClientOptions options = null)
+    public ModelManagementClient(ApiKeyCredential credential, OpenAIClientOptions options = null)
         : this(endpoint: null, credential, options)
     { }
 
     /// <summary>
-    /// Initializes a new instance of <see cref="ModelClient"/>, used for model operation requests. 
+    /// Initializes a new instance of <see cref="ModelManagementClient"/>, used for model operation requests. 
     /// </summary>
     /// <remarks>
     /// <para>
@@ -92,7 +88,7 @@ public partial class ModelClient
     /// </para>
     /// </remarks>
     /// <param name="options">Additional options to customize the client.</param>
-    public ModelClient(OpenAIClientOptions options = null)
+    public ModelManagementClient(OpenAIClientOptions options = null)
         : this(endpoint: null, credential: null, options)
     { }
 

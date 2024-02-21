@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace OpenAI.Internal.Models
 {
     /// <summary> Enum for status in RunStepObject. </summary>
-    public readonly partial struct RunStepObjectStatus : IEquatable<RunStepObjectStatus>
+    internal readonly partial struct RunStepObjectStatus : IEquatable<RunStepObjectStatus>
     {
         private readonly string _value;
 

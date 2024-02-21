@@ -6,7 +6,7 @@ using OpenAI.Files;
 using OpenAI.FineTuning;
 using OpenAI.Images;
 using OpenAI.LegacyCompletions;
-using OpenAI.Models;
+using OpenAI.ModelManagement;
 using OpenAI.Moderations;
 using System;
 using System.ClientModel;
@@ -138,16 +138,16 @@ public partial class OpenAIClient
         => new LegacyCompletionClient(_cachedEndpoint, _cachedCredential, _cachedOptions);
 
     /// <summary>
-    /// Gets a new instance of <see cref="ModelClient"/> that reuses the client configuration details provided to
+    /// Gets a new instance of <see cref="ModelManagementClient"/> that reuses the client configuration details provided to
     /// the <see cref="OpenAIClient"/> instance.
     /// </summary>
     /// <remarks>
-    /// This method is functionally equivalent to using the <see cref="ModelClient"/> constructor directly with
+    /// This method is functionally equivalent to using the <see cref="ModelManagementClient"/> constructor directly with
     /// the same configuration details.
     /// </remarks>
-    /// <returns> A new <see cref="ModelClient"/>. </returns>
-    public ModelClient GetModelClient()
-        => new ModelClient(_cachedEndpoint, _cachedCredential, _cachedOptions);
+    /// <returns> A new <see cref="ModelManagementClient"/>. </returns>
+    public ModelManagementClient GetModelManagementClient()
+        => new ModelManagementClient(_cachedEndpoint, _cachedCredential, _cachedOptions);
 
     /// <summary>
     /// Gets a new instance of <see cref="ModerationClient"/> that reuses the client configuration details provided to

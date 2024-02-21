@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace OpenAI.Internal.Models
 {
     /// <summary> The ChatCompletionTool_type. </summary>
-    public readonly partial struct ChatCompletionToolType : IEquatable<ChatCompletionToolType>
+    internal readonly partial struct ChatCompletionToolType : IEquatable<ChatCompletionToolType>
     {
         private readonly string _value;
 

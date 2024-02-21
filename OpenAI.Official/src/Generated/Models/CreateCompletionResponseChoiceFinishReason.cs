@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace OpenAI.Internal.Models
 {
     /// <summary> Enum for finish_reason in CreateCompletionResponseChoice. </summary>
-    public readonly partial struct CreateCompletionResponseChoiceFinishReason : IEquatable<CreateCompletionResponseChoiceFinishReason>
+    internal readonly partial struct CreateCompletionResponseChoiceFinishReason : IEquatable<CreateCompletionResponseChoiceFinishReason>
     {
         private readonly string _value;
 

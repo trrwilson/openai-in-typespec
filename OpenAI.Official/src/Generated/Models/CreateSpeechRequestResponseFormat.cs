@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace OpenAI.Internal.Models
 {
     /// <summary> Enum for response_format in CreateSpeechRequest. </summary>
-    public readonly partial struct CreateSpeechRequestResponseFormat : IEquatable<CreateSpeechRequestResponseFormat>
+    internal readonly partial struct CreateSpeechRequestResponseFormat : IEquatable<CreateSpeechRequestResponseFormat>
     {
         private readonly string _value;
 

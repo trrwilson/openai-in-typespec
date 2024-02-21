@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace OpenAI.Internal.Models
 {
     /// <summary> Enum for response_format in CreateTranslationRequest. </summary>
-    public readonly partial struct CreateTranslationRequestResponseFormat : IEquatable<CreateTranslationRequestResponseFormat>
+    internal readonly partial struct CreateTranslationRequestResponseFormat : IEquatable<CreateTranslationRequestResponseFormat>
     {
         private readonly string _value;
 

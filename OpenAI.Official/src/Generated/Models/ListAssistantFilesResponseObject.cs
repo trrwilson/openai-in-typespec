@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace OpenAI.Internal.Models
 {
     /// <summary> The ListAssistantFilesResponse_object. </summary>
-    public readonly partial struct ListAssistantFilesResponseObject : IEquatable<ListAssistantFilesResponseObject>
+    internal readonly partial struct ListAssistantFilesResponseObject : IEquatable<ListAssistantFilesResponseObject>
     {
         private readonly string _value;
 

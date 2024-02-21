@@ -43,11 +43,11 @@ public partial class ChatMessageContent
     /// <summary>
     /// Creates a new instance of <see cref="ChatMessageContent"/> that encapsulates binary image content.
     /// </summary>
-    /// <param name="imageData"> The binary representation of the image content. </param>
-    /// <param name="mediaTypeName"> The media type name, e.g. image/png, for the image. </param>
+    /// <param name="imageBytes"> The binary representation of the image content. </param>
+    /// <param name="mediaType"> The media type name, e.g. image/png, for the image. </param>
     /// <returns> A new instance of <see cref="ChatMessageContent"/>. </returns>
-    public static ChatMessageContent CreateImage(BinaryData imageData, string mediaTypeName)
-        => new(imageData, ChatMessageContentKind.Image, mediaTypeName);
+    public static ChatMessageContent CreateImage(BinaryData imageBytes, string mediaType)
+        => new(imageBytes, ChatMessageContentKind.Image, mediaType);
 
     /// <summary>
     /// Provides the <see cref="string"/> associated with a content item using

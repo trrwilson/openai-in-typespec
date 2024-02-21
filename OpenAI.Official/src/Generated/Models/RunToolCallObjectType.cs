@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace OpenAI.Internal.Models
 {
     /// <summary> The RunToolCallObject_type. </summary>
-    public readonly partial struct RunToolCallObjectType : IEquatable<RunToolCallObjectType>
+    internal readonly partial struct RunToolCallObjectType : IEquatable<RunToolCallObjectType>
     {
         private readonly string _value;
 

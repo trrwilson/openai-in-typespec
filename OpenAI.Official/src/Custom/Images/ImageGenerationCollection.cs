@@ -6,7 +6,7 @@ namespace OpenAI.Images;
 /// <summary>
 /// Represents an image generation response payload that contains information for multiple generated images.
 /// </summary>
-public class ImageGenerationCollection : ReadOnlyCollection<ImageGeneration>
+public class ImageGenerationCollection : ReadOnlyCollection<GeneratedImage>
 {
-    internal ImageGenerationCollection(IList<ImageGeneration> list) : base(list) { }
+    internal ImageGenerationCollection(IList<GeneratedImage> list) : base(list) { }
 }

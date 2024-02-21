@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace OpenAI.Internal.Models
 {
     /// <summary> Enum for quality in CreateImageRequest. </summary>
-    public readonly partial struct CreateImageRequestQuality : IEquatable<CreateImageRequestQuality>
+    internal readonly partial struct CreateImageRequestQuality : IEquatable<CreateImageRequestQuality>
     {
         private readonly string _value;
 
