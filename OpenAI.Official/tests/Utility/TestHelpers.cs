@@ -1,4 +1,5 @@
 ﻿using OpenAI.Assistants;
+using OpenAI.Audio;
 using OpenAI.Chat;
 using OpenAI.Files;
 using OpenAI.Images;
@@ -40,6 +41,7 @@ internal static class TestHelpers
             TestScenario.Assistants => new AssistantClient(options),
             TestScenario.Images => new ImageClient(overrideModel ?? "dall-e-3", options),
             TestScenario.Files => new FileClient(options),
+            TestScenario.Transcription => new AudioClient(overrideModel ?? "whisper-1", options),
             _ => throw new NotImplementedException(),
         };
         return (T)clientObject;

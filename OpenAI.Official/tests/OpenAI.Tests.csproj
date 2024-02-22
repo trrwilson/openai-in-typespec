@@ -6,9 +6,13 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="data\hello_world.m4a" />
     <None Remove="data\stop_sign.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="data\hello_world.m4a">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="data\stop_sign.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

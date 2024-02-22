@@ -1,8 +1,12 @@
+using OpenAI.ClientShared.Internal;
 using System;
 using System.ClientModel;
 using System.ClientModel;
 using System.ClientModel.Primitives;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -143,6 +147,34 @@ public partial class AudioClient
         return Shim.CreateSpeechAsync(request);
     }
 
+    public virtual ClientResult<AudioTranscription> TranscribeAudio(BinaryData audioBytes, string filename, AudioTranscriptionOptions options = null)
+    {
+        PipelineMessage message = CreateInternalTranscriptionRequestMessage(audioBytes, filename, options);
+        Shim.Pipeline.Send(message);
+        return GetTranscriptionResultFromResponse(message.Response);
+    }
+
+    public virtual async Task<ClientResult<AudioTranscription>> TranscribeAudioAsync(BinaryData audioBytes, string filename, AudioTranscriptionOptions options = null)
+    {
+        PipelineMessage message = CreateInternalTranscriptionRequestMessage(audioBytes, filename, options);
+        await Shim.Pipeline.SendAsync(message);
+        return GetTranscriptionResultFromResponse(message.Response);
+    }
+
+    public virtual ClientResult<AudioTranslation> TranslateAudio(BinaryData audioBytes, string filename, AudioTranslationOptions options = null)
+    {
+        PipelineMessage message = CreateInternalTranslationRequestMessage(audioBytes, filename, options);
+        Shim.Pipeline.Send(message);
+        return GetTranslationResultFromResponse(message.Response);
+    }
+
+    public virtual async Task<ClientResult<AudioTranslation>> TranslateAudioAsync(BinaryData audioBytes, string filename, AudioTranslationOptions options = null)
+    {
+        PipelineMessage message = CreateInternalTranslationRequestMessage(audioBytes, filename, options);
+        await Shim.Pipeline.SendAsync(message);
+        return GetTranslationResultFromResponse(message.Response);
+    }
+
     /// <inheritdoc cref="Internal.Audio.CreateSpeech(BinaryContent, RequestOptions)"/>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual ClientResult GenerateSpeechFromText(BinaryContent content, RequestOptions context = null)
@@ -152,6 +184,148 @@ public partial class AudioClient
     [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual Task<ClientResult> GenerateSpeechFromTextAsync(BinaryContent content, RequestOptions context = null)
         => Shim.CreateSpeechAsync(content, context);
+
+    private PipelineMessage CreateInternalTranscriptionRequestMessage(BinaryData audioBytes, string filename, AudioTranscriptionOptions options)
+    {
+        PipelineMessage message = Shim.Pipeline.CreateMessage();
+        message.ResponseClassifier = ResponseErrorClassifier200;
+        PipelineRequest request = message.Request;
+        request.Method = "POST";
+        UriBuilder uriBuilder = new(_clientConnector.Endpoint.AbsoluteUri);
+        StringBuilder path = new();
+        path.Append("/audio/transcriptions");
+        uriBuilder.Path += path.ToString();
+        request.Uri = uriBuilder.Uri;
+
+        MultipartFormDataContent requestContent = CreateInternalTranscriptionRequestContent(audioBytes, filename, options);
+        requestContent.ApplyToRequest(request);
+
+        return message;
+    }
+
+    private PipelineMessage CreateInternalTranslationRequestMessage(BinaryData audioBytes, string filename, AudioTranslationOptions options)
+    {
+        PipelineMessage message = Shim.Pipeline.CreateMessage();
+        message.ResponseClassifier = ResponseErrorClassifier200;
+        PipelineRequest request = message.Request;
+        request.Method = "POST";
+        UriBuilder uriBuilder = new(_clientConnector.Endpoint.AbsoluteUri);
+        StringBuilder path = new();
+        path.Append("/audio/translations");
+        uriBuilder.Path += path.ToString();
+        request.Uri = uriBuilder.Uri;
+
+        MultipartFormDataContent requestContent = CreateInternalTranscriptionRequestContent(audioBytes, filename, options);
+        requestContent.ApplyToRequest(request);
+
+        return message;
+    }
+
+    private MultipartFormDataContent CreateInternalTranscriptionRequestContent(BinaryData audioBytes, string filename, AudioTranscriptionOptions options)
+    {
+        options ??= new();
+        return CreateInternalTranscriptionRequestContent(
+            audioBytes,
+            filename,
+            options.Language,
+            options.Prompt,
+            options.ResponseFormat,
+            options.Temperature,
+            options.EnableWordTimestamps,
+            options.EnableSegmentTimestamps);
+    }
+
+    private MultipartFormDataContent CreateInternalTranscriptionRequestContent(BinaryData audioBytes, string filename, AudioTranslationOptions options)
+    {
+        options ??= new();
+        return CreateInternalTranscriptionRequestContent(
+            audioBytes,
+            filename,
+            language: null,
+            options.Prompt,
+            options.ResponseFormat,
+            options.Temperature,
+            enableWordTimestamps: null,
+            enableSegmentTimestamps: null);
+    }
+
+    private MultipartFormDataContent CreateInternalTranscriptionRequestContent(
+        BinaryData audioBytes,
+        string filename,
+        string language = null,
+        string prompt = null,
+        AudioTranscriptionFormat? transcriptionFormat = null,
+        float? temperature = null,
+        bool? enableWordTimestamps = null,
+        bool? enableSegmentTimestamps = null)
+    {
+        MultipartFormDataContent content = new();
+        content.Add(MultipartContent.Create(BinaryData.FromString(_clientConnector.Model)), name: "model", []);
+        content.Add(MultipartContent.Create(audioBytes), name: "file", fileName: filename, []);
+        if (OptionalProperty.IsDefined(language))
+        {
+            content.Add(MultipartContent.Create(BinaryData.FromString(language)), name: "language", []);
+        }
+        if (OptionalProperty.IsDefined(prompt))
+        {
+            content.Add(MultipartContent.Create(BinaryData.FromString(prompt)), name: "prompt", []);
+        }
+        if (OptionalProperty.IsDefined(transcriptionFormat))
+        {
+            content.Add(MultipartContent.Create(BinaryData.FromString(transcriptionFormat switch
+            {
+                AudioTranscriptionFormat.Simple => "json",
+                AudioTranscriptionFormat.Detailed => "verbose_json",
+                AudioTranscriptionFormat.Srt => "srt",
+                AudioTranscriptionFormat.Vtt => "vtt",
+                _ => throw new ArgumentException(nameof(transcriptionFormat)),
+            })),
+            name: "response_format",
+            []);
+        }
+        if (OptionalProperty.IsDefined(temperature))
+        {
+            content.Add(MultipartContent.Create(BinaryData.FromString($"{temperature}")), name: "temperature", []);
+        }
+
+        if (OptionalProperty.IsDefined(enableWordTimestamps) || OptionalProperty.IsDefined(enableSegmentTimestamps))
+        {
+            List<string> granularities = [];
+            if (enableWordTimestamps == true)
+            {
+                granularities.Add("word");
+            }
+            if (enableSegmentTimestamps == true)
+            {
+                granularities.Add("segment");
+            }
+            content.Add(MultipartContent.Create(BinaryData.FromObjectAsJson(granularities)), name: "timestamp_granularities", []);
+        }
+
+        return content;
+    }
+
+    public static ClientResult<AudioTranscription> GetTranscriptionResultFromResponse(PipelineResponse response)
+    {
+        if (response.IsError)
+        {
+            throw new ClientResultException(response);
+        }
+
+        using JsonDocument responseDocument = JsonDocument.Parse(response.Content);
+        return ClientResult.FromValue(AudioTranscription.DeserializeAudioTranscription(responseDocument.RootElement), response);
+    }
+
+    public static ClientResult<AudioTranslation> GetTranslationResultFromResponse(PipelineResponse response)
+    {
+        if (response.IsError)
+        {
+            throw new ClientResultException(response);
+        }
+
+        using JsonDocument responseDocument = JsonDocument.Parse(response.Content);
+        return ClientResult.FromValue(AudioTranslation.DeserializeAudioTranscription(responseDocument.RootElement), response);
+    }
 
     private Internal.Models.CreateSpeechRequest CreateInternalTtsRequest(
         string input,
@@ -186,4 +360,7 @@ public partial class AudioClient
             options?.SpeedMultiplier,
             serializedAdditionalRawData: null);
     }
+    private static PipelineMessageClassifier _responseErrorClassifier200;
+    private static PipelineMessageClassifier ResponseErrorClassifier200 => _responseErrorClassifier200 ??= PipelineMessageClassifier.Create(stackalloc ushort[] { 200 });
+
 }
