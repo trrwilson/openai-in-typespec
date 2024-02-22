@@ -1,7 +1,5 @@
 namespace OpenAI.Chat;
 
-using System;
-
 /// <summary>
 /// The reason the model stopped generating tokens. This will be:
 /// <list type="table">
@@ -39,38 +37,20 @@ using System;
 /// </item>
 /// </list>
 /// </summary>
-public readonly struct ChatFinishReason : IEquatable<ChatFinishReason>
+public enum ChatFinishReason
 {
-    private readonly string _value;
-    /// <summary>
-    /// Creates a new instance of <see cref="ChatFinishReason"/>.
-    /// </summary>
-    /// <param name="value"></param>
-    public ChatFinishReason(string value)
-    {
-        _value = value;
-    }
     /// <summary>
     /// Indicates that the model encountered a natural stop point or provided stop sequence.
     /// </summary>
-    public static ChatFinishReason Stopped { get; } = "stop";
+    Stopped,
     /// <summary>
     /// Indicates that the model reached the maximum number of tokens allowed for the request.
     /// </summary>
-    public static ChatFinishReason Length { get; } = "length";
+    Length,
     /// <summary>
     /// Indicates that content was omitted due to a triggered content filter rule.
     /// </summary>
-    public static ChatFinishReason ContentFilter { get; } = "content_filter";
-    /// <summary>
-    /// Indicates that the model called a function that was defined in the request.
-    /// </summary>
-    /// <remarks>
-    /// To resolve a function call, append the message associated with the function call followed by a
-    /// <see cref="ChatRequestFunctionMessage"/> with the appropriate name and arguments, then perform another chat
-    /// completion with the combined set of messages.
-    /// </remarks>
-    public static ChatFinishReason FunctionCall { get; } = "function_call";
+    ContentFilter,
     /// <summary>
     /// Indicates that the model called a function that was defined in the request.
     /// </summary>
@@ -84,23 +64,14 @@ public readonly struct ChatFinishReason : IEquatable<ChatFinishReason>
     /// In that case, calling the specified tool is assumed and the expected reason is <see cref="Stopped"/>.
     /// </para>
     /// </remarks>
-    public static ChatFinishReason ToolCalls { get; } = "tool_calls";
-    /// <inheritdoc/>
-    public static bool operator ==(ChatFinishReason left, ChatFinishReason right)
-        => left._value == right._value;
-    /// <inheritdoc/>
-    public static implicit operator ChatFinishReason(string value) => new(value); 
-    /// <inheritdoc/>
-    public static bool operator !=(ChatFinishReason left, ChatFinishReason right)
-        => left._value != right._value;
-    /// <inheritdoc/>
-    public bool Equals(ChatFinishReason other) => _value.Equals(other._value);
-    /// <inheritdoc/>
-    public override string ToString() => _value;
-    /// <inheritdoc/>
-    public override bool Equals(object obj)
-        => (obj is ChatFinishReason reason && reason._value.Equals(_value))
-            || (obj is string reasonText && reasonText.Equals(_value));
-    /// <inheritdoc/>
-    public override int GetHashCode() => _value.GetHashCode();
+    ToolCalls,
+    /// <summary>
+    /// Indicates that the model called a function that was defined in the request.
+    /// </summary>
+    /// <remarks>
+    /// To resolve a function call, append the message associated with the function call followed by a
+    /// <see cref="ChatRequestFunctionMessage"/> with the appropriate name and arguments, then perform another chat
+    /// completion with the combined set of messages.
+    /// </remarks>
+    FunctionCall,
 }

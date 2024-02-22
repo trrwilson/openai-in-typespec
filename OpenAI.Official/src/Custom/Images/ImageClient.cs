@@ -191,22 +191,45 @@ public partial class ImageClient
         Internal.Models.CreateImageRequestQuality? internalQuality = null;
         if (options.Quality != null)
         {
-            internalQuality = options.Quality.ToString();
+            internalQuality = options.Quality switch
+            {
+                ImageQuality.Balanced => Internal.Models.CreateImageRequestQuality.Standard,
+                ImageQuality.High => Internal.Models.CreateImageRequestQuality.Hd,
+                _ => throw new ArgumentException(nameof(options.Quality)),
+            };
         }
         Internal.Models.CreateImageRequestResponseFormat? internalFormat = null;
         if (options.ResponseFormat != null)
         {
-            internalFormat = options.ResponseFormat.ToString();
+            internalFormat = options.ResponseFormat switch
+            {
+                ImageResponseFormat.Bytes => Internal.Models.CreateImageRequestResponseFormat.B64Json,
+                ImageResponseFormat.Uri => Internal.Models.CreateImageRequestResponseFormat.Url,
+                _ => throw new ArgumentException(nameof(options.ResponseFormat)),
+            };
         }
         Internal.Models.CreateImageRequestSize? internalSize = null;
         if (options.Size != null)
         {
-            internalSize = options.Size.ToString();
+            internalSize = options.Size switch
+            {
+                ImageSize.Size1024x1024 => Internal.Models.CreateImageRequestSize._1024x1024,
+                ImageSize.Size1024x1792 => Internal.Models.CreateImageRequestSize._1024x1792,
+                ImageSize.Size1792x1024 => Internal.Models.CreateImageRequestSize._1792x1024,
+                ImageSize.Size256x256 => Internal.Models.CreateImageRequestSize._256x256,
+                ImageSize.Size512x512 => Internal.Models.CreateImageRequestSize._512x512,
+                _ => throw new ArgumentException(nameof(options.Size)),
+            };
         }
         Internal.Models.CreateImageRequestStyle? internalStyle = null;
         if (options.Style != null)
         {
-            internalStyle = options.Style.ToString();
+            internalStyle = options.Style switch
+            {
+                ImageStyle.Vivid => Internal.Models.CreateImageRequestStyle.Vivid,
+                ImageStyle.Natural => Internal.Models.CreateImageRequestStyle.Natural,
+                _ => throw new ArgumentException(nameof(options.Style)),
+            };
         }
         return new Internal.Models.CreateImageRequest(
             prompt,

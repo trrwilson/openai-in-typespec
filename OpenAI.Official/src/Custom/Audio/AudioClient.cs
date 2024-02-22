@@ -102,21 +102,20 @@ public partial class AudioClient
     /// Unless otherwise specified via <see cref="TextToSpeechOptions.ResponseFormat"/>, the <c>mp3</c> format of
     /// <see cref="AudioDataFormat.Mp3"/> will be used for the generated audio.
     /// </remarks>
-    /// <param name="input"> The text for the voice to speak. </param>
+    /// <param name="text"> The text for the voice to speak. </param>
     /// <param name="voice"> The voice to use. </param>
     /// <param name="options"> Additional options to control the text-to-speech operation. </param>
-    /// <param name="cancellationToken"> A cancellation token for the operation. </param>
     /// <returns>
     ///     A result containing generated, spoken audio in the specified output format.
     ///     Unless otherwise specified via <see cref="TextToSpeechOptions.ResponseFormat"/>, the <c>mp3</c> format of
     ///     <see cref="AudioDataFormat.Mp3"/> will be used for the generated audio.
     /// </returns>
     public virtual ClientResult<BinaryData> GenerateSpeechFromText(
-        string input,
+        string text,
         TextToSpeechVoice voice,
         TextToSpeechOptions options = null)
     {
-        Internal.Models.CreateSpeechRequest request = CreateInternalTtsRequest(input, voice, options);
+        Internal.Models.CreateSpeechRequest request = CreateInternalTtsRequest(text, voice, options);
         return Shim.CreateSpeech(request);
     }
 
@@ -127,30 +126,29 @@ public partial class AudioClient
     /// Unless otherwise specified via <see cref="TextToSpeechOptions.ResponseFormat"/>, the <c>mp3</c> format of
     /// <see cref="AudioDataFormat.Mp3"/> will be used for the generated audio.
     /// </remarks>
-    /// <param name="input"> The text for the voice to speak. </param>
+    /// <param name="text"> The text for the voice to speak. </param>
     /// <param name="voice"> The voice to use. </param>
     /// <param name="options"> Additional options to control the text-to-speech operation. </param>
-    /// <param name="cancellationToken"> A cancellation token for the operation. </param>
     /// <returns>
     ///     A result containing generated, spoken audio in the specified output format.
     ///     Unless otherwise specified via <see cref="TextToSpeechOptions.ResponseFormat"/>, the <c>mp3</c> format of
     ///     <see cref="AudioDataFormat.Mp3"/> will be used for the generated audio.
     /// </returns>
     public virtual Task<ClientResult<BinaryData>> GenerateSpeechFromTextAsync(
-        string input,
+        string text,
         TextToSpeechVoice voice,
         TextToSpeechOptions options = null)
     {
-        Internal.Models.CreateSpeechRequest request = CreateInternalTtsRequest(input, voice, options);
+        Internal.Models.CreateSpeechRequest request = CreateInternalTtsRequest(text, voice, options);
         return Shim.CreateSpeechAsync(request);
     }
 
-    /// <inheritdoc cref="Internal.Models.Audio.CreateSpeech(BinaryContent, RequestOptions)"/>
+    /// <inheritdoc cref="Internal.Audio.CreateSpeech(BinaryContent, RequestOptions)"/>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual ClientResult GenerateSpeechFromText(BinaryContent content, RequestOptions context = null)
         => Shim.CreateSpeech(content, context);
 
-    /// <inheritdoc cref="Internal.Models.Audio.CreateSpeech(BinaryContent, RequestOptions)"/>
+    /// <inheritdoc cref="Internal.Audio.CreateSpeech(BinaryContent, RequestOptions)"/>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual Task<ClientResult> GenerateSpeechFromTextAsync(BinaryContent content, RequestOptions context = null)
         => Shim.CreateSpeechAsync(content, context);
@@ -164,7 +162,21 @@ public partial class AudioClient
         Internal.Models.CreateSpeechRequestResponseFormat? internalResponseFormat = null;
         if (options.ResponseFormat != null)
         {
-            internalResponseFormat = options.ResponseFormat.ToString().ToLowerInvariant();
+            internalResponseFormat = options.ResponseFormat switch
+            {
+                AudioDataFormat.Aac => "aac",
+                AudioDataFormat.Flac => "flac",
+                AudioDataFormat.M4a => "m4a",
+                AudioDataFormat.Mp3 => "mp3",
+                AudioDataFormat.Mp4 => "mp4",
+                AudioDataFormat.Mpeg => "mpeg",
+                AudioDataFormat.Mpga => "mpga",
+                AudioDataFormat.Ogg => "ogg",
+                AudioDataFormat.Opus => "opus",
+                AudioDataFormat.Wav => "wav",
+                AudioDataFormat.Webm => "webm",
+                _ => throw new ArgumentException(nameof(options.ResponseFormat)),
+            };
         }
         return new Internal.Models.CreateSpeechRequest(
             _clientConnector.Model,

@@ -5,7 +5,7 @@ namespace OpenAI.ModelManagement;
 /// <summary>
 /// Represents information about a single available model entry.
 /// </summary>
-public partial class ModelInfo
+public partial class ModelDetails
 {
     /// <summary>
     /// The ID of the model as used when calling the service. An example is 'gpt-3.5-turbo'.
@@ -20,7 +20,7 @@ public partial class ModelInfo
     /// </summary>
     public string OwnerOrganization { get; }
 
-    internal ModelInfo(Internal.Models.Model internalModel)
+    internal ModelDetails(Internal.Models.Model internalModel)
     {
         Id = internalModel.Id;
         CreatedAt = internalModel.Created;

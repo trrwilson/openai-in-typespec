@@ -64,20 +64,6 @@ public partial class ChatCompletionOptions
         return packedLogitBias;
     }
 
-    internal Internal.Models.CreateChatCompletionRequestResponseFormat GetInternalFormat()
-    {
-        string formatValue = ResponseFormat.ToString();
-        if (string.IsNullOrEmpty(formatValue))
-        {
-            return null;
-        }
-        Internal.Models.CreateChatCompletionRequestResponseFormatType internalFormatType = formatValue;
-        Internal.Models.CreateChatCompletionRequestResponseFormat internalFormat = new(
-            internalFormatType,
-            serializedAdditionalRawData: null);
-        return internalFormat;
-    }
-
     internal IList<Internal.Models.ChatCompletionTool> GetInternalTools()
     {
         OptionalList<Internal.Models.ChatCompletionTool> internalTools = [];

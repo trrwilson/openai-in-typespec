@@ -18,13 +18,12 @@ namespace OpenAI.Chat;
 /// the model.
 /// </para>
 /// </remarks>
-public readonly struct ChatResponseFormat : IEquatable<ChatResponseFormat>
+public enum ChatResponseFormat
 {
-    private readonly string _value;
     /// <summary>
     /// Specifies that the model should provide plain, textual output.
     /// </summary>
-    public static ChatResponseFormat Text { get; } = new("text");
+    Text,
     /// <summary>
     /// Specifies that the model should enable "JSON mode" and better guarantee the emission of valid JSON.
     /// </summary>
@@ -41,31 +40,5 @@ public readonly struct ChatResponseFormat : IEquatable<ChatResponseFormat>
     /// the model.
     /// </para>
     /// </remarks>
-    public static ChatResponseFormat JsonObject { get; } = new("json_object");
-    /// <summary>
-    /// Creates a new instance of <see cref="ChatResponseFormat"/>.
-    /// </summary>
-    /// <param name="value"> The <c>type</c> of the <c>response_format</c> to use. </param>
-    public ChatResponseFormat(string value)
-    {
-        _value = value;
-    }
-    /// <inheritdoc/>
-    public static bool operator ==(ChatResponseFormat left, ChatResponseFormat right)
-        => left._value == right._value;
-    /// <inheritdoc/>
-    public static implicit operator ChatResponseFormat(string value) => new(value);
-    /// <inheritdoc/>
-    public static bool operator !=(ChatResponseFormat left, ChatResponseFormat right)
-        => left._value != right._value;
-    /// <inheritdoc/>
-    public bool Equals(ChatResponseFormat other) => _value == other._value;
-    /// <inheritdoc/>
-    public override string ToString() => _value;
-    /// <inheritdoc/>
-    public override bool Equals(object obj)
-        => (obj is ChatResponseFormat format && format._value == _value)
-        || (obj is string formatString && formatString == _value);
-    /// <inheritdoc/>
-    public override int GetHashCode() => _value.GetHashCode();
+    JsonObject,
 }

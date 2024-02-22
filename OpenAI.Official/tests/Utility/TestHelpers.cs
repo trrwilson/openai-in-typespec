@@ -1,5 +1,6 @@
 ﻿using OpenAI.Assistants;
 using OpenAI.Chat;
+using OpenAI.Images;
 using System;
 using System.ClientModel;
 using System.ClientModel.Primitives;
@@ -30,13 +31,15 @@ internal static class TestHelpers
     {
         OpenAIClientOptions options = new();
         options.AddPolicy(GetDumpPolicy(), PipelinePosition.PerTry);
-        return scenario switch
+        object clientObject = scenario switch
         {
-            TestScenario.Chat => (T)((object)new ChatClient(overrideModel ?? "gpt-3.5-turbo", options)),
-            TestScenario.VisionChat => (T)((object)new ChatClient(overrideModel ?? "gpt-4-vision-preview", options)),
-            TestScenario.Assistants => (T)((object)new AssistantClient(options)),
+            TestScenario.Chat => new ChatClient(overrideModel ?? "gpt-3.5-turbo", options),
+            TestScenario.VisionChat => new ChatClient(overrideModel ?? "gpt-4-vision-preview", options),
+            TestScenario.Assistants => new AssistantClient(options),
+            TestScenario.Images => new ImageClient(overrideModel ?? "dall-e-3", options),
             _ => throw new NotImplementedException(),
         };
+        return (T)clientObject;
     }
 
     private static PipelinePolicy GetDumpPolicy()

@@ -48,7 +48,7 @@ public partial class CombinationExamples
         // Finally, we'll get some text-to-speech for that critical evaluation using tts-1-hd:
         AudioClient audioClient = new("tts-1-hd");
         ClientResult<BinaryData> ttsResult = audioClient.GenerateSpeechFromText(
-            input: chatResponseText,
+            text: chatResponseText,
             TextToSpeechVoice.Fable,
             new TextToSpeechOptions()
             {

@@ -6,8 +6,8 @@ namespace OpenAI.ModelManagement;
 /// <summary>
 /// Represents a collection of entries for available models.
 /// </summary>
-public partial class ModelInfoCollection : ReadOnlyCollection<ModelInfo>
+public partial class ModelDetailCollection : ReadOnlyCollection<ModelDetails>
 {
-    internal ModelInfoCollection(IList<ModelInfo> list) : base(list)
+    internal ModelDetailCollection(IList<ModelDetails> list) : base(list)
     {}
 }

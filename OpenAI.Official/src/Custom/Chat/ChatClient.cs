@@ -332,6 +332,16 @@ public partial class ChatClient
         bool? stream = null)
     {
         options ??= new();
+        Internal.Models.CreateChatCompletionRequestResponseFormat? internalFormat = null;
+        if (options.ResponseFormat is not null)
+        {
+            internalFormat = new(options.ResponseFormat switch
+            {
+                ChatResponseFormat.Text => Internal.Models.CreateChatCompletionRequestResponseFormatType.Text,
+                ChatResponseFormat.JsonObject => Internal.Models.CreateChatCompletionRequestResponseFormatType.JsonObject,
+                _ => throw new ArgumentException(nameof(options.ResponseFormat)),
+            }, null);
+        }
         List<BinaryData> messageDataItems = [];
         foreach (ChatRequestMessage message in messages)
         {
@@ -348,7 +358,7 @@ public partial class ChatClient
             options?.MaxTokens,
             choiceCount,
             options?.PresencePenalty,
-            options?.GetInternalFormat(),
+            internalFormat,
             options?.Seed,
             options?.GetInternalStopSequences(),
             stream,

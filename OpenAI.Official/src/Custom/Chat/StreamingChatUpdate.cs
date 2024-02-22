@@ -236,7 +236,15 @@ public partial class StreamingChatUpdate
                                 finishReason = null;
                                 continue;
                             }
-                            finishReason = choiceProperty.Value.GetString();
+                            finishReason = choiceProperty.Value.GetString() switch
+                            {
+                                "stop" => ChatFinishReason.Stopped,
+                                "length" => ChatFinishReason.Length,
+                                "tool_calls" => ChatFinishReason.ToolCalls,
+                                "function_call" => ChatFinishReason.FunctionCall,
+                                "content_filter" => ChatFinishReason.ContentFilter,
+                                _ => throw new ArgumentException(nameof(finishReason)),
+                            };
                             continue;
                         }
                         if (choiceProperty.NameEquals("delta"u8))
@@ -245,7 +253,15 @@ public partial class StreamingChatUpdate
                             {
                                 if (deltaProperty.NameEquals("role"u8))
                                 {
-                                    role = deltaProperty.Value.GetString();
+                                    role = deltaProperty.Value.GetString() switch
+                                    {
+                                        "system" => ChatRole.System,
+                                        "user" => ChatRole.User,
+                                        "assistant" => ChatRole.Assistant,
+                                        "tool" => ChatRole.Tool,
+                                        "function" => ChatRole.Function,
+                                        _ => throw new ArgumentException(nameof(role)),
+                                    };
                                     continue;
                                 }
                                 if (deltaProperty.NameEquals("content"u8))

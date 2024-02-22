@@ -1,5 +1,3 @@
-using System;
-
 namespace OpenAI.Chat;
 
 /// <summary>
@@ -51,38 +49,27 @@ namespace OpenAI.Chat;
 /// </item>
 /// </list>
 /// </remarks>
-public readonly struct ChatRole : IEquatable<ChatRole>
+public enum ChatRole
 {
-    private readonly string _value;
-
-    /// <summary>
-    /// Creates a new instance of <see cref="ChatRole"/>.
-    /// </summary>
-    /// <param name="value"> The <c>role</c> to use for a chat completion message. </param>
-    public ChatRole(string value)
-    {
-        _value = value;
-    }
-
     /// <summary>
     /// The <c>system</c> role, which provides instructions to the model that guide the behavior of future
     /// <c>assistant</c> messages
     /// </summary>
-    public static ChatRole System { get; } = new("system");
+    System,
     /// <summary>
     /// The <c>assistant</c> role that provides output from the model that either issues completions in response to
     /// <c>user</c> messages or calls provided <c>tools</c> or <c>functions</c>.
     /// </summary>
-    public static ChatRole Assistant { get; } = new("assistant");
+    Assistant,
     /// <summary>
     /// The <c>user</c> role that provides input from the caller as a prompt for model responses.
     /// </summary>
-    public static ChatRole User { get; } = new("user");
+    User,
     /// <summary>
     /// The <c>tool</c> role that provides resolving information to prior <c>tool_calls</c> made by the model against
     /// supplied <c>tools</c>.
     /// </summary>
-    public static ChatRole Tool { get; } = new("tool");
+    Tool,    
     /// <summary>
     /// <para>
     /// The <c>function</c> role that provides resolving information to a prior <c>function_call</c> made by the model
@@ -94,23 +81,5 @@ public readonly struct ChatRole : IEquatable<ChatRole>
     /// <c>tool_calls</c> that must be resolved via the <c>tool</c> role rather than a <c>function_call</c> resolved
     /// by a <c>function</c> role message.
     /// </remarks>
-    public static ChatRole Function { get; } = new("function");
-    /// <inheritdoc/>
-    public static bool operator ==(ChatRole left, ChatRole right)
-        => left._value == right._value;
-    /// <inheritdoc/>
-    public static implicit operator ChatRole(string value) => new(value);
-    /// <inheritdoc/>
-    public static bool operator !=(ChatRole left, ChatRole right)
-        => left._value != right._value;
-    /// <inheritdoc/>
-    public bool Equals(ChatRole other) => other._value.Equals(_value);
-    /// <inheritdoc/>
-    public override string ToString() => _value;
-    /// <inheritdoc/>
-    public override bool Equals(object obj)
-        => (obj is ChatRole role && role._value == _value)
-        || (obj is string roleString && roleString == _value);
-    /// <inheritdoc/>
-    public override int GetHashCode() => _value.GetHashCode();
+    Function,
 }

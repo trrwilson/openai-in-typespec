@@ -14,7 +14,15 @@ public abstract partial class ChatRequestMessage :  IJsonModel<ChatRequestMessag
     void IJsonModel<ChatRequestMessage>.Write(Utf8JsonWriter writer, ModelReaderWriterOptions options)
     {
         writer.WriteStartObject();
-        writer.WriteString("role"u8, Role.ToString());
+        writer.WriteString("role"u8, Role switch
+        {
+            ChatRole.System => "system",
+            ChatRole.User => "user",
+            ChatRole.Assistant => "assistant",
+            ChatRole.Tool => "tool",
+            ChatRole.Function => "function",
+            _ => throw new ArgumentException(nameof(Role))
+        });
         if (OptionalProperty.IsDefined(Content))
         {
             writer.WritePropertyName("content"u8);

@@ -37,9 +37,25 @@ public class ChatCompletion
         Internal.Models.CreateChatCompletionResponseChoice internalChoice = internalResponse.Choices[(int)internalChoiceIndex];
         _internalResponse = internalResponse;
         _internalChoiceIndex = internalChoiceIndex;
-        Role = internalChoice.Message.Role.ToString();
+        Role = internalChoice.Message.Role.ToString() switch
+        {
+            "system" => ChatRole.System,
+            "user" => ChatRole.User,
+            "assistant" => ChatRole.Assistant,
+            "tool" => ChatRole.Tool,
+            "function" => ChatRole.Function,
+            _ => throw new ArgumentException(nameof(internalChoice.Message.Role)),
+        };
         Usage = new(_internalResponse.Usage);
-        FinishReason = internalChoice.FinishReason.ToString();
+        FinishReason = internalChoice.FinishReason.ToString() switch
+        {
+            "stop" => ChatFinishReason.Stopped,
+            "length" => ChatFinishReason.Length,
+            "tool_calls" => ChatFinishReason.ToolCalls,
+            "function_call" => ChatFinishReason.FunctionCall,
+            "content_filter" => ChatFinishReason.ContentFilter,
+            _ => throw new ArgumentException(nameof(internalChoice.FinishReason)),
+        };
         Content = internalChoice.Message.Content;
         if (internalChoice.Message.ToolCalls != null)
         {

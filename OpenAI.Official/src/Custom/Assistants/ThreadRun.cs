@@ -49,7 +49,18 @@ public partial class ThreadRun
         StartedAt = internalRun.StartedAt;
         CancelledAt = internalRun.CancelledAt;
         CompletedAt = internalRun.CompletedAt;
-        Status = new(internalRun.Status.ToString());
+        Status = internalRun.Status.ToString() switch
+        {
+            "queued" => RunStatus.Queued,
+            "in_progress" => RunStatus.InProgress,
+            "requires_action" => RunStatus.RequiresAction,
+            "cancelling" => RunStatus.Cancelling,
+            "cancelled" => RunStatus.Cancelled,
+            "failed" => RunStatus.Failed,
+            "completed" => RunStatus.CompletedSuccessfully,
+            "expired" => RunStatus.Expired,
+            _ => throw new ArgumentException(nameof(Status)),
+        };
         Metadata = internalRun.Metadata;
         FileIds = internalRun.FileIds;
         Metadata = internalRun.Metadata;

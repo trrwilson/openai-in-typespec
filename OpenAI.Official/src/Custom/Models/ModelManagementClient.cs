@@ -14,6 +14,8 @@ public partial class ModelManagementClient
 {
     private OpenAIClientConnector _clientConnector;
     private Internal.ModelsOps Shim => _clientConnector.InternalClient.GetModelsOpsClient();
+    private Internal.FineTuning FineTuningShim
+        => _clientConnector.InternalClient.GetFineTuningClient();
 
     /// <summary>
     /// Initializes a new instance of <see cref="ModelManagementClient"/>, used for model operation requests. 
@@ -92,17 +94,17 @@ public partial class ModelManagementClient
         : this(endpoint: null, credential: null, options)
     { }
 
-     public virtual ClientResult<ModelInfo> GetModelInfo(string modelId)
+     public virtual ClientResult<ModelDetails> GetModelInfo(string modelId)
     {
         ClientResult<Internal.Models.Model> internalResult = Shim.Retrieve(modelId);
-        return ClientResult.FromValue(new ModelInfo(internalResult.Value), internalResult.GetRawResponse());
+        return ClientResult.FromValue(new ModelDetails(internalResult.Value), internalResult.GetRawResponse());
     }
 
-    public virtual async Task<ClientResult<ModelInfo>> GetModelInfoAsync(
+    public virtual async Task<ClientResult<ModelDetails>> GetModelInfoAsync(
         string modelId)
     {
         ClientResult<Internal.Models.Model> internalResult = await Shim.RetrieveAsync(modelId).ConfigureAwait(false);
-        return ClientResult.FromValue(new ModelInfo(internalResult.Value), internalResult.GetRawResponse());
+        return ClientResult.FromValue(new ModelDetails(internalResult.Value), internalResult.GetRawResponse());
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -117,27 +119,27 @@ public partial class ModelManagementClient
         return Shim.RetrieveAsync(modelId, context);
     }
 
-    public virtual ClientResult<ModelInfoCollection> GetModels()
+    public virtual ClientResult<ModelDetailCollection> GetModels()
     {
         ClientResult<Internal.Models.ListModelsResponse> internalResult = Shim.GetModels();
-        OptionalList<ModelInfo> modelEntries = [];
+        OptionalList<ModelDetails> modelEntries = [];
         foreach (Internal.Models.Model internalModel in internalResult.Value.Data)
         {
             modelEntries.Add(new(internalModel));
         }
-        return ClientResult.FromValue(new ModelInfoCollection(modelEntries), internalResult.GetRawResponse());
+        return ClientResult.FromValue(new ModelDetailCollection(modelEntries), internalResult.GetRawResponse());
     }
 
-    public virtual async Task<ClientResult<ModelInfoCollection>> GetModelsAsync()
+    public virtual async Task<ClientResult<ModelDetailCollection>> GetModelsAsync()
     {
         ClientResult<Internal.Models.ListModelsResponse> internalResult
             = await Shim.GetModelsAsync().ConfigureAwait(false);
-        OptionalList<ModelInfo> modelEntries = [];
+        OptionalList<ModelDetails> modelEntries = [];
         foreach (Internal.Models.Model internalModel in internalResult.Value.Data)
         {
             modelEntries.Add(new(internalModel));
         }
-        return ClientResult.FromValue(new ModelInfoCollection(modelEntries), internalResult.GetRawResponse());
+        return ClientResult.FromValue(new ModelDetailCollection(modelEntries), internalResult.GetRawResponse());
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -164,4 +166,32 @@ public partial class ModelManagementClient
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual Task<ClientResult> DeleteModelAsync(string modelId, RequestOptions context) => Shim.DeleteAsync(modelId, context);
+
+    public virtual ClientResult CreateFineTuningJob(BinaryContent content, RequestOptions context = null)
+        => FineTuningShim.CreateFineTuningJob(content, context);
+
+    public virtual Task<ClientResult> CreateFineTuningJobAsync(BinaryContent content, RequestOptions context = null)
+        => FineTuningShim.CreateFineTuningJobAsync(content, context);
+
+    public virtual ClientResult GetFineTuningJob(string jobId, RequestOptions context) => FineTuningShim.RetrieveFineTuningJob(jobId, context);
+
+    public virtual Task<ClientResult> GetFineTuningJobAsync(string jobId, RequestOptions context)
+        => FineTuningShim.RetrieveFineTuningJobAsync(jobId, context);
+
+    public virtual ClientResult GetFineTuningJobs(string previousJobId, int? maxResults, RequestOptions context)
+        => FineTuningShim.GetPaginatedFineTuningJobs(previousJobId, maxResults, context);
+
+    public virtual Task<ClientResult> GetFineTuningJobsAsync(int? maxResults, string previousJobId, RequestOptions context)
+        => FineTuningShim.GetPaginatedFineTuningJobsAsync(previousJobId, maxResults, context);
+
+    public virtual ClientResult GetFineTuningJobEvents(string jobId, int? maxResults, string previousJobId, RequestOptions context)
+        => FineTuningShim.GetFineTuningEvents(jobId, previousJobId, maxResults, context);
+
+    public virtual Task<ClientResult> GetFineTuningJobEventsAsync(string jobId, int? maxResults, string previousJobId, RequestOptions context)
+        => FineTuningShim.GetFineTuningEventsAsync(jobId, previousJobId, maxResults, context);
+
+    public virtual ClientResult CancelFineTuningJob(string jobId, RequestOptions context) => FineTuningShim.CancelFineTuningJob(jobId, context);
+
+    public virtual Task<ClientResult> CancelFineTuningJobAsync(string jobId, RequestOptions context)
+        => FineTuningShim.CancelFineTuningJobAsync(jobId, context);
 }
