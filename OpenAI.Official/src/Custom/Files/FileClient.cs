@@ -1,6 +1,9 @@
 using System;
 using System.ClientModel;
+using System.ClientModel.Primitives;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace OpenAI.Files;
@@ -90,21 +93,27 @@ public partial class FileClient
         : this(endpoint: null, credential: null, options)
     { }
 
-     public virtual ClientResult<OpenAIFileInfo> UploadFile(BinaryData file, OpenAIFilePurpose purpose)
+    public virtual ClientResult<OpenAIFileInfo> UploadFile(BinaryData file, string filename, OpenAIFilePurpose purpose)
     {
-        Internal.Models.CreateFileRequest request = new(file, ToInternalFilePurpose(purpose).ToString());
-        ClientResult<Internal.Models.OpenAIFile> result = Shim.CreateFile(request);
-        return ClientResult.FromValue(new OpenAIFileInfo(result.Value), result.GetRawResponse());
+        if (file is null) throw new ArgumentNullException(nameof(file));
+        if (string.IsNullOrWhiteSpace(filename)) throw new ArgumentException(nameof(filename));
+
+        PipelineMessage uploadMessage = CreateInternalUploadMessage(file, filename, purpose);
+        Shim.Pipeline.Send(uploadMessage);
+        return GetUploadResultFromResponse(uploadMessage.Response);
     }
 
-     public virtual async Task<ClientResult<OpenAIFileInfo>> UploadFileAsync(BinaryData file, OpenAIFilePurpose purpose)
+    public virtual async Task<ClientResult<OpenAIFileInfo>> UploadFileAsync(BinaryData file, string filename, OpenAIFilePurpose purpose)
     {
-        Internal.Models.CreateFileRequest request = new(file, ToInternalFilePurpose(purpose).ToString());
-        ClientResult<Internal.Models.OpenAIFile> result = await Shim.CreateFileAsync(request).ConfigureAwait(false);
-        return ClientResult.FromValue(new OpenAIFileInfo(result.Value), result.GetRawResponse());
+        if (file is null) throw new ArgumentNullException(nameof(file));
+        if (string.IsNullOrWhiteSpace(filename)) throw new ArgumentException(nameof(filename));
+
+        PipelineMessage uploadMessage = CreateInternalUploadMessage(file, filename, purpose);
+        await Shim.Pipeline.SendAsync(uploadMessage);
+        return GetUploadResultFromResponse(uploadMessage.Response);
     }
 
-     public virtual ClientResult<OpenAIFileInfoCollection> GetFileInfoItems(OpenAIFilePurpose? purpose = null)
+    public virtual ClientResult<OpenAIFileInfoCollection> GetFileInfoItems(OpenAIFilePurpose? purpose = null)
     {
         Internal.Models.OpenAIFilePurpose? internalPurpose = ToInternalFilePurpose(purpose);
         string internalPurposeText = null;
@@ -121,7 +130,7 @@ public partial class FileClient
         return ClientResult.FromValue(new OpenAIFileInfoCollection(infoItems), result.GetRawResponse());
     }
 
-     public virtual async Task<ClientResult<OpenAIFileInfoCollection>> GetFileInfoItemsAsync(OpenAIFilePurpose? purpose = null)
+    public virtual async Task<ClientResult<OpenAIFileInfoCollection>> GetFileInfoItemsAsync(OpenAIFilePurpose? purpose = null)
     {
         Internal.Models.OpenAIFilePurpose? internalPurpose = ToInternalFilePurpose(purpose);
         string internalPurposeText = null;
@@ -136,6 +145,52 @@ public partial class FileClient
             infoItems.Add(new(internalFile));
         }
         return ClientResult.FromValue(new OpenAIFileInfoCollection(infoItems), result.GetRawResponse());
+    }
+
+    internal PipelineMessage CreateInternalUploadMessage(BinaryData fileData, string filename, OpenAIFilePurpose purpose)
+    {
+        MultipartFormDataContent content = new();
+        content.Add(BinaryContent.Create(fileData),
+            name: "file",
+            fileName: filename,
+            headers: []);
+        content.Add(MultipartContent.Create(
+            BinaryData.FromString(purpose switch
+            {
+                OpenAIFilePurpose.FineTuning => "fine-tune",
+                OpenAIFilePurpose.Assistants => "assistants",
+                _ => throw new ArgumentException($"Unsupported purpose for file upload: {purpose}"),
+            })),
+            name: "\"purpose\"",
+            headers: []);
+
+        PipelineMessage message = Shim.Pipeline.CreateMessage();
+        message.ResponseClassifier = ResponseErrorClassifier200;
+        PipelineRequest request = message.Request;
+        request.Method = "POST";
+        UriBuilder uriBuilder = new(_clientConnector.Endpoint.AbsoluteUri);
+        StringBuilder path = new();
+        path.Append("/files");
+        uriBuilder.Path += path.ToString();
+        request.Uri = uriBuilder.Uri;
+        request.Headers.Set("Accept", "application/json");
+        request.Content = content;
+
+        content.ApplyToRequest(request);
+
+        return message;
+    }
+
+    internal ClientResult<OpenAIFileInfo> GetUploadResultFromResponse(PipelineResponse response)
+    {
+        if (response.IsError)
+        {
+            throw new ClientResultException(response);
+        }
+
+        Internal.Models.OpenAIFile internalFile = Internal.Models.OpenAIFile.FromResponse(response);
+        OpenAIFileInfo fileInfo = new(internalFile);
+        return ClientResult.FromValue(fileInfo, response);
     }
 
     internal static Internal.Models.OpenAIFilePurpose? ToInternalFilePurpose(OpenAIFilePurpose? purpose)
@@ -153,5 +208,7 @@ public partial class FileClient
             _ => throw new ArgumentException($"Unsupported file purpose: {purpose}"),
         };
     }
-    
+    private static PipelineMessageClassifier _responseErrorClassifier200;
+    private static PipelineMessageClassifier ResponseErrorClassifier200 => _responseErrorClassifier200 ??= PipelineMessageClassifier.Create(stackalloc ushort[] { 200 });
+
 }

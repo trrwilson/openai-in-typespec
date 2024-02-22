@@ -1,5 +1,6 @@
 ﻿using OpenAI.Assistants;
 using OpenAI.Chat;
+using OpenAI.Files;
 using OpenAI.Images;
 using System;
 using System.ClientModel;
@@ -37,6 +38,7 @@ internal static class TestHelpers
             TestScenario.VisionChat => new ChatClient(overrideModel ?? "gpt-4-vision-preview", options),
             TestScenario.Assistants => new AssistantClient(options),
             TestScenario.Images => new ImageClient(overrideModel ?? "dall-e-3", options),
+            TestScenario.Files => new FileClient(options),
             _ => throw new NotImplementedException(),
         };
         return (T)clientObject;
