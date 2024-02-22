@@ -29,5 +29,15 @@ public partial class FileClientTests
         ClientResult<OpenAIFileInfo> uploadResult = client.UploadFile(uploadData, "test-file-delete-me.txt", OpenAIFilePurpose.Assistants);
     }
 
+    [Test]
+    public void DownloadAndInfoWork()
+    {
+        FileClient client = GetTestClient();
+        ClientResult<OpenAIFileInfo> fileInfoResult = client.GetFileInfo("file-S7roYWamZqfMK9D979HU4q6m");
+        Assert.That(fileInfoResult.Value, Is.Not.Null);
+        ClientResult<BinaryData> downloadResult = client.DownloadFile("file-S7roYWamZqfMK9D979HU4q6m");
+        Assert.That(downloadResult.Value, Is.Not.Null);
+    }
+
     private static FileClient GetTestClient() => GetTestClient<FileClient>(TestScenario.Files);
 }

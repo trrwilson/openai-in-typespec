@@ -260,7 +260,7 @@ namespace OpenAI.Internal
             if (fileId is null) throw new ArgumentNullException(nameof(fileId));
             if (string.IsNullOrEmpty(fileId)) throw new ArgumentException(nameof(fileId));
 
-            ClientResult result = await RetrieveFileAsync(fileId).ConfigureAwait(false);
+            ClientResult result = await RetrieveFileAsync(fileId, new RequestOptions()).ConfigureAwait(false);
             return ClientResult.FromValue(OpenAIFile.FromResponse(result.GetRawResponse()), result.GetRawResponse());
         }
 
@@ -273,7 +273,7 @@ namespace OpenAI.Internal
             if (fileId is null) throw new ArgumentNullException(nameof(fileId));
             if (string.IsNullOrEmpty(fileId)) throw new ArgumentException(nameof(fileId));
 
-            ClientResult result = RetrieveFile(fileId);
+            ClientResult result = RetrieveFile(fileId, new RequestOptions());
             return ClientResult.FromValue(OpenAIFile.FromResponse(result.GetRawResponse()), result.GetRawResponse());
         }
 
@@ -610,7 +610,6 @@ namespace OpenAI.Internal
             UriBuilder uriBuilder = new(_endpoint.ToString());
             StringBuilder path = new();
             path.Append("/files/");
-            uriBuilder.Path += path.ToString();
             path.Append(fileId);
             uriBuilder.Path += path.ToString();
             request.Uri = uriBuilder.Uri;

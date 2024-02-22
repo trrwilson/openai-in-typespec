@@ -28,10 +28,11 @@ internal static class TestHelpers
         Moderations,
     }
 
-    public static T GetTestClient<T>(TestScenario scenario, string overrideModel = null)
+    public static T GetTestClient<T>(TestScenario scenario, string overrideModel = null, bool throwOnError = true)
     {
         OpenAIClientOptions options = new();
         options.AddPolicy(GetDumpPolicy(), PipelinePosition.PerTry);
+        options.ErrorOptions = throwOnError ? ClientErrorBehaviors.Default : ClientErrorBehaviors.NoThrow;
         object clientObject = scenario switch
         {
             TestScenario.Chat => new ChatClient(overrideModel ?? "gpt-3.5-turbo", options),

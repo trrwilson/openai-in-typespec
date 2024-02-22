@@ -113,6 +113,18 @@ public partial class FileClient
         return GetUploadResultFromResponse(uploadMessage.Response);
     }
 
+    public virtual ClientResult<OpenAIFileInfo> GetFileInfo(string fileId)
+    {
+        ClientResult<Internal.Models.OpenAIFile> internalResult = Shim.RetrieveFile(fileId);
+        return ClientResult.FromValue(new OpenAIFileInfo(internalResult.Value), internalResult.GetRawResponse());
+    }
+
+    public virtual async Task<ClientResult<OpenAIFileInfo>> GetFileInfoAsync(string fileId)
+    {
+        ClientResult<Internal.Models.OpenAIFile> internalResult = await Shim.RetrieveFileAsync(fileId);
+        return ClientResult.FromValue(new OpenAIFileInfo(internalResult.Value), internalResult.GetRawResponse());
+    }
+
     public virtual ClientResult<OpenAIFileInfoCollection> GetFileInfoItems(OpenAIFilePurpose? purpose = null)
     {
         Internal.Models.OpenAIFilePurpose? internalPurpose = ToInternalFilePurpose(purpose);
@@ -145,6 +157,62 @@ public partial class FileClient
             infoItems.Add(new(internalFile));
         }
         return ClientResult.FromValue(new OpenAIFileInfoCollection(infoItems), result.GetRawResponse());
+    }
+
+    public virtual ClientResult<BinaryData> DownloadFile(string fileId)
+    {
+        PipelineMessage message = Shim.Pipeline.CreateMessage();
+        message.ResponseClassifier = ResponseErrorClassifier200;
+        PipelineRequest request = message.Request;
+        request.Method = "GET";
+        UriBuilder uriBuilder = new(_clientConnector.Endpoint.AbsoluteUri);
+        StringBuilder path = new();
+        path.Append($"/files/{fileId}/content");
+        uriBuilder.Path += path.ToString();
+        request.Uri = uriBuilder.Uri;
+        request.Headers.Set("content-type", "multipart/form-data");
+        request.Headers.Set("OpenAI-Beta", "assistants=v1");
+        Shim.Pipeline.Send(message);
+
+        if (message.Response.IsError)
+        {
+            throw new ClientResultException(message.Response);
+        }
+
+        return ClientResult.FromValue(message.Response.Content, message.Response);
+    }
+
+    public virtual async Task<ClientResult<BinaryData>> DownloadFileAsync(string fileId)
+    {
+        PipelineMessage message = Shim.Pipeline.CreateMessage();
+        message.ResponseClassifier = ResponseErrorClassifier200;
+        PipelineRequest request = message.Request;
+        request.Method = "GET";
+        UriBuilder uriBuilder = new(_clientConnector.Endpoint.AbsoluteUri);
+        StringBuilder path = new();
+        path.Append($"/files/{fileId}/content");
+        uriBuilder.Path += path.ToString();
+        request.Uri = uriBuilder.Uri;
+        request.Headers.Set("content-type", "multipart/form-data");
+
+        await Shim.Pipeline.SendAsync(message);
+
+        if (message.Response.IsError)
+        {
+            throw new ClientResultException(message.Response);
+        }
+
+        return ClientResult.FromValue(message.Response.Content, message.Response);
+    }
+
+    public virtual void DeleteFile(string fileId)
+    {
+        _ = Shim.DeleteFile(fileId);
+    }
+
+    public virtual async Task DeleteFileAsync(string fileId)
+    {
+        _ = Shim.DeleteFileAsync(fileId);
     }
 
     internal PipelineMessage CreateInternalUploadMessage(BinaryData fileData, string filename, OpenAIFilePurpose purpose)

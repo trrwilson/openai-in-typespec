@@ -4,6 +4,7 @@ using OpenAI.Files;
 using System;
 using System.ClientModel;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using static OpenAI.Tests.TestHelpers;
 
@@ -34,7 +35,7 @@ public partial class AssistantExamples
     }
 
     [Test]
-    [Ignore("Compilation validation only")]
+    // [Ignore("Compilation validation only")]
     public async Task SimpleRetrievalAugmentedGeneration()
     {
         // First, let's contrive a document we'll use retrieval with and upload it.
@@ -82,7 +83,8 @@ public partial class AssistantExamples
         ClientResult<Assistant> newAssistantResult = await client.CreateAssistantAsync("gpt-4-1106-preview", new AssistantCreationOptions()
         {
             Name = "Example: Contoso sales RAG",
-            Instructions = "You are an assistant that looks up sales data and helps visualize the information based on user queries.",
+            Instructions = "You are an assistant that looks up sales data and helps visualize the information based on user queries."
+                + " When asked to generate a graph, chart, or other visualization, use the code interpreter tool to do so.",
             FileIds = { uploadedFile.Id },
             Tools =
             {
@@ -137,6 +139,18 @@ public partial class AssistantExamples
                             Console.WriteLine($"      File path annotation, created ID: {pathAnnotation.CreatedFileId}");
                         }
                     }
+                }
+                else if (contentItem is MessageImageFileContent imageFileContentItem)
+                {
+                    string imageFileId = imageFileContentItem.FileId;
+                    Console.WriteLine($"   <<Image File Content>> fileId: {imageFileId}");
+                    ClientResult<OpenAIFileInfo> imageFileInfoResult = await fileClient.GetFileInfoAsync(imageFileId);
+                    ClientResult<BinaryData> imageFileDownloadResult = await fileClient.DownloadFileAsync(imageFileId);
+                    FileInfo imageFileInfo = new($"{imageFileInfoResult.Value.Filename}.png");
+                    using FileStream outputStream = imageFileInfo.Create();
+                    using BinaryWriter writer = new(outputStream);
+                    writer.Write(imageFileDownloadResult.Value);
+                    Console.WriteLine($"Wrote to file: {new Uri(imageFileInfo.FullName).AbsoluteUri}");
                 }
             }
         }

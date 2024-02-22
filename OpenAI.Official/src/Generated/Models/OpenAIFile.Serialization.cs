@@ -95,6 +95,11 @@ namespace OpenAI.Internal.Models
                 }
                 if (property.NameEquals("bytes"u8))
                 {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        bytes = 0;
+                        continue;
+                    }
                     bytes = property.Value.GetInt64();
                     continue;
                 }
