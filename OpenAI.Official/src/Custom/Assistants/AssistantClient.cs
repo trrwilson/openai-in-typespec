@@ -690,6 +690,8 @@ public partial class AssistantClient
         ThreadCreationOptions threadOptions,
         RunCreationOptions runOptions)
     {
+        threadOptions ??= new();
+        runOptions ??= new();
         Internal.Models.CreateThreadRequest internalThreadOptions = CreateInternalCreateThreadRequest(threadOptions);
         return new Internal.Models.CreateThreadAndRunRequest(
             assistantId,

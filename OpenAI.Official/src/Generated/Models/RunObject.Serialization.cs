@@ -254,6 +254,11 @@ namespace OpenAI.Internal.Models
                 }
                 if (property.NameEquals("expires_at"u8))
                 {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        lastError = null;
+                        continue;
+                    }
                     expiresAt = DateTimeOffset.FromUnixTimeSeconds(property.Value.GetInt64());
                     continue;
                 }
