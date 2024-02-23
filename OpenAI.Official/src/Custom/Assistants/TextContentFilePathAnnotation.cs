@@ -8,7 +8,7 @@ public class TextContentFilePathAnnotation : TextContentAnnotation
 {
     public string TextToReplace { get; }
 
-    public string CreatedFileId { get; }
+    public string FileId { get; }
 
     public int StartIndex { get; }
 
@@ -17,7 +17,7 @@ public class TextContentFilePathAnnotation : TextContentAnnotation
     internal TextContentFilePathAnnotation(string textToReplace, string createdFileId, int startIndex, int endIndex)
     {
         TextToReplace = textToReplace;
-        CreatedFileId = createdFileId;
+        FileId = createdFileId;
         StartIndex = startIndex;
         EndIndex = endIndex;
     }
@@ -28,7 +28,7 @@ public class TextContentFilePathAnnotation : TextContentAnnotation
         writer.WriteString("text"u8, TextToReplace);
         writer.WritePropertyName("file_path"u8);
         writer.WriteStartObject();
-        writer.WriteString("file_id"u8, CreatedFileId);
+        writer.WriteString("file_id"u8, FileId);
         writer.WriteEndObject();
         writer.WriteNumber("start_index"u8, StartIndex);
         writer.WriteNumber("end_index"u8, EndIndex);

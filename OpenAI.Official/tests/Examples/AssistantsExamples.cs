@@ -132,11 +132,11 @@ public partial class AssistantExamples
                     {
                         if (annotation is TextContentFilePathAnnotation fileAnnotation)
                         {
-                            Console.WriteLine($"      File annotation, created ID: {fileAnnotation.CreatedFileId}");
+                            Console.WriteLine($"      File annotation, created ID: {fileAnnotation.FileId}");
                         }
                         else if (annotation is TextContentFilePathAnnotation pathAnnotation)
                         {
-                            Console.WriteLine($"      File path annotation, created ID: {pathAnnotation.CreatedFileId}");
+                            Console.WriteLine($"      File path annotation, created ID: {pathAnnotation.FileId}");
                         }
                     }
                 }

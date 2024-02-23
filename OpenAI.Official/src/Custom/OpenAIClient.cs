@@ -33,12 +33,53 @@ public partial class OpenAIClient
     /// <param name="endpoint"> An explicitly defined endpoint that all clients created by this <see cref="OpenAIClient"/> should use. </param>
     /// <param name="credential"> An explicitly defined credential that all clients created by this <see cref="OpenAIClient"/> should use. </param>
     /// <param name="clientOptions"> A common client options definition that all clients created by this <see cref="OpenAIClient"/> should use. </param>
-    public OpenAIClient(Uri endpoint = null, ApiKeyCredential credential = null, OpenAIClientOptions clientOptions = null)
+    public OpenAIClient(Uri endpoint, ApiKeyCredential credential, OpenAIClientOptions clientOptions = null)
     {
         _cachedEndpoint = endpoint;
         _cachedCredential = credential;
         _cachedOptions = clientOptions;
     }
+
+    /// <summary>
+    /// Creates a new instance of <see cref="OpenAIClient"/> will store common client configuration details to permit
+    /// easy reuse and propagation to multiple, scenario-specific subclients.
+    /// </summary>
+    /// <remarks>
+    /// This client does not provide any model functionality directly and is purely a helper to facilitate the creation
+    /// of the scenario-specific subclients like <see cref="ChatClient"/>.
+    /// </remarks>
+    /// <param name="endpoint"> An explicitly defined endpoint that all clients created by this <see cref="OpenAIClient"/> should use. </param>
+    /// <param name="clientOptions"> A common client options definition that all clients created by this <see cref="OpenAIClient"/> should use. </param>
+    public OpenAIClient(Uri endpoint, OpenAIClientOptions clientOptions = null)
+        : this(endpoint, credential: null, clientOptions)
+    { }
+
+    /// <summary>
+    /// Creates a new instance of <see cref="OpenAIClient"/> will store common client configuration details to permit
+    /// easy reuse and propagation to multiple, scenario-specific subclients.
+    /// </summary>
+    /// <remarks>
+    /// This client does not provide any model functionality directly and is purely a helper to facilitate the creation
+    /// of the scenario-specific subclients like <see cref="ChatClient"/>.
+    /// </remarks>
+    /// <param name="credential"> An explicitly defined credential that all clients created by this <see cref="OpenAIClient"/> should use. </param>
+    /// <param name="clientOptions"> A common client options definition that all clients created by this <see cref="OpenAIClient"/> should use. </param>
+    public OpenAIClient(ApiKeyCredential credential, OpenAIClientOptions clientOptions = null)
+        : this(endpoint: null, credential, clientOptions)
+    { }
+
+    /// <summary>
+    /// Creates a new instance of <see cref="OpenAIClient"/> will store common client configuration details to permit
+    /// easy reuse and propagation to multiple, scenario-specific subclients.
+    /// </summary>
+    /// <remarks>
+    /// This client does not provide any model functionality directly and is purely a helper to facilitate the creation
+    /// of the scenario-specific subclients like <see cref="ChatClient"/>.
+    /// </remarks>
+    /// <param name="clientOptions"> A common client options definition that all clients created by this <see cref="OpenAIClient"/> should use. </param>
+    public OpenAIClient(OpenAIClientOptions clientOptions)
+        : this(endpoint: null, credential: null, clientOptions)
+    { }
 
     /// <summary>
     /// Gets a new instance of <see cref="AssistantClient"/> that reuses the client configuration details provided to

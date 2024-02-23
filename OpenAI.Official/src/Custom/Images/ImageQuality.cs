@@ -13,5 +13,5 @@ public enum ImageQuality
     /// <summary>
     /// The <c>standard</c> image quality that provides a balanced mix of detailing, consistency, and speed.
     /// </summary>
-    Balanced,
+    Standard,
 }

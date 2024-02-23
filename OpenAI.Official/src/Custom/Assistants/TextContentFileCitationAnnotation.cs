@@ -8,9 +8,9 @@ public class TextContentFileCitationAnnotation : TextContentAnnotation
 {
     public string TextToReplace { get; }
 
-    public string CitationFileId { get; }
+    public string FileId { get; }
 
-    public string CitationQuote { get; }
+    public string Quote { get; }
 
     public int StartIndex { get; }
 
@@ -19,8 +19,8 @@ public class TextContentFileCitationAnnotation : TextContentAnnotation
     internal TextContentFileCitationAnnotation(string textToReplace, string citationFileId, string citationQuote, int startIndex, int endIndex)
     {
         TextToReplace = textToReplace;
-        CitationFileId = citationFileId;
-        CitationQuote = citationQuote;
+        FileId = citationFileId;
+        Quote = citationQuote;
         StartIndex = startIndex;
         EndIndex = endIndex;
     }
@@ -31,8 +31,8 @@ public class TextContentFileCitationAnnotation : TextContentAnnotation
         writer.WriteString("text"u8, TextToReplace);
         writer.WritePropertyName("file_citation"u8);
         writer.WriteStartObject();
-        writer.WriteString("file_id"u8, CitationFileId);
-        writer.WriteString("quote"u8, CitationQuote);
+        writer.WriteString("file_id"u8, FileId);
+        writer.WriteString("quote"u8, Quote);
         writer.WriteEndObject();
         writer.WriteNumber("start_index"u8, StartIndex);
         writer.WriteNumber("end_index"u8, EndIndex);

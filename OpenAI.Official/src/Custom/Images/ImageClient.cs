@@ -193,7 +193,7 @@ public partial class ImageClient
         {
             internalQuality = options.Quality switch
             {
-                ImageQuality.Balanced => Internal.Models.CreateImageRequestQuality.Standard,
+                ImageQuality.Standard => Internal.Models.CreateImageRequestQuality.Standard,
                 ImageQuality.High => Internal.Models.CreateImageRequestQuality.Hd,
                 _ => throw new ArgumentException(nameof(options.Quality)),
             };

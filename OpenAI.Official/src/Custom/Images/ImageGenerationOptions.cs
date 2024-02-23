@@ -13,7 +13,7 @@ public partial class ImageGenerationOptions
     ///     <c>hd</c> - <see cref="ImageQuality.High"/> - Finer details, greater consistency, slower, more intensive.
     /// </item>
     /// <item>
-    ///     <c>standard</c> - <see cref="ImageQuality.Balanced"/> - The default quality level that's faster and less
+    ///     <c>standard</c> - <see cref="ImageQuality.Standard"/> - The default quality level that's faster and less
     ///     intensive but may also be less detailed and consistent than <c>hd</c>.
     /// </item>
     /// </list>

@@ -324,7 +324,7 @@ public partial class AudioClient
         return content;
     }
 
-    public static ClientResult<AudioTranscription> GetTranscriptionResultFromResponse(PipelineResponse response)
+    private static ClientResult<AudioTranscription> GetTranscriptionResultFromResponse(PipelineResponse response)
     {
         if (response.IsError)
         {
@@ -335,7 +335,7 @@ public partial class AudioClient
         return ClientResult.FromValue(AudioTranscription.DeserializeAudioTranscription(responseDocument.RootElement), response);
     }
 
-    public static ClientResult<AudioTranslation> GetTranslationResultFromResponse(PipelineResponse response)
+    private static ClientResult<AudioTranslation> GetTranslationResultFromResponse(PipelineResponse response)
     {
         if (response.IsError)
         {
