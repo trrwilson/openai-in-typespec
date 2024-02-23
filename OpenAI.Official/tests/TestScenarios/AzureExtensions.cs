@@ -17,7 +17,7 @@ public partial class AzureExtensionsTests
         string key = Environment.GetEnvironmentVariable("AZ_OPENAI_KEY")!;
         string endpoint = Environment.GetEnvironmentVariable("AZ_OPENAI_ENDPOINT")!;
 
-        var options = new AzureOpenAIClientOptions(endpoint, key, "gpt35turbo");
+        var options = new AzureOpenAIClientOptions(new Uri(endpoint), key, "gpt35turbo");
         ChatClient client = new ChatClient("", new ApiKeyCredential(key), options);
 
         Assert.That(client, Is.InstanceOf<ChatClient>());
@@ -30,29 +30,36 @@ public partial class AzureExtensionsTests
 
 public class AzureOpenAIClientOptions : OpenAIClientOptions
 {
-    public AzureOpenAIClientOptions(string endpoint, string apiKey, string deployment, string version = "2023-12-01-preview")
+    public AzureOpenAIClientOptions(Uri endpoint, ApiKeyCredential apiKey, string deployment, ServiceVersion version = ServiceVersion.V20231201_preview)
     {
         base.AddPolicy(new ToAzureRequestPolicy(endpoint, apiKey, deployment, version), PipelinePosition.BeforeTransport);
     }
+
+    public enum ServiceVersion
+    {
+        V20231201_preview
+    }
+
     class ToAzureRequestPolicy : PipelinePolicy
     {
-        string endpoint;
+        Uri endpoint;
         string deployment;
         string version;
-        string apiKey;
+        ApiKeyCredential apiKey;
 
-        public ToAzureRequestPolicy(string endpoint, string apiKey, string deployment, string version)
+        public ToAzureRequestPolicy(Uri endpoint, ApiKeyCredential apiKey, string deployment, ServiceVersion version)
         {
             this.endpoint=endpoint;
             this.deployment=deployment;
-            this.version=version;
+            this.version=version == ServiceVersion.V20231201_preview? "2023-12-01-preview" : throw new NotSupportedException();
             this.apiKey=apiKey;
         }
 
         private void RewriteRequest(PipelineMessage message)
         {
+            apiKey.Deconstruct(out string key);
+            message.Request.Headers.Add("api-key", key);
             message.Request.Headers.Remove("Authorization");
-            message.Request.Headers.Add("api-key", apiKey);
 
             var uri = message.Request.Uri.PathAndQuery.ToString();
             string operation = "";
