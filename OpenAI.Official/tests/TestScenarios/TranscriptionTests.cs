@@ -35,9 +35,9 @@ public partial class TranscriptionTests
         Assert.That(transcriptionResult.Value, Is.Not.Null);
         // Assert.That(transcriptionResult.Value.Segments, Is.Null);
         // Assert.That(transcriptionResult.Value.Words, Is.Not.Null.Or.Empty);
-        //Assert.That(transcriptionResult.Value.Words[1].Word, Contains.Substring("world"));
-        //Assert.That(transcriptionResult.Value.Words[1].Start, Is.GreaterThan(TimeSpan.FromMilliseconds(0)));
-        //Assert.That(transcriptionResult.Value.Words[1].End, Is.GreaterThan(TimeSpan.FromMilliseconds(0)));
+        // Assert.That(transcriptionResult.Value.Words[1].Word, Contains.Substring("world"));
+        // Assert.That(transcriptionResult.Value.Words[1].Start, Is.GreaterThan(TimeSpan.FromMilliseconds(0)));
+        // Assert.That(transcriptionResult.Value.Words[1].End, Is.GreaterThan(TimeSpan.FromMilliseconds(0)));
     }
     private static AudioClient GetTestClient() => GetTestClient<AudioClient>(TestScenario.Transcription);
 }

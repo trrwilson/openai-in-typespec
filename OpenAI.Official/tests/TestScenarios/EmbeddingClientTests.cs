@@ -17,6 +17,7 @@ public partial class EmbeddingClientTests
         Assert.That(response.Value.Usage, Is.Not.Null);
         Assert.That(response.Value.Usage.TotalTokens, Is.GreaterThan(0));
         Assert.That(response.Value.Vector, Is.Not.Null.Or.Empty);
+        Assert.That(response.Value.Model, Contains.Substring("ada"));
         float[] array = response.Value.Vector.ToArray();
         Assert.That(array.Length > 100);
     }

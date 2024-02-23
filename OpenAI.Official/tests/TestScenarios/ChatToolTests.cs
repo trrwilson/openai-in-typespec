@@ -52,18 +52,18 @@ public partial class ChatToolTests
         {
             Name = "get_favorite_color_for_month",
             Description = "gets the caller's favorite color for a given month",
-            Parameters = BinaryData.FromObjectAsJson(new
-            {
-                type = "object",
-                properties = new
+            Parameters = BinaryData.FromString("""
                 {
-                    month = new
-                    {
-                        type = "string",
-                        description = "the name of a month, like January or September",
+                    "type": "object",
+                    "properties": {
+                        "month_name": {
+                            "type": "string",
+                            "description": "the name of a calendar month, e.g. February or October."
+                        }
                     },
-                },
-            }),
+                    "required": [ "month_name" ]
+                }
+                """),
         };
         ChatCompletionOptions options = new()
         {
@@ -80,8 +80,8 @@ public partial class ChatToolTests
         Assert.That(functionToolCall.Name, Is.EqualTo(favoriteColorForMonthTool.Name));
         JsonObject argumentsJson = JsonSerializer.Deserialize<JsonObject>(functionToolCall.Arguments);
         Assert.That(argumentsJson.Count, Is.EqualTo(1));
-        Assert.That(argumentsJson.ContainsKey("month"));
-        Assert.That(argumentsJson["month"].ToString().ToLowerInvariant(), Is.EqualTo("february"));
+        Assert.That(argumentsJson.ContainsKey("month_name"));
+        Assert.That(argumentsJson["month_name"].ToString().ToLowerInvariant(), Is.EqualTo("february"));
         messages.Add(new ChatRequestAssistantMessage(result.Value));
         messages.Add(new ChatRequestToolMessage(functionToolCall.Id, "chartreuse"));
         result = client.CompleteChat(messages, options);

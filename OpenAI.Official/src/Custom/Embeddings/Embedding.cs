@@ -13,6 +13,8 @@ public partial class Embedding
     public ReadOnlyMemory<float> Vector { get; }
     /// <inheritdoc cref="Internal.Models.Embedding.Index"/>
     public long Index { get; }
+    /// <inheritdoc cref="Internal.Models.EmbeddingCollection.Model"/>
+    public string Model { get; }
     /// <inheritdoc cref="Internal.Models.EmbeddingCollection.Usage"/>
     public EmbeddingTokenUsage Usage { get; }
 
@@ -37,5 +39,6 @@ public partial class Embedding
         Vector = new ReadOnlyMemory<float>(vector);
         Index = dataItem.Index;
         Usage = usage ?? new(internalResponse.Usage);
+        Model = internalResponse.Model;
     }
 }

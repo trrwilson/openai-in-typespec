@@ -35,7 +35,7 @@ public partial class AssistantExamples
     }
 
     [Test]
-    // [Ignore("Compilation validation only")]
+    [Ignore("Compilation validation only")]
     public async Task SimpleRetrievalAugmentedGeneration()
     {
         // First, let's contrive a document we'll use retrieval with and upload it.

@@ -4,6 +4,13 @@ namespace OpenAI.Images;
 /// A representation of the quality setting for image operations that controls the level of work that the model will
 /// perform.
 /// </summary>
+/// <remarks>
+/// Available qualities consist of:
+/// <list type="bullet">
+/// <item><see cref="Standard"/> - <c>standard</c> - The default setting that balances speed, detail, and consistecy. </item>
+/// <item><see cref="High"/> - <c>hd</c> - Better consistency and finer details, but may be slower. </item>
+/// </list>
+/// </remarks>
 public enum ImageQuality
 {
     /// <summary>
