@@ -12,10 +12,10 @@ public partial class FileClientTests
     public void ListFilesWorks()
     {
         FileClient client = new();
-        ClientResult<OpenAIFileInfoCollection> result = client.GetFileInfoItems();
+        ClientResult<OpenAIFileInfoCollection> result = client.GetFileInfoList();
         Assert.That(result.Value.Count, Is.GreaterThan(0));
         Console.WriteLine(result.Value.Count);
-        ClientResult<OpenAIFileInfoCollection> assistantsResult = client.GetFileInfoItems(OpenAIFilePurpose.Assistants);
+        ClientResult<OpenAIFileInfoCollection> assistantsResult = client.GetFileInfoList(OpenAIFilePurpose.Assistants);
         Assert.That(assistantsResult.Value.Count, Is.GreaterThan(0));
         Assert.That(assistantsResult.Value.Count, Is.LessThan(result.Value.Count));
         Console.WriteLine(assistantsResult.Value.Count);

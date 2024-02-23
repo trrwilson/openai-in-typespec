@@ -147,6 +147,16 @@ public partial class AudioClient
         return Shim.CreateSpeechAsync(request);
     }
 
+    /// <inheritdoc cref="Internal.Audio.CreateSpeech(BinaryContent, RequestOptions)"/>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public virtual ClientResult GenerateSpeechFromText(BinaryContent content, RequestOptions context = null)
+        => Shim.CreateSpeech(content, context);
+
+    /// <inheritdoc cref="Internal.Audio.CreateSpeech(BinaryContent, RequestOptions)"/>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public virtual Task<ClientResult> GenerateSpeechFromTextAsync(BinaryContent content, RequestOptions context = null)
+        => Shim.CreateSpeechAsync(content, context);
+
     public virtual ClientResult<AudioTranscription> TranscribeAudio(BinaryData audioBytes, string filename, AudioTranscriptionOptions options = null)
     {
         PipelineMessage message = CreateInternalTranscriptionRequestMessage(audioBytes, filename, options);
@@ -160,6 +170,16 @@ public partial class AudioClient
         await Shim.Pipeline.SendAsync(message);
         return GetTranscriptionResultFromResponse(message.Response);
     }
+
+    /// <inheritdoc cref="Internal.Audio.CreateTranscription(BinaryContent, RequestOptions)"/>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public virtual ClientResult TranscribeAudio(BinaryContent content, RequestOptions context = null)
+        => Shim.CreateTranscription(content, context);
+
+    /// <inheritdoc cref="Internal.Audio.CreateTranscriptionAsync(BinaryContent, RequestOptions)"/>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public virtual Task<ClientResult> TranscribeAudioAsync(BinaryContent content, RequestOptions context = null)
+        => Shim.CreateTranscriptionAsync(content, context);
 
     public virtual ClientResult<AudioTranslation> TranslateAudio(BinaryData audioBytes, string filename, AudioTranslationOptions options = null)
     {
@@ -175,15 +195,15 @@ public partial class AudioClient
         return GetTranslationResultFromResponse(message.Response);
     }
 
-    /// <inheritdoc cref="Internal.Audio.CreateSpeech(BinaryContent, RequestOptions)"/>
+    /// <inheritdoc cref="Internal.Audio.CreateTranslation(BinaryContent, RequestOptions)"/>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual ClientResult GenerateSpeechFromText(BinaryContent content, RequestOptions context = null)
-        => Shim.CreateSpeech(content, context);
+    public virtual ClientResult TranslateAudio(BinaryContent content, RequestOptions context = null)
+        => Shim.CreateTranslation(content, context);
 
-    /// <inheritdoc cref="Internal.Audio.CreateSpeech(BinaryContent, RequestOptions)"/>
+    /// <inheritdoc cref="Internal.Audio.CreateTranslationAsync(BinaryContent, RequestOptions)"/>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public virtual Task<ClientResult> GenerateSpeechFromTextAsync(BinaryContent content, RequestOptions context = null)
-        => Shim.CreateSpeechAsync(content, context);
+    public virtual Task<ClientResult> TranslateAudioAsync(BinaryContent content, RequestOptions context = null)
+        => Shim.CreateTranslationAsync(content, context);
 
     private PipelineMessage CreateInternalTranscriptionRequestMessage(BinaryData audioBytes, string filename, AudioTranscriptionOptions options)
     {
@@ -261,7 +281,6 @@ public partial class AudioClient
     {
         MultipartFormDataContent content = new();
         content.Add(MultipartContent.Create(BinaryData.FromString(_clientConnector.Model)), name: "model", []);
-        content.Add(MultipartContent.Create(audioBytes), name: "file", fileName: filename, []);
         if (OptionalProperty.IsDefined(language))
         {
             content.Add(MultipartContent.Create(BinaryData.FromString(language)), name: "language", []);
@@ -287,7 +306,6 @@ public partial class AudioClient
         {
             content.Add(MultipartContent.Create(BinaryData.FromString($"{temperature}")), name: "temperature", []);
         }
-
         if (OptionalProperty.IsDefined(enableWordTimestamps) || OptionalProperty.IsDefined(enableSegmentTimestamps))
         {
             List<string> granularities = [];
@@ -301,6 +319,7 @@ public partial class AudioClient
             }
             content.Add(MultipartContent.Create(BinaryData.FromObjectAsJson(granularities)), name: "timestamp_granularities", []);
         }
+        content.Add(MultipartContent.Create(audioBytes), name: "file", fileName: filename, []);
 
         return content;
     }
