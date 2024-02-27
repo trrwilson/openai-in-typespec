@@ -137,7 +137,7 @@ public class ChatFunctions
         {
             writer.WriteStartObject(parameter.Name!);
             writer.WriteString("type"u8, ClrToJsonTypeUtf8(parameter.ParameterType));
-            //writer.WriteString("description"u8, ""); // description of the parameter
+            writer.WriteString("description"u8, ParameterInfoToDescription(parameter));
             writer.WriteEndObject();
         }
         writer.WriteEndObject(); // properties
