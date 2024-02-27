@@ -1,13 +1,10 @@
 ﻿using System;
-using System.ClientModel;
-using System.ClientModel.Primitives;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace OpenAI.Chat;
 
@@ -56,7 +53,6 @@ public class ChatFunctions
     }
     public string Call(ChatFunctionToolCall call)
     {
-        var name = call.Name;
         var arguments = new List<object>();
         if (call.Arguments != "{}")
         {
@@ -75,6 +71,7 @@ public class ChatFunctions
                 }
             }
         }
+        var name = call.Name;
         var result = Call(name, arguments.ToArray());
         return result;
     }
@@ -139,6 +136,7 @@ public class ChatFunctions
             writer.WriteString("type"u8, ClrToJsonTypeUtf8(parameter.ParameterType));
             writer.WriteString("description"u8, ParameterInfoToDescription(parameter));
             writer.WriteEndObject();
+            required.Add(parameter.Name!);
         }
         writer.WriteEndObject(); // properties
         writer.WriteStartArray("required");
