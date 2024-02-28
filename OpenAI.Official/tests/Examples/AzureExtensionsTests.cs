@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using NUnit.Framework.Interfaces;
 using OpenAI.Chat;
 using System;
 using System.ClientModel;
@@ -62,7 +61,6 @@ public class AzureExtensionsTests
                     goto CALL_SERVICE;
                 case ChatFinishReason.Length:
                     throw new NotImplementedException("trim prompt");
-                    break;
                 default:
                     throw new NotImplementedException(chatCompletion.FinishReason.ToString());
             }
