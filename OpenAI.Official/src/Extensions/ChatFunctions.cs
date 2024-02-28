@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenAI.Internal;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -76,6 +77,17 @@ public class ChatFunctions
         return result;
     }
 
+    public IEnumerable<ChatRequestToolMessage> CallAll(IEnumerable<ChatToolCall> toolCalls)
+    {
+        var messages = new List<ChatRequestToolMessage>();
+        foreach (ChatToolCall toolCall in toolCalls)
+        {
+            ChatFunctionToolCall functionToolCall = toolCall as ChatFunctionToolCall;
+            var result = Call(functionToolCall);
+            messages.Add(new ChatRequestToolMessage(toolCall.Id, result));
+        }
+        return messages;
+    }
     protected virtual string MethodInfoToDescription(MethodInfo function)
     {
         var description = function.Name;
