@@ -48,24 +48,20 @@ public class AzureExtensionsTests
             Tools = funtions.Definitions
         };
 
-        ChatCompletion chatCompletion = client.CompleteChat(messages, options).Value;
+        ChatCompletion chatCompletion = client.CompleteChat(messages, options);
 
         if (chatCompletion.FinishReason == ChatFinishReason.ToolCalls)
         {
             // First, add the assistant message with tool calls to the conversation history.
             messages.Add(new ChatRequestAssistantMessage(chatCompletion));
 
+            IEnumerable<ChatRequestToolMessage> callResults = funtions.CallAll(chatCompletion.ToolCalls);
             // Then, add a new tool message for each tool call that is resolved.
-            foreach (ChatToolCall toolCall in chatCompletion.ToolCalls)
-            {
-                ChatFunctionToolCall functionToolCall = toolCall as ChatFunctionToolCall;
-                var result = funtions.Call(functionToolCall);
-                messages.Add(new ChatRequestToolMessage(toolCall.Id, result));
-            }
+            messages.AddRange(callResults);
 
             // Finally, make a new request to chat completions to let the assistant summarize the tool results
             // and add the resulting message to the conversation history to keep it organized all in one place.
-            ChatCompletion chatCompletionAfterToolMessages = client.CompleteChat(messages, options).Value;
+            ChatCompletion chatCompletionAfterToolMessages = client.CompleteChat(messages, options);
             messages.Add(new ChatRequestAssistantMessage(chatCompletionAfterToolMessages));
         }
     }

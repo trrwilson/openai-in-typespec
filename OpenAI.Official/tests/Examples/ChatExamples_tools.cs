@@ -31,7 +31,7 @@ public partial class ChatExamples
             Tools = funtions.Definitions
         };
 
-        ChatCompletion chatCompletion = client.CompleteChat(messages, options).Value;
+        ChatCompletion chatCompletion = client.CompleteChat(messages, options);
 
         if (chatCompletion.FinishReason == ChatFinishReason.ToolCalls)
         {
@@ -44,7 +44,7 @@ public partial class ChatExamples
 
             // Finally, make a new request to chat completions to let the assistant summarize the tool results
             // and add the resulting message to the conversation history to keep it organized all in one place.
-            ChatCompletion chatCompletionAfterToolMessages = client.CompleteChat(messages, options).Value;
+            ChatCompletion chatCompletionAfterToolMessages = client.CompleteChat(messages, options);
             messages.Add(new ChatRequestAssistantMessage(chatCompletionAfterToolMessages));
         }
     }
