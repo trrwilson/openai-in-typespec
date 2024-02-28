@@ -70,6 +70,53 @@ public class AzureExtensionsTests
     {
         [Description("Returns the current weather at the specified location")]
         public static string GetCurrentWeather(string location, string unit) => $"31 {unit}";
+
+        public static string GetCurrentTime() => DateTimeOffset.Now.ToString("t");
+    }
+
+    [Test]
+    public void ChatRag()
+    {
+        string[] testMessages = [
+            "How is your day?",
+            "What time is it?",
+            "What's the weather in Seattle?"
+        ];
+
+        var clientOptions = new AzureOpenAIClientOptions(new Uri(endpoint), credential, chatDeployment);
+        ChatClient client = new ChatClient(model: "", credential, clientOptions);
+
+        ChatFunctions funtions = new(typeof(MyFunctions));
+
+        ChatCompletionOptions completionOptions = new() { Tools = funtions.Definitions };
+        List<ChatRequestMessage> prompt = new();
+
+        foreach(var testMessage in testMessages)
+        {
+            prompt.Add(ChatRequestMessage.CreateUserMessage(testMessage));
+
+            CALL_SERVICE:
+            ChatCompletion chatCompletion = client.CompleteChat(prompt, completionOptions);
+
+            switch(chatCompletion.FinishReason)
+            {
+                case ChatFinishReason.Stopped:
+                    prompt.Add(new ChatRequestAssistantMessage(chatCompletion));
+                    Console.WriteLine(chatCompletion.Content);
+                    break;
+                case ChatFinishReason.ToolCalls:
+                    prompt.Add(new ChatRequestAssistantMessage(chatCompletion));
+                    IEnumerable<ChatRequestToolMessage> callResults = funtions.CallAll(chatCompletion.ToolCalls);
+                    prompt.AddRange(callResults);
+                    goto CALL_SERVICE;
+                case ChatFinishReason.Length:
+                    throw new NotImplementedException("trim prompt");
+                break;
+
+                default:
+                    throw new NotImplementedException(chatCompletion.FinishReason.ToString());
+            }
+        }
     }
 }
 
