@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using NUnit.Framework.Interfaces;
 using OpenAI.Chat;
 using System;
 using System.ClientModel;
@@ -35,34 +36,36 @@ public class AzureExtensionsTests
 
         ChatFunctions funtions = new(typeof(MyFunctions));
 
-        List<ChatRequestMessage> messages =
-        [
-            new ChatRequestSystemMessage(
-               "Don't make assumptions about what values to plug into functions."
-               + " Ask for clarification if a user request is ambiguous."),
-            new ChatRequestUserMessage("What's the weather like in San Francisco?"),
+        List<ChatRequestMessage> prompt = [
+            new ChatRequestUserMessage("What's the weather like in today?")
         ];
 
-        ChatCompletionOptions options = new()
-        {
+        ChatCompletionOptions completionOptions = new() {
             Tools = funtions.Definitions
         };
 
-        ChatCompletion chatCompletion = client.CompleteChat(messages, options);
-
-        if (chatCompletion.FinishReason == ChatFinishReason.ToolCalls)
+        while(true)
         {
-            // First, add the assistant message with tool calls to the conversation history.
-            messages.Add(new ChatRequestAssistantMessage(chatCompletion));
+            CALL_SERVICE:
+            ChatCompletion chatCompletion = client.CompleteChat(prompt, completionOptions);
 
-            IEnumerable<ChatRequestToolMessage> callResults = funtions.CallAll(chatCompletion.ToolCalls);
-            // Then, add a new tool message for each tool call that is resolved.
-            messages.AddRange(callResults);
-
-            // Finally, make a new request to chat completions to let the assistant summarize the tool results
-            // and add the resulting message to the conversation history to keep it organized all in one place.
-            ChatCompletion chatCompletionAfterToolMessages = client.CompleteChat(messages, options);
-            messages.Add(new ChatRequestAssistantMessage(chatCompletionAfterToolMessages));
+            switch (chatCompletion.FinishReason)
+            {
+                case ChatFinishReason.Stopped:
+                    prompt.Add(new ChatRequestAssistantMessage(chatCompletion));
+                    Console.WriteLine(chatCompletion.Content);
+                    return;
+                case ChatFinishReason.ToolCalls:
+                    prompt.Add(new ChatRequestAssistantMessage(chatCompletion));
+                    IEnumerable<ChatRequestToolMessage> callResults = funtions.CallAll(chatCompletion.ToolCalls);
+                    prompt.AddRange(callResults);
+                    goto CALL_SERVICE;
+                case ChatFinishReason.Length:
+                    throw new NotImplementedException("trim prompt");
+                    break;
+                default:
+                    throw new NotImplementedException(chatCompletion.FinishReason.ToString());
+            }
         }
     }
 
@@ -70,7 +73,7 @@ public class AzureExtensionsTests
     {
         [Description("Returns the current weather at the specified location")]
         public static string GetCurrentWeather(string location, string unit) => $"31 {unit}";
-
+        public static string GetCurrentLocation() => "San Francisco";
         public static string GetCurrentTime() => DateTimeOffset.Now.ToString("t");
     }
 
