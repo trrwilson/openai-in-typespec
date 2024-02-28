@@ -12,7 +12,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="System.ClientModel" Version="1.1.0-alpha.20240220.1" />
+    <PackageReference Include="System.ClientModel" Version="1.1.0-alpha.20240227.1" />
     <PackageReference Include="System.Text.Json" Version="8.0.2" />
   </ItemGroup>
 
