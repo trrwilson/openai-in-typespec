@@ -1,3 +1,14 @@
+function Write-ColorOutput($ForegroundColor)
+{
+    $fc = $host.UI.RawUI.ForegroundColor
+
+    $host.UI.RawUI.ForegroundColor = $ForegroundColor
+
+    Write-Output $args
+
+    $host.UI.RawUI.ForegroundColor = $fc
+}
+
 function Edit-GeneratedSubclients {
     $root = Split-Path $PSScriptRoot -Parent
 
@@ -29,7 +40,7 @@ function Edit-GeneratedSubclients {
 
         $content = Get-Content -Path $file -Raw
 
-        Write-Output "Editing $($file.FullName)"
+        Write-ColorOutput green "Editing $($file.FullName)"
 
         $content = $content -creplace "public partial class", "internal partial class"
         $content = $content -creplace "public readonly partial struct", "internal readonly partial struct"
@@ -78,6 +89,14 @@ function Edit-GeneratedModels {
         "FileSearchToolDefinition.Serialization.cs",
         "FileSearchToolResources.cs",
         "FileSearchToolResources.Serialization.cs",
+        "FineTuningJob.cs",
+        "FineTuningJob.Serialization.cs",
+        "FineTuningJobError.cs",
+        "FineTuningJobError.Serialization.cs",
+        "FineTuningJobStatus.cs",
+        "FineTuningJobObject.cs",
+        "FineTuningJobHyperparameters",
+        "FineTuningJobHyperparameters.Serialization.cs",
         "FunctionToolDefinition.cs",
         "FunctionToolDefinition.Serialization.cs",
         "InternalAssistantToolsFileSearchFileSearch.cs",
@@ -624,23 +643,15 @@ function Edit-GeneratedModels {
         "InternalFineTuningIntegrationType.cs",
         "InternalFineTuningIntegrationWandb.cs",
         "InternalFineTuningIntegrationWandb.Serialization.cs",
-        "InternalFineTuningJob.cs",
-        "InternalFineTuningJob.Serialization.cs",
         "InternalFineTuningJobCheckpoint.cs",
         "InternalFineTuningJobCheckpoint.Serialization.cs",
         "InternalFineTuningJobCheckpointMetrics.cs",
         "InternalFineTuningJobCheckpointMetrics.Serialization.cs",
         "InternalFineTuningJobCheckpointObject.cs",
-        "InternalFineTuningJobError.cs",
-        "InternalFineTuningJobError.Serialization.cs",
         "InternalFineTuningJobEvent.cs",
         "InternalFineTuningJobEvent.Serialization.cs",
         "InternalFineTuningJobEventLevel.cs",
         "InternalFineTuningJobEventObject.cs",
-        "InternalFineTuningJobHyperparameters.cs",
-        "InternalFineTuningJobHyperparameters.Serialization.cs",
-        "InternalFineTuningJobObject.cs",
-        "InternalFineTuningJobStatus.cs",
         "InternalListFineTuningJobCheckpointsResponse.cs",
         "InternalListFineTuningJobCheckpointsResponse.Serialization.cs",
         "InternalListFineTuningJobCheckpointsResponseObject.cs",
@@ -778,9 +789,11 @@ function Edit-GeneratedModels {
         "VectorStoreModificationOptions.Serialization.cs",
         "VectorStoreStatus.Serialization.cs"
     )
+    $usedExclusions = @()
 
     foreach ($file in $files) {
         if ($exclusions -contains $file.Name) {
+            $usedExclusions += $file.Name
             continue
         }
 
@@ -789,7 +802,7 @@ function Edit-GeneratedModels {
             continue
         }
 
-        Write-Output "Editing $($file.FullName)"
+        Write-ColorOutput green "Editing $($file.FullName)"
 
         $content = $content -creplace "public partial class", "internal partial class"
         $content = $content -creplace "public abstract partial class", "internal abstract partial class"
@@ -800,6 +813,12 @@ function Edit-GeneratedModels {
 
         $content | Set-Content -Path $file.FullName -NoNewline
     }
+
+    $unusedExclusions = $exclusions | Where-Object { $usedExclusions -notcontains $_ }
+    if ($unusedExclusions.Count -gt 0) {
+		Write-ColorOutput darkyellow "The following exclusions were not used:"
+		Write-ColorOutput darkyellow $unusedExclusions
+	}
 }
 
 Edit-GeneratedSubclients

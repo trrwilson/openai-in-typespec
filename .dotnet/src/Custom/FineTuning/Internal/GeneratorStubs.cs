@@ -38,9 +38,6 @@ internal readonly partial struct InternalFineTuningIntegrationType { }
 [CodeGenModel("FineTuningIntegrationWandb")]
 internal partial class InternalFineTuningIntegrationWandb { }
 
-[CodeGenModel("FineTuningJob")]
-internal partial class InternalFineTuningJob { }
-
 [CodeGenModel("FineTuningJobCheckpoint")]
 internal partial class InternalFineTuningJobCheckpoint { }
 
@@ -50,26 +47,14 @@ internal partial class InternalFineTuningJobCheckpointMetrics { }
 [CodeGenModel("FineTuningJobCheckpointObject")]
 internal readonly partial struct InternalFineTuningJobCheckpointObject { }
 
-[CodeGenModel("FineTuningJobError")]
-internal partial class InternalFineTuningJobError { }
-
 [CodeGenModel("FineTuningJobEvent")]
 internal partial class InternalFineTuningJobEvent { }
 
-[CodeGenModel("FineTuningJobEventLevel")]
+[CodeGenModel("FineTuningJobEventLevel")]   
 internal readonly partial struct InternalFineTuningJobEventLevel { }
 
 [CodeGenModel("FineTuningJobEventObject")]
 internal readonly partial struct InternalFineTuningJobEventObject { }
-
-[CodeGenModel("FineTuningJobHyperparameters")]
-internal partial class InternalFineTuningJobHyperparameters { }
-
-[CodeGenModel("FineTuningJobObject")]
-internal readonly partial struct InternalFineTuningJobObject { }
-
-[CodeGenModel("FineTuningJobStatus")]
-internal readonly partial struct InternalFineTuningJobStatus { }
 
 [CodeGenModel("ListFineTuningJobCheckpointsResponse")]
 internal partial class InternalListFineTuningJobCheckpointsResponse { }
