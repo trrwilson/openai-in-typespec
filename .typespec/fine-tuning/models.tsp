@@ -5,6 +5,7 @@
 
 import "../chat";
 import "../common";
+import "./custom.tsp";
 
 using TypeSpec.OpenAPI;
 
@@ -70,23 +71,31 @@ model CreateFineTuningJobRequest {
 
   /** The hyperparameters used for the fine-tuning job. */
   hyperparameters?: {
+    // Tool customization: use a custom type for fine-tuning heterogeneous unions
     /**
      * Number of examples in each batch. A larger batch size means that model parameters
      * are updated less frequently, but with lower variance.
      */
-    batch_size?: "auto" | int32 = "auto";
+    @minValue(1)
+    @maxValue(256)
+    batch_size?: CreateFineTuningJobRequestHyperparametersBatchSize = "auto";
 
+    // Tool customization: use a custom type for fine-tuning heterogeneous unions
     /**
      * Scaling factor for the learning rate. A smaller learning rate may be useful to avoid
      * overfitting.
      */
-    learning_rate_multiplier?: "auto" | float32 = "auto";
+    @minValue(0)
+    learning_rate_multiplier?: CreateFineTuningJobRequestHyperparametersLearningRateMultiplier = "auto";
 
+    // Tool customization: use a custom type for fine-tuning heterogeneous unions
     /**
      * The number of epochs to train the model for. An epoch refers to one full cycle
      * through the training dataset.
      */
-    n_epochs?: "auto" | int32 = "auto";
+    @minValue(1)
+    @maxValue(50)
+    n_epochs?: CreateFineTuningJobRequestHyperparametersNEpochs = "auto";
   };
 
   @doc("""

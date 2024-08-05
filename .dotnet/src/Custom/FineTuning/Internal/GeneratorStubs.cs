@@ -5,9 +5,6 @@ namespace OpenAI.FineTuning;
 [CodeGenModel("CreateFineTuningJobRequest")]
 internal partial class InternalCreateFineTuningJobRequest { }
 
-[CodeGenModel("CreateFineTuningJobRequestHyperparameters")]
-internal partial class InternalCreateFineTuningJobRequestHyperparameters { }
-
 [CodeGenModel("CreateFineTuningJobRequestIntegration")]
 internal partial class InternalCreateFineTuningJobRequestIntegration { }
 
