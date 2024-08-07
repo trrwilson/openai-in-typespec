@@ -67,16 +67,12 @@ public partial struct FineTuningJobHyperparameters
         }
     }
 
-    public float GetNEpochs() => HandleDefaults(NEpochs);
-    public float GetBatchSize()
-    {
-        return HandleDefaults(BatchSize);
-    }
-
+    public int GetNEpochs() => (int) HandleDefaults(NEpochs);
+    public int GetBatchSize() => (int) HandleDefaults(BatchSize);
     public float GetLearningRateMultiplier() => HandleDefaults(LearningRateMultipler);
 
 
-    public void SetNEpochs(float value)
+    public void SetNEpochs(int value)
     {
         NEpochs = new BinaryData(value);
     }
@@ -90,7 +86,7 @@ public partial struct FineTuningJobHyperparameters
         NEpochs = value;
     }
 
-    public void SetBatchSize(float value)
+    public void SetBatchSize(int value)
     {
         BatchSize = new BinaryData(value);
     }
