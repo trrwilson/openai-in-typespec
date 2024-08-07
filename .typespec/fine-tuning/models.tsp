@@ -69,34 +69,9 @@ model CreateFineTuningJobRequest {
     """)
   training_file: string;
 
+  // Tool customization: reflect observed wire truth (learning_rate_multiplier, n_epochs) for hyperparameters in ft responses
   /** The hyperparameters used for the fine-tuning job. */
-  hyperparameters?: {
-    // Tool customization: use a custom type for fine-tuning heterogeneous unions
-    /**
-     * Number of examples in each batch. A larger batch size means that model parameters
-     * are updated less frequently, but with lower variance.
-     */
-    @minValue(1)
-    @maxValue(256)
-    batch_size?: CreateFineTuningJobRequestHyperparametersBatchSize = "auto";
-
-    // Tool customization: use a custom type for fine-tuning heterogeneous unions
-    /**
-     * Scaling factor for the learning rate. A smaller learning rate may be useful to avoid
-     * overfitting.
-     */
-    @minValue(0)
-    learning_rate_multiplier?: CreateFineTuningJobRequestHyperparametersLearningRateMultiplier = "auto";
-
-    // Tool customization: use a custom type for fine-tuning heterogeneous unions
-    /**
-     * The number of epochs to train the model for. An epoch refers to one full cycle
-     * through the training dataset.
-     */
-    @minValue(1)
-    @maxValue(50)
-    n_epochs?: CreateFineTuningJobRequestHyperparametersNEpochs = "auto";
-  };
+  hyperparameters?: CreateFineTuningJobRequestHyperparameters;
 
   @doc("""
     A string of up to 18 characters that will be added to your fine-tuned model name.
@@ -188,14 +163,9 @@ model FineTuningJob {
   @encode("unixTimestamp", int32)
   finished_at: utcDateTime | null;
 
+  // Tool customization: reflect observed wire truth (learning_rate_multiplier, n_epochs) for hyperparameters in ft responses
   /** The hyperparameters used for the fine-tuning job. See the [fine-tuning guide](/docs/guides/fine-tuning) for more details. */
-  hyperparameters: {
-    /**
-     * The number of epochs to train the model for. An epoch refers to one full cycle through the training dataset.
-     * "auto" decides the optimal number of epochs based on the size of the dataset. If setting the number manually, we support any number between 1 and 50 epochs.
-     */
-    n_epochs: "auto" | int32 = "auto";
-  };
+  hyperparameters: FineTuningJobHyperparameters;
 
   /** The base model that is being fine-tuned. */
   `model`: string;
