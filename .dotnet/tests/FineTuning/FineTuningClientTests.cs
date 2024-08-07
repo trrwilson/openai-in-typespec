@@ -20,7 +20,7 @@ namespace OpenAI.Tests.FineTuning
         }
 
         [Test]
-        public void ExceptionThrownOnInvalidFilename()
+        public void ExceptionThrownOnInvalidFileName()
         {
             var client = new FineTuningClient();
 
@@ -28,6 +28,13 @@ namespace OpenAI.Tests.FineTuning
             Assert.Throws<ClientResultException>(() =>
                 client.CreateJob(training_file: "Invalid File Name", model: "gpt-3.5-turbo")
             );
+        }
+
+        [Test]
+        public void ExceptionThrownOnInvalidModelName()
+        {
+            var client = new FineTuningClient();
+
             Assert.Throws<ClientResultException>(() =>
             {
                 string path = Path.Combine("Assets", "fine_tuning_sample.jsonl");
