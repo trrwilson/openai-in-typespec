@@ -15,8 +15,8 @@ try {
   Invoke { npm exec --no -- tsp format **/*tsp }
   Invoke { npm exec --no -- tsp compile . --pretty }
   Invoke { .$PSScriptRoot\Update-ClientModel.ps1 }
-  Invoke { .$PSScriptRoot\ConvertTo-Internal.ps1 }
   Invoke { .$PSScriptRoot\Edit-Serialization.ps1 }
+  Invoke { .$PSScriptRoot\Run-Checks.ps1 }
 }
 finally {
   Pop-Location
