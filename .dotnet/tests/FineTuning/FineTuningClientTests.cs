@@ -68,6 +68,8 @@ namespace OpenAI.Tests.FineTuning
         {
             var client = new FineTuningClient();
 
+            FineTuningJob job = client.CreateJob("gpt-3.5-turbo", sampleFile.Id);
+
             Assert.True(job.Status.InProgress());
             Assert.AreEqual(0, job.Hyperparameters.GetNEpochs());
 
@@ -88,7 +90,7 @@ namespace OpenAI.Tests.FineTuning
             Assert.AreEqual(2, job.Hyperparameters.GetBatchSize());
             Assert.AreEqual(3, job.Hyperparameters.GetLearningRateMultiplier());
 
-            job = client.CancelJob(job.Id);
+            client.CancelJob(job.Id);
         }
 
         [Test]
@@ -96,7 +98,7 @@ namespace OpenAI.Tests.FineTuning
         {
             var hp = new FineTuningJobHyperparameters(nEpochs: 1, batchSize: 2, learningRateMultiplier: 3);
 
-            FineTuningJob job = await client.CreateJobAsync(sampleFile.Id, "gpt-3.5-turbo");
+            FineTuningJob job = await client.CreateJobAsync("gpt-3.5-turbo", sampleFile.Id);
             Assert.True(job.Status.InProgress());
             job = await client.CancelJobAsync(job.Id);
             Assert.AreEqual(FineTuningJobStatus.Cancelled, job.Status);

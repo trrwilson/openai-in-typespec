@@ -30,15 +30,12 @@ public partial struct FineTuningJobHyperparameters
         NEpochs = nEpochs;
         SerializedAdditionalRawData = serializedAdditionalRawData;
 
-        serializedAdditionalRawData.TryGetValue("batch_size", out BinaryData batchSize);
-        serializedAdditionalRawData.TryGetValue("learning_rate_multiplier", out BinaryData learningRateMultiplier);
+        foreach (KeyValuePair<string, BinaryData> kvp in serializedAdditionalRawData)
+        {
+            if (kvp.Key == "batch_size") { BatchSize = kvp.Value; }
+            if (kvp.Key == "learning_rate_multiplier") { LearningRateMultipler = kvp.Value; }
+        }
 
-        /*        foreach (KeyValuePair<string, BinaryData> kvp in serializedAdditionalRawData)
-                {
-                    if (kvp.Key == "batch_size") { BatchSize = kvp.Value; }            
-                    if (kvp.Key == "learning_rate_multiplier") { LearningRateMultipler = kvp.Value; }
-                }
-        */
     }
 
     public FineTuningJobHyperparameters(int nEpochs = 0, int batchSize = 0, int learningRateMultiplier = 0)
@@ -48,7 +45,7 @@ public partial struct FineTuningJobHyperparameters
         LearningRateMultipler = learningRateMultiplier > 0 ? new BinaryData(learningRateMultiplier) : Auto;
     }
 
-    private int HandleDefaults(BinaryData data)
+    private float HandleDefaults(BinaryData data)
     {
         if (data is null)
         {
@@ -62,7 +59,7 @@ public partial struct FineTuningJobHyperparameters
 
         try
         {
-            return int.Parse(data.ToString());
+            return float.Parse(data.ToString());
         }
         catch (FormatException)
         {
@@ -70,17 +67,16 @@ public partial struct FineTuningJobHyperparameters
         }
     }
 
-    public int GetNEpochs() => HandleDefaults(NEpochs);
-    public int GetBatchSize()
+    public float GetNEpochs() => HandleDefaults(NEpochs);
+    public float GetBatchSize()
     {
-        Console.WriteLine($"Getting batch size: {BatchSize}");
         return HandleDefaults(BatchSize);
     }
 
-    public int GetLearningRateMultiplier() => HandleDefaults(LearningRateMultipler);
+    public float GetLearningRateMultiplier() => HandleDefaults(LearningRateMultipler);
 
 
-    public void SetNEpochs(int value)
+    public void SetNEpochs(float value)
     {
         NEpochs = new BinaryData(value);
     }
@@ -94,7 +90,7 @@ public partial struct FineTuningJobHyperparameters
         NEpochs = value;
     }
 
-    public void SetBatchSize(int value)
+    public void SetBatchSize(float value)
     {
         BatchSize = new BinaryData(value);
     }
@@ -107,7 +103,7 @@ public partial struct FineTuningJobHyperparameters
         BatchSize = value;
 
     }
-    public void SetLearningRateMultiplier(int value)
+    public void SetLearningRateMultiplier(float value)
     {
         LearningRateMultipler = new BinaryData(value);
     }

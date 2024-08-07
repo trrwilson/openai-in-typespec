@@ -80,7 +80,6 @@ namespace OpenAI.FineTuning
             Dictionary<string, BinaryData> rawDataDictionary = new Dictionary<string, BinaryData>();
             foreach (var property in element.EnumerateObject())
             {
-                Console.WriteLine($"DESERIALIZE FTJH Property name: {property.Name}, {options.Format}");
                 if (property.NameEquals("n_epochs"u8))
                 {
                     nEpochs = BinaryData.FromString(property.Value.GetRawText());
