@@ -10,14 +10,13 @@ public partial class FineTuningJob
     internal static FineTuningJob FromResponse(PipelineResponse pipelineResponse)
     {
         using var document = JsonDocument.Parse(pipelineResponse.Content);
-        return DeserializeFineTuningJob(document.RootElement);
+        return DeserializeFineTuningJob(document.RootElement, options: new(format: "RW"));
     }
 
     public FineTuningJobStatus Status { get; }
 
-    public string Object { get; }
+    public string Object { get; }  // make hidden 
 
-    public FineTuningJobHyperparameters? Hyperparameters { get; set; } 
+    public FineTuningJobHyperparameters Hyperparameters { get; set; } = default;
     internal IReadOnlyList<InternalFineTuningIntegration> Integrations { get; }
-
 }

@@ -70,7 +70,7 @@ namespace OpenAI.FineTuning
             if (SerializedAdditionalRawData?.ContainsKey("hyperparameters") != true)
             {
                 writer.WritePropertyName("hyperparameters"u8);
-                writer.WriteObjectValue<FineTuningJobHyperparameters?>(Hyperparameters, options);
+                writer.WriteObjectValue<FineTuningJobHyperparameters>(Hyperparameters, options);
             }
             if (SerializedAdditionalRawData?.ContainsKey("model") != true)
             {
@@ -212,7 +212,7 @@ namespace OpenAI.FineTuning
             FineTuningJobError error = default;
             string fineTunedModel = default;
             DateTimeOffset? finishedAt = default;
-            FineTuningJobHyperparameters? hyperparameters = default;
+            FineTuningJobHyperparameters hyperparameters = default;
             string model = default;
             string @object = default;
             string organizationId = default;

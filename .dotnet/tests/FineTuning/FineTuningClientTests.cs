@@ -12,6 +12,26 @@ namespace OpenAI.Tests.FineTuning
     [TestFixture]
     public class FineTuningClientTests
     {
+        FineTuningClient client;
+        FileClient fileClient;
+        OpenAIFileInfo sampleFile;
+
+        [SetUp]
+        public void Setup()
+        {
+            client = new FineTuningClient();
+            fileClient = new FileClient();
+            string path = Path.Combine("Assets", "fine_tuning_sample.jsonl");
+
+            sampleFile = fileClient.UploadFile(path, "fine-tune");
+
+        }
+        [TearDown]
+        public void TearDown()
+        {
+            fileClient.DeleteFile(sampleFile.Id);
+        }
+
         [Test]
         public void ClientDefaults()
         {
@@ -26,7 +46,7 @@ namespace OpenAI.Tests.FineTuning
 
             // Wrong filename will respond with http 400
             Assert.Throws<ClientResultException>(() =>
-                client.CreateJob(training_file: "Invalid File Name", model: "gpt-3.5-turbo")
+                client.CreateJob(model: "gpt-3.5-turbo", trainingFile: "Invalid File Name")
             );
         }
 
@@ -38,7 +58,7 @@ namespace OpenAI.Tests.FineTuning
             Assert.Throws<ClientResultException>(() =>
             {
                 string path = Path.Combine("Assets", "fine_tuning_sample.jsonl");
-                client.CreateJob(training_file: path, model: "gpt-nonexistent");
+                client.CreateJob(model: "gpt-nonexistent", trainingFile: sampleFile.Id);
             }
             );
         }
@@ -48,51 +68,39 @@ namespace OpenAI.Tests.FineTuning
         {
             var client = new FineTuningClient();
 
-            var fileClient = new FileClient();
-            string path = Path.Combine("Assets", "fine_tuning_sample.jsonl");
+            Assert.True(job.Status.InProgress());
+            Assert.AreEqual(0, job.Hyperparameters.GetNEpochs());
 
-            OpenAIFileInfo file = fileClient.UploadFile(path, "fine-tune");
+            job = client.CancelJob(job.Id);
 
-            try
-            {
+            Assert.AreEqual(FineTuningJobStatus.Cancelled, job.Status);
+            Assert.AreEqual("fine_tuning.job", job.Object);
+            Assert.False(job.Status.InProgress());
+        }
+        [Test]
+        public void CreateAndCancelJobWithHyperparams()
+        {
+            var hp = new FineTuningJobHyperparameters(nEpochs: 1, batchSize: 2, learningRateMultiplier: 3);
 
-                Console.WriteLine("Creating job...");
-                FineTuningJob job = client.CreateJob(file.Id, "gpt-3.5-turbo");	
-                Assert.True(job.Status.InProgress());
-                Console.WriteLine("Job created successfully! Cancelling...");
-                job = client.CancelJob(job.Id);
-                Assert.AreEqual(FineTuningJobStatus.Cancelled, job.Status);
-                Assert.AreEqual("fine_tuning.job", job.Object);
-                Assert.False(job.Status.InProgress());
-            }
-            finally
-            {
-                fileClient.DeleteFile(file.Id);
-            }
+            FineTuningJob job = client.CreateJob("gpt-3.5-turbo", sampleFile.Id, hyperparameters: hp);
+
+            Assert.AreEqual(1, job.Hyperparameters.GetNEpochs());
+            Assert.AreEqual(2, job.Hyperparameters.GetBatchSize());
+            Assert.AreEqual(3, job.Hyperparameters.GetLearningRateMultiplier());
+
+            job = client.CancelJob(job.Id);
         }
 
         [Test]
         public async Task CreateAndCancelJobAsync()
         {
-            var client = new FineTuningClient();
+            var hp = new FineTuningJobHyperparameters(nEpochs: 1, batchSize: 2, learningRateMultiplier: 3);
 
-            var fileClient = new FileClient();
-            string path = Path.Combine("Assets", "fine_tuning_sample.jsonl");
-
-            OpenAIFileInfo file = await fileClient.UploadFileAsync(path, "fine-tune");
-
-            try
-            {
-                FineTuningJob job = await client.CreateJobAsync(file.Id, "gpt-3.5-turbo");
-                Assert.True(job.Status.InProgress());
-                job = await client.CancelJobAsync(job.Id);
-                Assert.AreEqual(FineTuningJobStatus.Cancelled, job.Status);
-                Assert.False(job.Status.InProgress());
-            }
-            finally
-            {
-                await fileClient.DeleteFileAsync(file.Id);
-            }
+            FineTuningJob job = await client.CreateJobAsync(sampleFile.Id, "gpt-3.5-turbo");
+            Assert.True(job.Status.InProgress());
+            job = await client.CancelJobAsync(job.Id);
+            Assert.AreEqual(FineTuningJobStatus.Cancelled, job.Status);
+            Assert.False(job.Status.InProgress());
         }
     }
 }

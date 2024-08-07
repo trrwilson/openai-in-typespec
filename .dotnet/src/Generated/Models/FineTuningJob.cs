@@ -12,7 +12,7 @@ namespace OpenAI.FineTuning
     public partial class FineTuningJob
     {
         internal IDictionary<string, BinaryData> SerializedAdditionalRawData { get; set; }
-        internal FineTuningJob(string id, DateTimeOffset createdAt, FineTuningJobError error, string fineTunedModel, DateTimeOffset? finishedAt, FineTuningJobHyperparameters? hyperparameters, string model, string organizationId, IEnumerable<string> resultFiles, FineTuningJobStatus status, int? trainedTokens, string trainingFile, string validationFile, int seed)
+        internal FineTuningJob(string id, DateTimeOffset createdAt, FineTuningJobError error, string fineTunedModel, DateTimeOffset? finishedAt, FineTuningJobHyperparameters hyperparameters, string model, string organizationId, IEnumerable<string> resultFiles, FineTuningJobStatus status, int? trainedTokens, string trainingFile, string validationFile, int seed)
         {
             Argument.AssertNotNull(id, nameof(id));
             Argument.AssertNotNull(model, nameof(model));
@@ -37,7 +37,7 @@ namespace OpenAI.FineTuning
             Seed = seed;
         }
 
-        internal FineTuningJob(string id, DateTimeOffset createdAt, FineTuningJobError error, string fineTunedModel, DateTimeOffset? finishedAt, FineTuningJobHyperparameters? hyperparameters, string model, string @object, string organizationId, IReadOnlyList<string> resultFiles, FineTuningJobStatus status, int? trainedTokens, string trainingFile, string validationFile, IReadOnlyList<InternalFineTuningIntegration> integrations, int seed, DateTimeOffset? estimatedFinish, IDictionary<string, BinaryData> serializedAdditionalRawData)
+        internal FineTuningJob(string id, DateTimeOffset createdAt, FineTuningJobError error, string fineTunedModel, DateTimeOffset? finishedAt, FineTuningJobHyperparameters hyperparameters, string model, string @object, string organizationId, IReadOnlyList<string> resultFiles, FineTuningJobStatus status, int? trainedTokens, string trainingFile, string validationFile, IReadOnlyList<InternalFineTuningIntegration> integrations, int seed, DateTimeOffset? estimatedFinish, IDictionary<string, BinaryData> serializedAdditionalRawData)
         {
             Id = id;
             CreatedAt = createdAt;
