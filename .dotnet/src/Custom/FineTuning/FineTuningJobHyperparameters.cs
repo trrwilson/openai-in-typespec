@@ -5,44 +5,26 @@ namespace OpenAI.FineTuning;
 
 
 [CodeGenModel("FineTuningJobHyperparameters")]
-public partial struct FineTuningJobHyperparameters
+public readonly partial struct FineTuningJobHyperparameters
 {
     private static readonly BinaryData Auto = new("\"auto\"");
 
     [CodeGenMember("n_epochs")]
-    internal BinaryData NEpochs { get; set; }
+    internal BinaryData NEpochs { get; }
 
     [CodeGenMember("batch_size")]
-    internal BinaryData BatchSize { get; set; }
+    internal BinaryData BatchSize { get; }
 
     [CodeGenMember("learning_rate_multiplier")]
-    internal BinaryData LearningRateMultipler { get; set; }
+    internal BinaryData LearningRateMultiplier { get; }
 
     public IDictionary<string, BinaryData> SerializedAdditionalRawData { get; }
-
-    public FineTuningJobHyperparameters(BinaryData nEpochs)
-    {
-        NEpochs = nEpochs;
-    }
-
-    public FineTuningJobHyperparameters(BinaryData nEpochs, IDictionary<string, BinaryData> serializedAdditionalRawData)
-    {
-        NEpochs = nEpochs;
-        SerializedAdditionalRawData = serializedAdditionalRawData;
-
-        foreach (KeyValuePair<string, BinaryData> kvp in serializedAdditionalRawData)
-        {
-            if (kvp.Key == "batch_size") { BatchSize = kvp.Value; }
-            if (kvp.Key == "learning_rate_multiplier") { LearningRateMultipler = kvp.Value; }
-        }
-
-    }
 
     public FineTuningJobHyperparameters(int nEpochs = 0, int batchSize = 0, int learningRateMultiplier = 0)
     {
         NEpochs = nEpochs > 0 ? new BinaryData(nEpochs) : Auto;
         BatchSize = batchSize > 0 ? new BinaryData(batchSize) : Auto;
-        LearningRateMultipler = learningRateMultiplier > 0 ? new BinaryData(learningRateMultiplier) : Auto;
+        LearningRateMultiplier = learningRateMultiplier > 0 ? new BinaryData(learningRateMultiplier) : Auto;
     }
 
     private float HandleDefaults(BinaryData data)
@@ -67,48 +49,7 @@ public partial struct FineTuningJobHyperparameters
         }
     }
 
-    public int GetNEpochs() => (int) HandleDefaults(NEpochs);
+    public int GetCycleCount() => (int) HandleDefaults(NEpochs);
     public int GetBatchSize() => (int) HandleDefaults(BatchSize);
-    public float GetLearningRateMultiplier() => HandleDefaults(LearningRateMultipler);
-
-
-    public void SetNEpochs(int value)
-    {
-        NEpochs = new BinaryData(value);
-    }
-
-    public void SetNEpochsAuto()
-    {
-        NEpochs = Auto;
-    }
-    public void SetNEpochs(BinaryData value)
-    {
-        NEpochs = value;
-    }
-
-    public void SetBatchSize(int value)
-    {
-        BatchSize = new BinaryData(value);
-    }
-    public void SetBatchAuto()
-    {
-        BatchSize = Auto;
-    }
-    public void SetBatchSize(BinaryData value)
-    {
-        BatchSize = value;
-
-    }
-    public void SetLearningRateMultiplier(float value)
-    {
-        LearningRateMultipler = new BinaryData(value);
-    }
-    public void SetLearningRateMultiplierAuto()
-    {
-        LearningRateMultipler = Auto;
-    }
-    public void SetLearningRateMultiplier(BinaryData value)
-    {
-        LearningRateMultipler = value;
-    }
+    public float GetLearningRateMultiplier() => HandleDefaults(LearningRateMultiplier);
 }

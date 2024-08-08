@@ -16,7 +16,7 @@ namespace OpenAI.Tests.FineTuning
         FileClient fileClient;
         OpenAIFileInfo sampleFile;
 
-        [SetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
             client = new FineTuningClient();
@@ -26,52 +26,39 @@ namespace OpenAI.Tests.FineTuning
             sampleFile = fileClient.UploadFile(path, "fine-tune");
 
         }
-        [TearDown]
+        [OneTimeTearDown]
         public void TearDown()
         {
             fileClient.DeleteFile(sampleFile.Id);
         }
 
         [Test]
-        public void ClientDefaults()
-        {
-            var client = new FineTuningClient();
-            Assert.IsNotNull(client);
-        }
-
-        [Test]
+        [Parallelizable]
         public void ExceptionThrownOnInvalidFileName()
         {
-            var client = new FineTuningClient();
-
-            // Wrong filename will respond with http 400
             Assert.Throws<ClientResultException>(() =>
                 client.CreateJob(model: "gpt-3.5-turbo", trainingFile: "Invalid File Name")
             );
         }
 
         [Test]
+        [Parallelizable]
         public void ExceptionThrownOnInvalidModelName()
         {
-            var client = new FineTuningClient();
-
             Assert.Throws<ClientResultException>(() =>
-            {
-                string path = Path.Combine("Assets", "fine_tuning_sample.jsonl");
-                client.CreateJob(model: "gpt-nonexistent", trainingFile: sampleFile.Id);
-            }
+                client.CreateJob(model: "gpt-nonexistent", trainingFile: sampleFile.Id)
             );
         }
 
         [Test]
+        [Parallelizable]
         public void CreateAndCancelJob()
         {
-            var client = new FineTuningClient();
 
             FineTuningJob job = client.CreateJob("gpt-3.5-turbo", sampleFile.Id);
 
             Assert.True(job.Status.InProgress());
-            Assert.AreEqual(0, job.Hyperparameters.GetNEpochs());
+            Assert.AreEqual(0, job.Hyperparameters.GetCycleCount());
 
             job = client.CancelJob(job.Id);
 
@@ -79,14 +66,17 @@ namespace OpenAI.Tests.FineTuning
             Assert.AreEqual("fine_tuning.job", job.Object);
             Assert.False(job.Status.InProgress());
         }
+
         [Test]
+        [Parallelizable]
         public void CreateAndCancelJobWithHyperparams()
         {
-            var hp = new FineTuningJobHyperparameters(nEpochs: 1, batchSize: 2, learningRateMultiplier: 3);
+
+            var hp = new HyperparameterOptions(cycleCount: 1, batchSize: 2, learningRate: 3);
 
             FineTuningJob job = client.CreateJob("gpt-3.5-turbo", sampleFile.Id, hyperparameters: hp);
 
-            Assert.AreEqual(1, job.Hyperparameters.GetNEpochs());
+            Assert.AreEqual(1, job.Hyperparameters.GetCycleCount());
             Assert.AreEqual(2, job.Hyperparameters.GetBatchSize());
             Assert.AreEqual(3, job.Hyperparameters.GetLearningRateMultiplier());
 
@@ -94,6 +84,7 @@ namespace OpenAI.Tests.FineTuning
         }
 
         [Test]
+        [Parallelizable]
         public async Task CreateAndCancelJobAsync()
         {
             var hp = new FineTuningJobHyperparameters(nEpochs: 1, batchSize: 2, learningRateMultiplier: 3);

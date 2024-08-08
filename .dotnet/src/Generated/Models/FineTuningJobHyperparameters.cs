@@ -5,10 +5,29 @@
 using System;
 using System.Collections.Generic;
 
-namespace OpenAI.Internal.FineTuning
+namespace OpenAI.FineTuning
 {
-    internal readonly partial struct FineTuningJobHyperparameters
+    public readonly partial struct FineTuningJobHyperparameters
     {
+        internal FineTuningJobHyperparameters(BinaryData nEpochs, BinaryData batchSize, BinaryData learningRateMultiplier)
+        {
+            Argument.AssertNotNull(nEpochs, nameof(nEpochs));
+            Argument.AssertNotNull(batchSize, nameof(batchSize));
+            Argument.AssertNotNull(learningRateMultiplier, nameof(learningRateMultiplier));
+
+            NEpochs = nEpochs;
+            BatchSize = batchSize;
+            LearningRateMultiplier = learningRateMultiplier;
+        }
+
+        internal FineTuningJobHyperparameters(BinaryData nEpochs, BinaryData batchSize, BinaryData learningRateMultiplier, IDictionary<string, BinaryData> serializedAdditionalRawData)
+        {
+            NEpochs = nEpochs;
+            BatchSize = batchSize;
+            LearningRateMultiplier = learningRateMultiplier;
+            SerializedAdditionalRawData = serializedAdditionalRawData;
+        }
+
         public FineTuningJobHyperparameters()
         {
         }

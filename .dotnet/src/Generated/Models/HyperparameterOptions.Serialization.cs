@@ -21,6 +21,11 @@ namespace OpenAI.FineTuning
             }
 
             writer.WriteStartObject();
+            if (SerializedAdditionalRawData?.ContainsKey("n_epochs") != true)
+            {
+                writer.WritePropertyName("n_epochs"u8);
+                writer.WriteStringValue(CycleCount.ToString());
+            }
             if (SerializedAdditionalRawData?.ContainsKey("batch_size") != true)
             {
                 writer.WritePropertyName("batch_size"u8);
@@ -30,11 +35,6 @@ namespace OpenAI.FineTuning
             {
                 writer.WritePropertyName("learning_rate_multiplier"u8);
                 writer.WriteStringValue(LearningRate.ToString());
-            }
-            if (SerializedAdditionalRawData?.ContainsKey("n_epochs") != true)
-            {
-                writer.WritePropertyName("n_epochs"u8);
-                writer.WriteStringValue(CycleCount.ToString());
             }
             if (SerializedAdditionalRawData != null)
             {
@@ -78,13 +78,22 @@ namespace OpenAI.FineTuning
             {
                 return null;
             }
+            HyperparameterCycleCount nEpochs = default;
             HyperparameterBatchSize batchSize = default;
             HyperparameterLearningRate learningRateMultiplier = default;
-            HyperparameterCycleCount nEpochs = default;
             IDictionary<string, BinaryData> serializedAdditionalRawData = default;
             Dictionary<string, BinaryData> rawDataDictionary = new Dictionary<string, BinaryData>();
             foreach (var property in element.EnumerateObject())
             {
+                if (property.NameEquals("n_epochs"u8))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        continue;
+                    }
+                    nEpochs = new HyperparameterCycleCount(property.Value.GetString());
+                    continue;
+                }
                 if (property.NameEquals("batch_size"u8))
                 {
                     if (property.Value.ValueKind == JsonValueKind.Null)
@@ -103,15 +112,6 @@ namespace OpenAI.FineTuning
                     learningRateMultiplier = new HyperparameterLearningRate(property.Value.GetString());
                     continue;
                 }
-                if (property.NameEquals("n_epochs"u8))
-                {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        continue;
-                    }
-                    nEpochs = new HyperparameterCycleCount(property.Value.GetString());
-                    continue;
-                }
                 if (options.Format != "W")
                 {
                     rawDataDictionary ??= new Dictionary<string, BinaryData>();
@@ -119,7 +119,7 @@ namespace OpenAI.FineTuning
                 }
             }
             serializedAdditionalRawData = rawDataDictionary;
-            return new HyperparameterOptions(batchSize, learningRateMultiplier, nEpochs, serializedAdditionalRawData);
+            return new HyperparameterOptions(nEpochs, batchSize, learningRateMultiplier, serializedAdditionalRawData);
         }
 
         BinaryData IPersistableModel<HyperparameterOptions>.Write(ModelReaderWriterOptions options)

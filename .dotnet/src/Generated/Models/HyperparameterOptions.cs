@@ -13,13 +13,5 @@ namespace OpenAI.FineTuning
         public HyperparameterOptions()
         {
         }
-
-        internal HyperparameterOptions(HyperparameterBatchSize batchSize, HyperparameterLearningRate learningRate, HyperparameterCycleCount cycleCount, IDictionary<string, BinaryData> serializedAdditionalRawData)
-        {
-            BatchSize = batchSize;
-            LearningRate = learningRate;
-            CycleCount = cycleCount;
-            SerializedAdditionalRawData = serializedAdditionalRawData;
-        }
     }
 }

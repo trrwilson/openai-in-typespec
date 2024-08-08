@@ -21,6 +21,18 @@ namespace OpenAI.FineTuning
             }
 
             writer.WriteStartObject();
+            if (SerializedAdditionalRawData?.ContainsKey("n_epochs") != true)
+            {
+                writer.WritePropertyName("n_epochs"u8);
+#if NET6_0_OR_GREATER
+				writer.WriteRawValue(NEpochs);
+#else
+                using (JsonDocument document = JsonDocument.Parse(NEpochs))
+                {
+                    JsonSerializer.Serialize(writer, document.RootElement);
+                }
+#endif
+            }
             if (SerializedAdditionalRawData?.ContainsKey("batch_size") != true)
             {
                 writer.WritePropertyName("batch_size"u8);
@@ -40,18 +52,6 @@ namespace OpenAI.FineTuning
 				writer.WriteRawValue(LearningRateMultiplier);
 #else
                 using (JsonDocument document = JsonDocument.Parse(LearningRateMultiplier))
-                {
-                    JsonSerializer.Serialize(writer, document.RootElement);
-                }
-#endif
-            }
-            if (SerializedAdditionalRawData?.ContainsKey("n_epochs") != true)
-            {
-                writer.WritePropertyName("n_epochs"u8);
-#if NET6_0_OR_GREATER
-				writer.WriteRawValue(NEpochs);
-#else
-                using (JsonDocument document = JsonDocument.Parse(NEpochs))
                 {
                     JsonSerializer.Serialize(writer, document.RootElement);
                 }
@@ -99,17 +99,18 @@ namespace OpenAI.FineTuning
         {
             options ??= ModelSerializationExtensions.WireOptions;
 
-            if (element.ValueKind == JsonValueKind.Null)
-            {
-                return null;
-            }
+            BinaryData nEpochs = default;
             BinaryData batchSize = default;
             BinaryData learningRateMultiplier = default;
-            BinaryData nEpochs = default;
             IDictionary<string, BinaryData> serializedAdditionalRawData = default;
             Dictionary<string, BinaryData> rawDataDictionary = new Dictionary<string, BinaryData>();
             foreach (var property in element.EnumerateObject())
             {
+                if (property.NameEquals("n_epochs"u8))
+                {
+                    nEpochs = BinaryData.FromString(property.Value.GetRawText());
+                    continue;
+                }
                 if (property.NameEquals("batch_size"u8))
                 {
                     batchSize = BinaryData.FromString(property.Value.GetRawText());
@@ -120,11 +121,6 @@ namespace OpenAI.FineTuning
                     learningRateMultiplier = BinaryData.FromString(property.Value.GetRawText());
                     continue;
                 }
-                if (property.NameEquals("n_epochs"u8))
-                {
-                    nEpochs = BinaryData.FromString(property.Value.GetRawText());
-                    continue;
-                }
                 if (options.Format != "W")
                 {
                     rawDataDictionary ??= new Dictionary<string, BinaryData>();
@@ -132,7 +128,7 @@ namespace OpenAI.FineTuning
                 }
             }
             serializedAdditionalRawData = rawDataDictionary;
-            return new InternalFineTuningJobHyperparameters(batchSize, learningRateMultiplier, nEpochs, serializedAdditionalRawData);
+            return new FineTuningJobHyperparameters(nEpochs, batchSize, learningRateMultiplier, serializedAdditionalRawData);
         }
 
         BinaryData IPersistableModel<FineTuningJobHyperparameters>.Write(ModelReaderWriterOptions options)

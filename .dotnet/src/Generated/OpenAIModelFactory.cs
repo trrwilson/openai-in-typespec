@@ -85,14 +85,14 @@ namespace OpenAI
             return new EmbeddingTokenUsage(inputTokens, totalTokens, serializedAdditionalRawData: null);
         }
 
+        public static HyperparameterOptions HyperparameterOptions(HyperparameterCycleCount cycleCount = default, HyperparameterBatchSize batchSize = default, HyperparameterLearningRate learningRate = default)
+        {
+            return new HyperparameterOptions(cycleCount, batchSize, learningRate, serializedAdditionalRawData: null);
+        }
+
         public static FineTuningJobError FineTuningJobError(string code = null, string message = null, string param = null)
         {
             return new FineTuningJobError(code, message, param, serializedAdditionalRawData: null);
-        }
-
-        public static FineTuningJobHyperparameters FineTuningJobHyperparameters(BinaryData nEpochs = null)
-        {
-            return new FineTuningJobHyperparameters(nEpochs, serializedAdditionalRawData: null);
         }
 
         public static GeneratedImageCollection GeneratedImageCollection(DateTimeOffset created = default, IEnumerable<GeneratedImage> data = null)
