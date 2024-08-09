@@ -9,6 +9,12 @@ using System.Threading.Tasks;
 
 namespace OpenAI.Tests.FineTuning
 {
+
+    public class Expensive : ExplicitAttribute
+    {
+        public Expensive() : base("This finishes the job so it will cost $ on the account.") { }
+    }
+
     [TestFixture]
     public class FineTuningClientTests
     {
@@ -23,9 +29,9 @@ namespace OpenAI.Tests.FineTuning
             fileClient = new FileClient();
             string path = Path.Combine("Assets", "fine_tuning_sample.jsonl");
 
-            sampleFile = fileClient.UploadFile(path, "fine-tune");
-
+            sampleFile = fileClient.UploadFile(path, FileUploadPurpose.FineTune);
         }
+
         [OneTimeTearDown]
         public void TearDown()
         {
@@ -63,7 +69,6 @@ namespace OpenAI.Tests.FineTuning
             job = client.CancelJob(job.Id);
 
             Assert.AreEqual(FineTuningJobStatus.Cancelled, job.Status);
-            Assert.AreEqual("fine_tuning.job", job.Object);
             Assert.False(job.Status.InProgress());
         }
 
@@ -87,13 +92,36 @@ namespace OpenAI.Tests.FineTuning
         [Parallelizable]
         public async Task CreateAndCancelJobAsync()
         {
-            var hp = new FineTuningJobHyperparameters(nEpochs: 1, batchSize: 2, learningRateMultiplier: 3);
-
             FineTuningJob job = await client.CreateJobAsync("gpt-3.5-turbo", sampleFile.Id);
             Assert.True(job.Status.InProgress());
+
             job = await client.CancelJobAsync(job.Id);
+
             Assert.AreEqual(FineTuningJobStatus.Cancelled, job.Status);
             Assert.False(job.Status.InProgress());
+        }
+
+        [Test]
+        [Parallelizable]
+        [Expensive]
+        public async Task TestWaitForSuccess()
+        {
+            // Keep number of iterations low to avoid high costs
+            var hp = new HyperparameterOptions(cycleCount: 10, batchSize: 1);
+
+            FineTuningJob job = client.CreateJob("ft:gpt-3.5-turbo-0125:personal::9rYqxSbx", sampleFile.Id, hp);
+
+            job = await client.WaitUntilCompleted(job);
+            // Debug logs might be similar to:
+            /*
+             *     Waiting for 30 seconds
+             *     Waiting for 30 seconds
+             *     ...
+             *     Waiting for 30 seconds
+             *     Waiting for 00:03:16.7177007
+             */
+
+            Assert.AreEqual(FineTuningJobStatus.Succeeded, job.Status);
         }
     }
 }

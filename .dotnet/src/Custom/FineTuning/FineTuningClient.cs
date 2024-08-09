@@ -54,7 +54,7 @@ public partial class FineTuningClient
               OpenAIClient.CreatePipeline(OpenAIClient.GetApiKey(), options),
               OpenAIClient.GetEndpoint(options),
               options)
-    {}
+    { }
 
     /// <summary> Initializes a new instance of FineTuningClient. </summary>
     /// <param name="pipeline"> The HTTP pipeline for sending and receiving REST requests and responses. </param>
@@ -71,20 +71,25 @@ public partial class FineTuningClient
     /// <param name="options"> Additional options (<see cref="RequestOptions"/>) to customize the request. </param>
     public ClientResult<FineTuningJob> CreateJob(string model, string trainingFile, HyperparameterOptions hyperparameters = default, RequestOptions options = default)
     {
-        var request = new InternalCreateFineTuningJobRequest(model, trainingFile);
-        request.Hyperparameters = hyperparameters;
-        var content = request.ToBinaryContent();
-        ClientResult result = CreateJob(content, options);
-        return ClientResult.FromValue(FineTuningJob.FromResponse(result.GetRawResponse()), result.GetRawResponse());
+        var task = CreateJobAsync(model, trainingFile, hyperparameters, options);
+        try
+        {
+            task.Wait();
+        }
+        catch (AggregateException e)
+        {
+            throw e.InnerException;
+        }
+        return task.Result;
     }
 
     /// <summary> Async version of create job</summary>
     /// <param name="model"> The model name to fine-tune. String such as "gpt-3.5-turbo" </param>
     /// <param name="trainingFile"> The training file name that is already uploaded. String should match pattern '^file-[a-zA-Z0-9]{24}$'  </param>
     /// <param name="options"> Additional options (<see cref="RequestOptions"/>) to customize the request. </param>
-    public async Task<ClientResult<FineTuningJob>> CreateJobAsync(string model, string trainingFile, RequestOptions options = default)
+    public async Task<ClientResult<FineTuningJob>> CreateJobAsync(string model, string trainingFile, HyperparameterOptions hyperparameters = default, RequestOptions options = default)
     {
-        var request = new InternalCreateFineTuningJobRequest(model, trainingFile);
+        var request = new InternalCreateFineTuningJobRequest(model, trainingFile, hyperparameters, suffix: null, validationFile: null, integrations: null, null, null);
         var content = request.ToBinaryContent();
         ClientResult result = await CreateJobAsync(content, options);
         return ClientResult.FromValue(FineTuningJob.FromResponse(result.GetRawResponse()), result.GetRawResponse());
@@ -110,5 +115,33 @@ public partial class FineTuningClient
     {
         ClientResult result = await CancelJobAsync(jobId, cancellationToken.ToRequestOptions());
         return ClientResult.FromValue(FineTuningJob.FromResponse(result.GetRawResponse()), result.GetRawResponse());
+    }
+
+    public async Task<ClientResult<FineTuningJob>> GetJobAsync(string jobId)
+    {
+        ClientResult result = await GetJobAsync(jobId, null);
+        return ClientResult.FromValue(FineTuningJob.FromResponse(result.GetRawResponse()), result.GetRawResponse());
+    }
+
+    public async Task<FineTuningJob> WaitUntilCompleted(FineTuningJob job)
+    {
+        while (job.Status.InProgress())
+        {
+            var estimate = job.EstimatedFinish;
+
+            if (estimate.HasValue)
+            {
+                // Console.WriteLine($"Waiting for {estimate.Value - DateTimeOffset.UtcNow}");
+                await Task.Delay(estimate.Value - DateTimeOffset.UtcNow);
+            }
+            else
+            {
+                // Console.WriteLine("Waiting for 30 seconds");
+                await Task.Delay(30 * 1000);
+            }
+
+            job = await GetJobAsync(job.Id);
+        }
+        return job;
     }
 }
