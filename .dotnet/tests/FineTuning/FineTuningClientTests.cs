@@ -4,8 +4,11 @@ using OpenAI.Files;
 using OpenAI.FineTuning;
 using System;
 using System.ClientModel;
+using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace OpenAI.Tests.FineTuning
 {
@@ -90,7 +93,7 @@ namespace OpenAI.Tests.FineTuning
 
         [Test]
         [Parallelizable]
-        public async Task CreateAndCancelJobAsync()
+        public async void CreateAndCancelJobAsync()
         {
             FineTuningJob job = await client.CreateJobAsync("gpt-3.5-turbo", sampleFile.Id);
             Assert.True(job.Status.InProgress());
