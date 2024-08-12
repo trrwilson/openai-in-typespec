@@ -3,17 +3,12 @@ using NUnit.Framework.Internal;
 using OpenAI.Files;
 using OpenAI.FineTuning;
 using System.ClientModel;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
 namespace OpenAI.Tests.FineTuning
 {
-
-    public class Expensive : ExplicitAttribute
-    {
-        public Expensive() : base("This finishes the job so it will cost $ on the account.") { }
-    }
-
     [TestFixture]
     public class FineTuningClientTests
     {
@@ -102,7 +97,7 @@ namespace OpenAI.Tests.FineTuning
 
         [Test]
         [Parallelizable]
-        [Expensive]
+        [Explicit("This test is slow and costs $ because it completes the fine-tuning job.")]
         public async Task TestWaitForSuccess()
         {
             // Keep number of iterations low to avoid high costs
@@ -125,12 +120,29 @@ namespace OpenAI.Tests.FineTuning
 
         [Test]
         [Parallelizable]
-        public void TestSuffixAndSeed() {
+        public void CustomSuffixAndSeed()
+        {
             FineTuningJob job = client.CreateJob("gpt-3.5-turbo", sampleFile.Id, suffix: "TestFTJob", seed: 1234567);
             job = client.CancelJob(job.Id);
-            
+
             Assert.AreEqual(job._user_provided_suffix, "TestFTJob");
             Assert.AreEqual(1234567, job.Seed);
+        }
+
+        [Test]
+        [Parallelizable]
+        [Explicit("This test requires wandb.ai account and api key integration.")]
+        public void WandBIntegrations()
+        {
+
+            var integrations = new List<Integration> {
+                new(new IntegrationWandB("ft-tests"))
+            };
+
+            FineTuningJob job = client.CreateJob("gpt-3.5-turbo", sampleFile.Id, integrations: integrations);
+
+            client.CancelJob(job.Id);
+
         }
     }
 }

@@ -5,14 +5,7 @@ namespace OpenAI.FineTuning;
 [CodeGenModel("CreateFineTuningJobRequest")]
 internal partial class InternalCreateFineTuningJobRequest { }
 
-[CodeGenModel("CreateFineTuningJobRequestIntegration")]
-internal partial class InternalCreateFineTuningJobRequestIntegration { }
 
-[CodeGenModel("CreateFineTuningJobRequestIntegrationType")]
-internal readonly partial struct InternalCreateFineTuningJobRequestIntegrationType { }
-
-[CodeGenModel("CreateFineTuningJobRequestIntegrationWandb")]
-internal partial class InternalCreateFineTuningJobRequestIntegrationWandb { }
 
 [CodeGenModel("CreateFineTuningJobRequestModel")]
 internal readonly partial struct InternalCreateFineTuningJobRequestModel { }

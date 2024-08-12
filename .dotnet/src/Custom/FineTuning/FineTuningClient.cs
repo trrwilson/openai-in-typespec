@@ -1,6 +1,7 @@
 using System;
 using System.ClientModel;
 using System.ClientModel.Primitives;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -74,9 +75,9 @@ public partial class FineTuningClient
     /// <param name="hyperparameters"> The hyperparameters (Epochs/Cycles, Batch size, and learning rate multiplier). </param>
     /// <param name="suffix"> The suffix to append to the fine-tuned model name. </param>
     /// <param name="options"> Additional options (<see cref="RequestOptions"/>) to customize the request. </param>
-    public ClientResult<FineTuningJob> CreateJob(string model, string trainingFile, HyperparameterOptions hyperparameters = default, string suffix = null, int seed = _unset_int, RequestOptions options = null)
+    public ClientResult<FineTuningJob> CreateJob(string model, string trainingFile, HyperparameterOptions hyperparameters = default, string suffix = null, List<Integration> integrations = null, int seed = _unset_int, RequestOptions options = null)
     {
-        var request = new InternalCreateFineTuningJobRequest(model, trainingFile, hyperparameters, suffix, validationFile: null, integrations: null, seed == _unset_int ? null : seed, null);
+        var request = new InternalCreateFineTuningJobRequest(model, trainingFile, hyperparameters, suffix, validationFile: null, integrations, seed == _unset_int ? null : seed, null);
         var content = request.ToBinaryContent();
         ClientResult result = CreateJob(content, options);
         return ClientResult.FromValue(FineTuningJob.FromResponse(result.GetRawResponse()), result.GetRawResponse());
