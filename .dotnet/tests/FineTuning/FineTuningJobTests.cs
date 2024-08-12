@@ -22,7 +22,6 @@ namespace OpenAI.Tests.FineTuning
                             createdAt: DateTimeOffset.MinValue,
                             error: null,
                             fineTunedModel: "ft:gpt-3.5-turbo-0125:personal::unitTest",
-                            // dateTimeOffset
                             finishedAt: DateTimeOffset.Now,
                             hyperparameters: new(),
                             model: "gpt-3.5-turbo-0125",

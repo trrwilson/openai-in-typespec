@@ -10,6 +10,9 @@ namespace OpenAI.FineTuning;
 [CodeGenModel("FineTuningJob")]
 public partial class FineTuningJob
 {
+
+    public string _user_provided_suffix { get; set; }
+
     public FineTuningJob(string id, DateTimeOffset createdAt, FineTuningJobError error, string fineTunedModel, DateTimeOffset? finishedAt, FineTuningJobHyperparameters hyperparameters, string model, string organizationId, IEnumerable<string> resultFiles, FineTuningJobStatus status, int? trainedTokens, string trainingFile, string validationFile, int seed)
     {
         Id = id;
@@ -31,7 +34,14 @@ public partial class FineTuningJob
     internal static FineTuningJob FromResponse(PipelineResponse pipelineResponse)
     {
         using var document = JsonDocument.Parse(pipelineResponse.Content);
-        return DeserializeFineTuningJob(document.RootElement);
+        var job = DeserializeFineTuningJob(document.RootElement, new("RW"));
+
+        // Check for user_provided_suffix
+        if (job.SerializedAdditionalRawData.ContainsKey("user_provided_suffix"))
+        {
+            job._user_provided_suffix = JsonDocument.Parse(job.SerializedAdditionalRawData["user_provided_suffix"]).RootElement.GetString();
+        }
+        return job;
     }
     public FineTuningJobStatus Status { get; }
     internal string Object { get; }  // make hidden 

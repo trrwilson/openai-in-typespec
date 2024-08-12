@@ -2,13 +2,9 @@ using NUnit.Framework;
 using NUnit.Framework.Internal;
 using OpenAI.Files;
 using OpenAI.FineTuning;
-using System;
 using System.ClientModel;
-using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace OpenAI.Tests.FineTuning
 {
@@ -93,7 +89,7 @@ namespace OpenAI.Tests.FineTuning
 
         [Test]
         [Parallelizable]
-        public async void CreateAndCancelJobAsync()
+        public async Task CreateAndCancelJobAsync()
         {
             FineTuningJob job = await client.CreateJobAsync("gpt-3.5-turbo", sampleFile.Id);
             Assert.True(job.Status.InProgress());
@@ -125,6 +121,16 @@ namespace OpenAI.Tests.FineTuning
              */
 
             Assert.AreEqual(FineTuningJobStatus.Succeeded, job.Status);
+        }
+
+        [Test]
+        [Parallelizable]
+        public void TestSuffixAndSeed() {
+            FineTuningJob job = client.CreateJob("gpt-3.5-turbo", sampleFile.Id, suffix: "TestFTJob", seed: 1234567);
+            job = client.CancelJob(job.Id);
+            
+            Assert.AreEqual(job._user_provided_suffix, "TestFTJob");
+            Assert.AreEqual(1234567, job.Seed);
         }
     }
 }
