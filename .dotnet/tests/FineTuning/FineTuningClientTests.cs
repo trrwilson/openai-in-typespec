@@ -36,6 +36,137 @@ namespace OpenAI.Tests.FineTuning
             fileClient.DeleteFile(validationFile.Id);
         }
 
+
+
+        [Test]
+        [Parallelizable]
+        public void MinimalRequiredParams()
+        {
+
+            FineTuningJob job = client.CreateJob("gpt-3.5-turbo", sampleFile.Id);
+
+            Assert.True(job.Status.InProgress());
+            Assert.AreEqual(0, job.Hyperparameters.GetCycleCount());
+
+            job = client.CancelJob(job.Id);
+
+            Assert.AreEqual(FineTuningJobStatus.Cancelled, job.Status);
+            Assert.False(job.Status.InProgress());
+        }
+
+        // minimal but async
+        [Test]
+        [Parallelizable]
+        public async Task MinimalRequiredParamsAsync()
+        {
+
+            FineTuningJob job = await client.CreateJobAsync("gpt-3.5-turbo", sampleFile.Id);
+
+            Assert.True(job.Status.InProgress());
+            Assert.AreEqual(0, job.Hyperparameters.GetCycleCount());
+
+            job = await client.CancelJobAsync(job.Id);
+
+            Assert.AreEqual(FineTuningJobStatus.Cancelled, job.Status);
+            Assert.False(job.Status.InProgress());
+        }
+
+        [Test]
+        [Parallelizable]
+        public void AllParameters()
+        {
+            // This test does not check for Integrations because it requires a valid API key
+
+            var hp = new HyperparameterOptions(cycleCount: 1, batchSize: 2, learningRate: 3);
+
+            FineTuningJob job = client.CreateJob(
+                "gpt-3.5-turbo",
+                sampleFile.Id,
+                hyperparameters: hp,
+                suffix: "TestFTJob",
+                validationFileId: validationFile.Id,
+                seed: 1234567
+                );
+
+            Assert.AreEqual(1, job.Hyperparameters.GetCycleCount());
+            Assert.AreEqual(2, job.Hyperparameters.GetBatchSize());
+            Assert.AreEqual(3, job.Hyperparameters.GetLearningRateMultiplier());
+            Assert.AreEqual(job._user_provided_suffix, "TestFTJob");
+            Assert.AreEqual(1234567, job.Seed);
+            Assert.AreEqual(validationFile.Id, job.ValidationFile);
+
+            job = client.CancelJob(job.Id);
+        }
+
+        [Test]
+        [Parallelizable]
+        public async Task AllParametersAsync()
+        {
+            // This test does not check for Integrations because it requires a valid API key
+
+            var hp = new HyperparameterOptions(cycleCount: 1, batchSize: 2, learningRate: 3);
+
+            FineTuningJob job = await client.CreateJobAsync(
+                "gpt-3.5-turbo",
+                sampleFile.Id,
+                hyperparameters: hp,
+                suffix: "TestFTJob",
+                validationFileId: validationFile.Id,
+                seed: 1234567
+                );
+
+            Assert.AreEqual(1, job.Hyperparameters.GetCycleCount());
+            Assert.AreEqual(2, job.Hyperparameters.GetBatchSize());
+            Assert.AreEqual(3, job.Hyperparameters.GetLearningRateMultiplier());
+            Assert.AreEqual(job._user_provided_suffix, "TestFTJob");
+            Assert.AreEqual(1234567, job.Seed);
+            Assert.AreEqual(validationFile.Id, job.ValidationFile);
+
+            job = await client.CancelJobAsync(job.Id);
+        }
+
+
+
+        [Test]
+        [Parallelizable]
+        [Explicit("This test is slow and costs $ because it completes the fine-tuning job.")]
+        public async Task TestWaitForSuccess()
+        {
+            // Keep number of iterations low to avoid high costs
+            var hp = new HyperparameterOptions(cycleCount: 1, batchSize: 10);
+
+            FineTuningJob job = client.CreateJob("ft:gpt-3.5-turbo-0125:personal::9rYqxSbx", sampleFile.Id, hyperparameters: hp);
+
+            job = await client.WaitUntilCompleted(job);
+            // Debug logs might be similar to:
+            /*
+             *     Waiting for 30 seconds
+             *     Waiting for 30 seconds
+             *     ...
+             *     Waiting for 30 seconds
+             *     Waiting for 00:03:16.7177007
+             */
+
+            Assert.AreEqual(FineTuningJobStatus.Succeeded, job.Status);
+        }
+
+
+        [Test]
+        [Parallelizable]
+        [Explicit("This test requires wandb.ai account and api key integration.")]
+        public void WandBIntegrations()
+        {
+
+            var integrations = new List<Integration> {
+                new(new IntegrationWandB("ft-tests"))
+            };
+
+            FineTuningJob job = client.CreateJob("gpt-3.5-turbo", sampleFile.Id, integrations: integrations);
+
+            client.CancelJob(job.Id);
+
+        }
+
         [Test]
         [Parallelizable]
         public void ExceptionThrownOnInvalidFileName()
@@ -56,151 +187,24 @@ namespace OpenAI.Tests.FineTuning
 
         [Test]
         [Parallelizable]
-        public void CreateAndCancelJob()
-        {
-
-            FineTuningJob job = client.CreateJob("gpt-3.5-turbo", sampleFile.Id);
-
-            Assert.True(job.Status.InProgress());
-            Assert.AreEqual(0, job.Hyperparameters.GetCycleCount());
-
-            job = client.CancelJob(job.Id);
-
-            Assert.AreEqual(FineTuningJobStatus.Cancelled, job.Status);
-            Assert.False(job.Status.InProgress());
-        }
-
-        [Test]
-        [Parallelizable]
-        public void CreateAndCancelJobWithValidation()
-        {
-
-            FineTuningJob job = client.CreateJob("gpt-3.5-turbo", sampleFile.Id, validationFile.Id);
-
-            Assert.True(job.Status.InProgress());
-            Assert.AreEqual(0, job.Hyperparameters.GetCycleCount());
-
-            job = client.CancelJob(job.Id);
-
-            Assert.AreEqual(FineTuningJobStatus.Cancelled, job.Status);
-            Assert.False(job.Status.InProgress());
-        }
-
-        [Test]
-        [Parallelizable]
-        public void CreateAndCancelJobWithInvalidValidationId()
+        public void ExceptionThrownOnInvalidValidationId()
         {
 
             Assert.Throws<ClientResultException>(() =>
             {
-                FineTuningJob job = client.CreateJob("gpt-3.5-turbo", sampleFile.Id, "7");
+                FineTuningJob job = client.CreateJob("gpt-3.5-turbo", sampleFile.Id, validationFileId: "7");
             });
         }
 
         [Test]
         [Parallelizable]
-        public void CreateAndCancelJobWithValidationAsync()
+        public void ExceptionThrownOnInvalidValidationIdAsync()
         {
 
-            FineTuningJob job = client.CreateJobAsync("gpt-3.5-turbo", sampleFile.Id, validationFile.Id).Result;
-
-            Assert.True(job.Status.InProgress());
-            Assert.AreEqual(0, job.Hyperparameters.GetCycleCount());
-
-            job = client.CancelJob(job.Id);
-
-            Assert.AreEqual(FineTuningJobStatus.Cancelled, job.Status);
-            Assert.False(job.Status.InProgress());
-        }
-
-        [Test]
-        [Parallelizable]
-        public void CreateAndCancelJobWithInvalidValidationIdAsync()
-        {
-
-            Assert.Throws<ClientResultException>(() =>
+            Assert.ThrowsAsync<ClientResultException>(async () =>
             {
-                var job = client.CreateJobAsync("gpt-3.5-turbo", sampleFile.Id, "7");
+                var job = await client.CreateJobAsync("gpt-3.5-turbo", sampleFile.Id, validationFileId: "7");
             });
-        }
-
-        [Test]
-        [Parallelizable]
-        public void CreateAndCancelJobWithHyperparams()
-        {
-
-            var hp = new HyperparameterOptions(cycleCount: 1, batchSize: 2, learningRate: 3);
-
-            FineTuningJob job = client.CreateJob("gpt-3.5-turbo", sampleFile.Id, hyperparameters: hp);
-
-            Assert.AreEqual(1, job.Hyperparameters.GetCycleCount());
-            Assert.AreEqual(2, job.Hyperparameters.GetBatchSize());
-            Assert.AreEqual(3, job.Hyperparameters.GetLearningRateMultiplier());
-
-            client.CancelJob(job.Id);
-        }
-
-        [Test]
-        [Parallelizable]
-        public async Task CreateAndCancelJobAsync()
-        {
-            FineTuningJob job = await client.CreateJobAsync("gpt-3.5-turbo", sampleFile.Id);
-            Assert.True(job.Status.InProgress());
-
-            job = await client.CancelJobAsync(job.Id);
-
-            Assert.AreEqual(FineTuningJobStatus.Cancelled, job.Status);
-            Assert.False(job.Status.InProgress());
-        }
-
-        [Test]
-        [Parallelizable]
-        [Explicit("This test is slow and costs $ because it completes the fine-tuning job.")]
-        public async Task TestWaitForSuccess()
-        {
-            // Keep number of iterations low to avoid high costs
-            var hp = new HyperparameterOptions(cycleCount: 10, batchSize: 1);
-
-            FineTuningJob job = client.CreateJob("ft:gpt-3.5-turbo-0125:personal::9rYqxSbx", sampleFile.Id, null, hp);
-
-            job = await client.WaitUntilCompleted(job);
-            // Debug logs might be similar to:
-            /*
-             *     Waiting for 30 seconds
-             *     Waiting for 30 seconds
-             *     ...
-             *     Waiting for 30 seconds
-             *     Waiting for 00:03:16.7177007
-             */
-
-            Assert.AreEqual(FineTuningJobStatus.Succeeded, job.Status);
-        }
-
-        [Test]
-        [Parallelizable]
-        public void CustomSuffixAndSeed()
-        {
-            FineTuningJob job = client.CreateJob("gpt-3.5-turbo", sampleFile.Id, suffix: "TestFTJob", seed: 1234567);
-            job = client.CancelJob(job.Id);
-
-            Assert.AreEqual(job._user_provided_suffix, "TestFTJob");
-            Assert.AreEqual(1234567, job.Seed);
-        }
-
-        [Test]
-        [Parallelizable]
-        [Explicit("This test requires wandb.ai account and api key integration.")]
-        public void WandBIntegrations()
-        {
-
-            var integrations = new List<Integration> {
-                new(new IntegrationWandB("ft-tests"))
-            };
-
-            FineTuningJob job = client.CreateJob("gpt-3.5-turbo", sampleFile.Id, integrations: integrations);
-
-            client.CancelJob(job.Id);
-
         }
     }
 }
