@@ -71,10 +71,17 @@ public partial class FineTuningClient
     /// <param name="trainingFile"> The training file name that is already uploaded. String should match pattern '^file-[a-zA-Z0-9]{24}$'. </param>
     /// <param name="hyperparameters"> The hyperparameters (Epochs/Cycles, Batch size, and learning rate multiplier). </param>
     /// <param name="suffix"> The suffix to append to the fine-tuned model name. </param>
+    /// <param name="validationFileId"> The validation file Id that is already uploaded. String should match pattern '^file-[a-zA-Z0-9]{24}$' and is retrieved by using a FileClient.UploadFile(...) call. </param>
     /// <param name="options"> Additional options (<see cref="RequestOptions"/>) to customize the request. </param>
-    public ClientResult<FineTuningJob> CreateJob(string model, string trainingFile, HyperparameterOptions hyperparameters = default, string suffix = null, List<Integration> integrations = null, int? seed = null, RequestOptions options = null)
+    public ClientResult<FineTuningJob> CreateJob(
+        string model, 
+        string trainingFile,
+        string validationFileId = null,
+        HyperparameterOptions hyperparameters = default,
+        RequestOptions options = default
+        )
     {
-        var request = new InternalCreateFineTuningJobRequest(model, trainingFile, hyperparameters, suffix, validationFile: null, integrations, seed, null);
+        var request = new InternalCreateFineTuningJobRequest(model, trainingFile, hyperparameters, suffix, validationFile: validationFileId, integrations, seed, null);
         var content = request.ToBinaryContent();
         ClientResult result = CreateJob(content, options);
         return ClientResult.FromValue(FineTuningJob.FromResponse(result.GetRawResponse()), result.GetRawResponse());
@@ -83,10 +90,24 @@ public partial class FineTuningClient
     /// <summary> Async version of create job</summary>
     /// <param name="model"> The model name to fine-tune. String such as "gpt-3.5-turbo" </param>
     /// <param name="trainingFile"> The training file name that is already uploaded. String should match pattern '^file-[a-zA-Z0-9]{24}$'  </param>
+    /// <param name="validationFileId"> The validation file Id that is already uploaded. String should match pattern '^file-[a-zA-Z0-9]{24}$' and is retrieved by using a FileClient.UploadFile(...) call. </param>
     /// <param name="options"> Additional options (<see cref="RequestOptions"/>) to customize the request. </param>
-    public async Task<ClientResult<FineTuningJob>> CreateJobAsync(string model, string trainingFile, HyperparameterOptions hyperparameters = default, RequestOptions options = default)
+    public async Task<ClientResult<FineTuningJob>> CreateJobAsync(
+        string model, 
+        string trainingFile, 
+        string validationFileId = null,
+        HyperparameterOptions hyperparameters = default, 
+        RequestOptions options = default)
     {
-        var request = new InternalCreateFineTuningJobRequest(model, trainingFile, hyperparameters, suffix: null, validationFile: null, integrations: null, null, null);
+        var request = new InternalCreateFineTuningJobRequest(
+            model, 
+            trainingFile, 
+            hyperparameters, 
+            suffix: null, 
+            validationFileId: validationFileId, 
+            integrations: null, 
+            null, 
+            null);
         var content = request.ToBinaryContent();
         ClientResult result = await CreateJobAsync(content, options);
         return ClientResult.FromValue(FineTuningJob.FromResponse(result.GetRawResponse()), result.GetRawResponse());

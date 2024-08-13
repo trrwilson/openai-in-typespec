@@ -48,12 +48,12 @@ namespace OpenAI.FineTuning
                     writer.WriteNull("suffix");
                 }
             }
-            if (SerializedAdditionalRawData?.ContainsKey("validation_file") != true && Optional.IsDefined(ValidationFile))
+            if (SerializedAdditionalRawData?.ContainsKey("validation_file") != true && Optional.IsDefined(ValidationFileId))
             {
-                if (ValidationFile != null)
+                if (ValidationFileId != null)
                 {
                     writer.WritePropertyName("validation_file"u8);
-                    writer.WriteStringValue(ValidationFile);
+                    writer.WriteStringValue(ValidationFileId);
                 }
                 else
                 {

@@ -19,13 +19,13 @@ namespace OpenAI.FineTuning
             Integrations = new ChangeTrackingList<Integration>();
         }
 
-        internal InternalCreateFineTuningJobRequest(InternalCreateFineTuningJobRequestModel model, string trainingFile, HyperparameterOptions hyperparameters, string suffix, string validationFile, IList<Integration> integrations, int? seed, IDictionary<string, BinaryData> serializedAdditionalRawData)
+        internal InternalCreateFineTuningJobRequest(InternalCreateFineTuningJobRequestModel model, string trainingFile, HyperparameterOptions hyperparameters, string suffix, string validationFileId, IList<Integration> integrations, int? seed, IDictionary<string, BinaryData> serializedAdditionalRawData)
         {
             Model = model;
             TrainingFile = trainingFile;
             Hyperparameters = hyperparameters;
             Suffix = suffix;
-            ValidationFile = validationFile;
+            ValidationFileId = validationFileId;
             Integrations = integrations;
             Seed = seed;
             SerializedAdditionalRawData = serializedAdditionalRawData;
@@ -39,7 +39,7 @@ namespace OpenAI.FineTuning
         public string TrainingFile { get; }
         public HyperparameterOptions Hyperparameters { get; set; }
         public string Suffix { get; set; }
-        public string ValidationFile { get; set; }
+        public string ValidationFileId { get; set; }
         public IList<Integration> Integrations { get; set; }
         public int? Seed { get; set; }
     }
