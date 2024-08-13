@@ -23,22 +23,26 @@ namespace OpenAI.Tests.FineTuning
     {
         FineTuningClient client;
         FileClient fileClient;
-        OpenAIFileInfo sampleFile;
+        OpenAIFileInfo sampleFile, validationFile;
 
         [OneTimeSetUp]
         public void Setup()
         {
             client = new FineTuningClient();
             fileClient = new FileClient();
-            string path = Path.Combine("Assets", "fine_tuning_sample.jsonl");
+            string samplePath = Path.Combine("Assets", "fine_tuning_sample.jsonl");
+            string validationPath = Path.Combine("Assets", "fine_tuning_sample_validation.jsonl");
 
-            sampleFile = fileClient.UploadFile(path, FileUploadPurpose.FineTune);
+            sampleFile = fileClient.UploadFile(samplePath, FileUploadPurpose.FineTune);
+            validationFile = fileClient.UploadFile(validationPath, FileUploadPurpose.FineTune);
+
         }
 
         [OneTimeTearDown]
         public void TearDown()
         {
             fileClient.DeleteFile(sampleFile.Id);
+            fileClient.DeleteFile(validationFile.Id);
         }
 
         [Test]
@@ -73,6 +77,33 @@ namespace OpenAI.Tests.FineTuning
 
             Assert.AreEqual(FineTuningJobStatus.Cancelled, job.Status);
             Assert.False(job.Status.InProgress());
+        }
+
+        [Test]
+        [Parallelizable]
+        public void CreateAndCancelJobWithValidation()
+        {
+
+            FineTuningJob job = client.CreateJob("gpt-3.5-turbo", sampleFile.Id, validationFile.Id);
+
+            Assert.True(job.Status.InProgress());
+            Assert.AreEqual(0, job.Hyperparameters.GetCycleCount());
+
+            job = client.CancelJob(job.Id);
+
+            Assert.AreEqual(FineTuningJobStatus.Cancelled, job.Status);
+            Assert.False(job.Status.InProgress());
+        }
+
+        [Test]
+        [Parallelizable]
+        public void CreateAndCancelJobWithInvalidValidationId()
+        {
+
+            Assert.Throws<ClientResultException>(() =>
+            {
+                FineTuningJob job = client.CreateJob("gpt-3.5-turbo", sampleFile.Id, "7");
+            });
         }
 
         [Test]
@@ -112,7 +143,7 @@ namespace OpenAI.Tests.FineTuning
             // Keep number of iterations low to avoid high costs
             var hp = new HyperparameterOptions(cycleCount: 10, batchSize: 1);
 
-            FineTuningJob job = client.CreateJob("ft:gpt-3.5-turbo-0125:personal::9rYqxSbx", sampleFile.Id, hp);
+            FineTuningJob job = client.CreateJob("ft:gpt-3.5-turbo-0125:personal::9rYqxSbx", sampleFile.Id, null, hp);
 
             job = await client.WaitUntilCompleted(job);
             // Debug logs might be similar to:
