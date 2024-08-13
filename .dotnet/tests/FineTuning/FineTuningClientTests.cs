@@ -108,6 +108,33 @@ namespace OpenAI.Tests.FineTuning
 
         [Test]
         [Parallelizable]
+        public void CreateAndCancelJobWithValidationAsync()
+        {
+
+            FineTuningJob job = client.CreateJobAsync("gpt-3.5-turbo", sampleFile.Id, validationFile.Id).Result;
+
+            Assert.True(job.Status.InProgress());
+            Assert.AreEqual(0, job.Hyperparameters.GetCycleCount());
+
+            job = client.CancelJob(job.Id);
+
+            Assert.AreEqual(FineTuningJobStatus.Cancelled, job.Status);
+            Assert.False(job.Status.InProgress());
+        }
+
+        [Test]
+        [Parallelizable]
+        public void CreateAndCancelJobWithInvalidValidationIdAsync()
+        {
+
+            Assert.Throws<ClientResultException>(() =>
+            {
+                var job = client.CreateJobAsync("gpt-3.5-turbo", sampleFile.Id, "7");
+            });
+        }
+
+        [Test]
+        [Parallelizable]
         public void CreateAndCancelJobWithHyperparams()
         {
 
