@@ -136,7 +136,7 @@ namespace OpenAI.FineTuning
             HyperparameterOptions hyperparameters = default;
             string suffix = default;
             string validationFile = default;
-            IList<InternalCreateFineTuningJobRequestIntegration> integrations = default;
+            IList<Integration> integrations = default;
             int? seed = default;
             IDictionary<string, BinaryData> serializedAdditionalRawData = default;
             Dictionary<string, BinaryData> rawDataDictionary = new Dictionary<string, BinaryData>();
@@ -187,10 +187,10 @@ namespace OpenAI.FineTuning
                     {
                         continue;
                     }
-                    List<InternalCreateFineTuningJobRequestIntegration> array = new List<InternalCreateFineTuningJobRequestIntegration>();
+                    List<Integration> array = new List<Integration>();
                     foreach (var item in property.Value.EnumerateArray())
                     {
-                        array.Add(InternalCreateFineTuningJobRequestIntegration.DeserializeInternalCreateFineTuningJobRequestIntegration(item, options));
+                        array.Add(Integration.DeserializeIntegration(item, options));
                     }
                     integrations = array;
                     continue;
@@ -218,7 +218,7 @@ namespace OpenAI.FineTuning
                 hyperparameters,
                 suffix,
                 validationFile,
-                integrations ?? new ChangeTrackingList<InternalCreateFineTuningJobRequestIntegration>(),
+                integrations ?? new ChangeTrackingList<Integration>(),
                 seed,
                 serializedAdditionalRawData);
         }

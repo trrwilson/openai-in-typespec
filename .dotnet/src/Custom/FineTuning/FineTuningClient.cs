@@ -1,6 +1,7 @@
 using System;
 using System.ClientModel;
 using System.ClientModel.Primitives;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,7 +25,7 @@ namespace OpenAI.FineTuning;
 [CodeGenSuppress("GetFineTuningJobCheckpoints", typeof(string), typeof(string), typeof(int?))]
 public partial class FineTuningClient
 {
-    // Customization: documented constructors, apply protected visibility
+    // Customization: documented constructors, apply protected visibility    
 
     /// <summary>
     /// Initializes a new instance of <see cref="FineTuningClient"/> that will use an API key when authenticating.
@@ -67,20 +68,16 @@ public partial class FineTuningClient
 
     /// <summary> Creates a job with a training file and model. </summary>
     /// <param name="model"> The model name to fine-tune. String such as "gpt-3.5-turbo" </param>
-    /// <param name="trainingFile"> The training file name that is already uploaded. String should match pattern '^file-[a-zA-Z0-9]{24}$'  </param>
+    /// <param name="trainingFile"> The training file name that is already uploaded. String should match pattern '^file-[a-zA-Z0-9]{24}$'. </param>
+    /// <param name="hyperparameters"> The hyperparameters (Epochs/Cycles, Batch size, and learning rate multiplier). </param>
+    /// <param name="suffix"> The suffix to append to the fine-tuned model name. </param>
     /// <param name="options"> Additional options (<see cref="RequestOptions"/>) to customize the request. </param>
-    public ClientResult<FineTuningJob> CreateJob(string model, string trainingFile, HyperparameterOptions hyperparameters = default, RequestOptions options = default)
+    public ClientResult<FineTuningJob> CreateJob(string model, string trainingFile, HyperparameterOptions hyperparameters = default, string suffix = null, List<Integration> integrations = null, int? seed = null, RequestOptions options = null)
     {
-        var task = CreateJobAsync(model, trainingFile, hyperparameters, options);
-        try
-        {
-            task.Wait();
-        }
-        catch (AggregateException e)
-        {
-            throw e.InnerException;
-        }
-        return task.Result;
+        var request = new InternalCreateFineTuningJobRequest(model, trainingFile, hyperparameters, suffix, validationFile: null, integrations, seed, null);
+        var content = request.ToBinaryContent();
+        ClientResult result = CreateJob(content, options);
+        return ClientResult.FromValue(FineTuningJob.FromResponse(result.GetRawResponse()), result.GetRawResponse());
     }
 
     /// <summary> Async version of create job</summary>
