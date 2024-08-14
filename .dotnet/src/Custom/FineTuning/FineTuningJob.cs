@@ -20,6 +20,10 @@ public partial class FineTuningJob
     [CodeGenMember("ValidationFileId")]
     public string ValidationFileId { get; }
 
+    [CodeGenMember("TrainingFile")]
+    public string TrainingFileId { get; }
+
+
 
     public FineTuningJob(string id, DateTimeOffset createdAt, FineTuningJobError error, string fineTunedModel, DateTimeOffset? finishedAt, FineTuningJobHyperparameters hyperparameters, string model, string organizationId, IEnumerable<string> resultFiles, FineTuningJobStatus status, int? trainedTokens, string trainingFile, string validationFile, int seed)
     {
@@ -34,7 +38,7 @@ public partial class FineTuningJob
         ResultFiles = resultFiles.ToList();
         Status = status;
         TrainedTokens = trainedTokens;
-        TrainingFile = trainingFile;
+        TrainingFileId = trainingFile;
         ValidationFileId = validationFile;
         Integrations = new ChangeTrackingList<InternalFineTuningIntegration>();
         Seed = seed;

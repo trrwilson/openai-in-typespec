@@ -117,7 +117,7 @@ namespace OpenAI.FineTuning
             if (SerializedAdditionalRawData?.ContainsKey("training_file") != true)
             {
                 writer.WritePropertyName("training_file"u8);
-                writer.WriteStringValue(TrainingFile);
+                writer.WriteStringValue(TrainingFileId);
             }
             if (SerializedAdditionalRawData?.ContainsKey("validation_file") != true)
             {
