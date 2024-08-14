@@ -115,6 +115,7 @@ namespace OpenAI.Tests.FineTuning
                 seed: 1234567
                 );
 
+            
             Assert.AreEqual(1, job.Hyperparameters.GetCycleCount());
             Assert.AreEqual(2, job.Hyperparameters.GetBatchSize());
             Assert.AreEqual(3, job.Hyperparameters.GetLearningRateMultiplier());
@@ -172,7 +173,7 @@ namespace OpenAI.Tests.FineTuning
         public void ExceptionThrownOnInvalidFileName()
         {
             Assert.Throws<ClientResultException>(() =>
-                client.CreateJob(model: "gpt-3.5-turbo", trainingFile: "Invalid File Name")
+                client.CreateJob(model: "gpt-3.5-turbo", trainingFileId: "Invalid File Name")
             );
         }
 
@@ -181,7 +182,7 @@ namespace OpenAI.Tests.FineTuning
         public void ExceptionThrownOnInvalidModelName()
         {
             Assert.Throws<ClientResultException>(() =>
-                client.CreateJob(model: "gpt-nonexistent", trainingFile: sampleFile.Id)
+                client.CreateJob(model: "gpt-nonexistent", trainingFileId: sampleFile.Id)
             );
         }
 

@@ -153,12 +153,12 @@ namespace OpenAI.FineTuning
                 writer.WritePropertyName("seed"u8);
                 writer.WriteNumberValue(Seed);
             }
-            if (SerializedAdditionalRawData?.ContainsKey("estimated_finish") != true && Optional.IsDefined(EstimatedFinish))
+            if (SerializedAdditionalRawData?.ContainsKey("estimated_finish") != true && Optional.IsDefined(EstimatedFinishAt))
             {
-                if (EstimatedFinish != null)
+                if (EstimatedFinishAt != null)
                 {
                     writer.WritePropertyName("estimated_finish"u8);
-                    writer.WriteNumberValue(EstimatedFinish.Value, "U");
+                    writer.WriteNumberValue(EstimatedFinishAt.Value, "U");
                 }
                 else
                 {

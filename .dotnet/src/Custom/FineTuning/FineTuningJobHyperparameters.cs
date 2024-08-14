@@ -9,20 +9,17 @@ public readonly partial struct FineTuningJobHyperparameters
 {
     private static readonly BinaryData Auto = new("\"auto\"");
 
-    [CodeGenMember("n_epochs")]
-    internal BinaryData NEpochs { get; }
-
-    [CodeGenMember("batch_size")]
+    [CodeGenMember("NEpochs")]
+    internal BinaryData CycleCount { get; }    
     internal BinaryData BatchSize { get; }
 
-    [CodeGenMember("learning_rate_multiplier")]
     internal BinaryData LearningRateMultiplier { get; }
 
     public IDictionary<string, BinaryData> SerializedAdditionalRawData { get; }
 
-    public FineTuningJobHyperparameters(int nEpochs = 0, int batchSize = 0, int learningRateMultiplier = 0)
+    public FineTuningJobHyperparameters(int cycleCount = 0, int batchSize = 0, int learningRateMultiplier = 0)
     {
-        NEpochs = nEpochs > 0 ? new BinaryData(nEpochs) : Auto;
+        CycleCount = cycleCount > 0 ? new BinaryData(cycleCount) : Auto;
         BatchSize = batchSize > 0 ? new BinaryData(batchSize) : Auto;
         LearningRateMultiplier = learningRateMultiplier > 0 ? new BinaryData(learningRateMultiplier) : Auto;
     }
@@ -49,7 +46,7 @@ public readonly partial struct FineTuningJobHyperparameters
         }
     }
 
-    public int GetCycleCount() => (int) HandleDefaults(NEpochs);
+    public int GetCycleCount() => (int) HandleDefaults(CycleCount);
     public int GetBatchSize() => (int) HandleDefaults(BatchSize);
     public float GetLearningRateMultiplier() => HandleDefaults(LearningRateMultiplier);
 }

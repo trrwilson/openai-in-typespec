@@ -1434,7 +1434,7 @@ namespace OpenAI.FineTuning {
     public class FineTuningJob {
         public DateTimeOffset CreatedAt { get; }
         public FineTuningJobError Error { get; }
-        public DateTimeOffset? EstimatedFinish { get; }
+        public DateTimeOffset? EstimatedFinishAt { get; }
         public string FineTunedModel { get; }
         public DateTimeOffset? FinishedAt { get; }
         public FineTuningJobHyperparameters? Hyperparameters { get; set; }

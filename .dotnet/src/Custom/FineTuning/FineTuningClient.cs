@@ -68,7 +68,7 @@ public partial class FineTuningClient
 
     /// <summary> Creates a job with a training file and model. </summary>
     /// <param name="model"> The model name to fine-tune. String such as "gpt-3.5-turbo" </param>
-    /// <param name="trainingFile"> The training file name that is already uploaded. String should match pattern '^file-[a-zA-Z0-9]{24}$'. </param>
+    /// <param name="trainingFileId"> The training file name that is already uploaded. String should match pattern '^file-[a-zA-Z0-9]{24}$'. </param>
     /// <param name="hyperparameters"> The hyperparameters (Epochs/Cycles, Batch size, and learning rate multiplier). </param>
     /// <param name="suffix"> The suffix to append to the model name. </param>
     /// <param name="validationFileId"> The validation file Id that is already uploaded. String should match pattern '^file-[a-zA-Z0-9]{24}$' and is retrieved by using a FileClient.UploadFile(...) call. </param>
@@ -78,7 +78,7 @@ public partial class FineTuningClient
     /// <returns>A <see cref="ClientResult{FineTuningJob}"/> containing the newly started fine-tuning job.</returns>
     public ClientResult<FineTuningJob> CreateJob(
         string model, 
-        string trainingFile,
+        string trainingFileId,
         HyperparameterOptions hyperparameters = default,
         string suffix = null,
         string validationFileId = null,
@@ -87,7 +87,7 @@ public partial class FineTuningClient
         RequestOptions options = default
         )
     {
-        var request = new InternalCreateFineTuningJobRequest(model, trainingFile, hyperparameters, suffix, validationFileId, integrations, seed, null);
+        var request = new InternalCreateFineTuningJobRequest(model, trainingFileId, hyperparameters, suffix, validationFileId, integrations, seed, null);
         var content = request.ToBinaryContent();
         ClientResult result = CreateJob(content, options);
         return ClientResult.FromValue(FineTuningJob.FromResponse(result.GetRawResponse()), result.GetRawResponse());
@@ -96,7 +96,7 @@ public partial class FineTuningClient
     /// <summary> Async version of create job</summary>
     /// <summary> Creates a job with a training file and model. </summary>
     /// <param name="model"> The model name to fine-tune. String such as "gpt-3.5-turbo" </param>
-    /// <param name="trainingFile"> The training file name that is already uploaded. String should match pattern '^file-[a-zA-Z0-9]{24}$'. </param>
+    /// <param name="trainingFileId"> The training file Id that is already uploaded. String should match pattern '^file-[a-zA-Z0-9]{24}$'. </param>
     /// <param name="hyperparameters"> The hyperparameters (Epochs/Cycles, Batch size, and learning rate multiplier). </param>
     /// <param name="suffix"> The suffix to append to the model name. </param>
     /// <param name="validationFileId"> The validation file Id that is already uploaded. String should match pattern '^file-[a-zA-Z0-9]{24}$' and is retrieved by using a FileClient.UploadFile(...) call. </param>
@@ -106,7 +106,7 @@ public partial class FineTuningClient
     /// <returns>A <see cref="Task"/> of a <see cref="ClientResult{FineTuningJob}"/> containing the newly started fine-tuning job.</returns>
     public async Task<ClientResult<FineTuningJob>> CreateJobAsync(
         string model,
-        string trainingFile,
+        string trainingFileId,
         HyperparameterOptions hyperparameters = default,
         string suffix = null,
         string validationFileId = null,
@@ -117,7 +117,7 @@ public partial class FineTuningClient
     {
         var request = new InternalCreateFineTuningJobRequest(
             model, 
-            trainingFile, 
+            trainingFileId, 
             hyperparameters, 
             suffix, 
             validationFileId, 
@@ -161,7 +161,7 @@ public partial class FineTuningClient
     {
         while (job.Status.InProgress())
         {
-            var estimate = job.EstimatedFinish;
+            var estimate = job.EstimatedFinishAt;
 
             if (estimate.HasValue)
             {

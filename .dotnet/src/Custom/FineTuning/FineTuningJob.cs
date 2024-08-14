@@ -1,6 +1,7 @@
 using System;
 using System.ClientModel.Primitives;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -12,6 +13,9 @@ public partial class FineTuningJob
 {
 
     public string _user_provided_suffix { get; set; }
+
+    [CodeGenMember("EstimatedFinish")]
+    public DateTimeOffset? EstimatedFinishAt { get; }
 
     public FineTuningJob(string id, DateTimeOffset createdAt, FineTuningJobError error, string fineTunedModel, DateTimeOffset? finishedAt, FineTuningJobHyperparameters hyperparameters, string model, string organizationId, IEnumerable<string> resultFiles, FineTuningJobStatus status, int? trainedTokens, string trainingFile, string validationFile, int seed)
     {

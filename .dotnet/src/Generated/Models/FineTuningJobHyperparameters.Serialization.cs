@@ -25,9 +25,9 @@ namespace OpenAI.FineTuning
             {
                 writer.WritePropertyName("n_epochs"u8);
 #if NET6_0_OR_GREATER
-				writer.WriteRawValue(NEpochs);
+				writer.WriteRawValue(CycleCount);
 #else
-                using (JsonDocument document = JsonDocument.Parse(NEpochs))
+                using (JsonDocument document = JsonDocument.Parse(CycleCount))
                 {
                     JsonSerializer.Serialize(writer, document.RootElement);
                 }
