@@ -91,7 +91,7 @@ namespace OpenAI.FineTuning
             {
                 writer.WritePropertyName("result_files"u8);
                 writer.WriteStartArray();
-                foreach (var item in ResultFiles)
+                foreach (var item in ResultFileIds)
                 {
                     writer.WriteStringValue(item);
                 }

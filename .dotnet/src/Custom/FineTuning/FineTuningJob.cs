@@ -23,6 +23,10 @@ public partial class FineTuningJob
     [CodeGenMember("TrainingFile")]
     public string TrainingFileId { get; }
 
+    [CodeGenMember("ResultFiles")]
+    public IReadOnlyList<string> ResultFileIds { get; }
+
+
 
 
     public FineTuningJob(string id, DateTimeOffset createdAt, FineTuningJobError error, string fineTunedModel, DateTimeOffset? finishedAt, FineTuningJobHyperparameters hyperparameters, string model, string organizationId, IEnumerable<string> resultFiles, FineTuningJobStatus status, int? trainedTokens, string trainingFile, string validationFile, int seed)
@@ -35,7 +39,7 @@ public partial class FineTuningJob
         Hyperparameters = hyperparameters;
         Model = model;
         OrganizationId = organizationId;
-        ResultFiles = resultFiles.ToList();
+        ResultFileIds = resultFiles.ToList();
         Status = status;
         TrainedTokens = trainedTokens;
         TrainingFileId = trainingFile;
