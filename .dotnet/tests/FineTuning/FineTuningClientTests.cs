@@ -93,7 +93,7 @@ namespace OpenAI.Tests.FineTuning
             Assert.AreEqual(3, job.Hyperparameters.GetLearningRateMultiplier());
             Assert.AreEqual(job._user_provided_suffix, "TestFTJob");
             Assert.AreEqual(1234567, job.Seed);
-            Assert.AreEqual(validationFile.Id, job.ValidationFile);
+            Assert.AreEqual(validationFile.Id, job.ValidationFileId);
 
             job = client.CancelJob(job.Id);
         }
@@ -121,7 +121,7 @@ namespace OpenAI.Tests.FineTuning
             Assert.AreEqual(3, job.Hyperparameters.GetLearningRateMultiplier());
             Assert.AreEqual(job._user_provided_suffix, "TestFTJob");
             Assert.AreEqual(1234567, job.Seed);
-            Assert.AreEqual(validationFile.Id, job.ValidationFile);
+            Assert.AreEqual(validationFile.Id, job.ValidationFileId);
 
             job = await client.CancelJobAsync(job.Id);
         }
