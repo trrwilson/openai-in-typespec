@@ -11,8 +11,8 @@ namespace OpenAI.FineTuning;
 /// The service client for OpenAI fine-tuning operations.
 /// </summary>
 [CodeGenClient("FineTuning")]
-[CodeGenSuppress("CreateFineTuningJobAsync", typeof(InternalCreateFineTuningJobRequest))]
-[CodeGenSuppress("CreateFineTuningJob", typeof(InternalCreateFineTuningJobRequest))]
+[CodeGenSuppress("CreateFineTuningJobAsync", typeof(FineTuningOptions))]
+[CodeGenSuppress("CreateFineTuningJob", typeof(FineTuningOptions))]
 [CodeGenSuppress("GetPaginatedFineTuningJobsAsync", typeof(string), typeof(int?))]
 [CodeGenSuppress("GetPaginatedFineTuningJobs", typeof(string), typeof(int?))]
 [CodeGenSuppress("RetrieveFineTuningJobAsync", typeof(string))]
@@ -69,63 +69,41 @@ public partial class FineTuningClient
     /// <summary> Creates a job with a training file and model. </summary>
     /// <param name="model"> The model name to fine-tune. String such as "gpt-3.5-turbo" </param>
     /// <param name="trainingFileId"> The training file name that is already uploaded. String should match pattern '^file-[a-zA-Z0-9]{24}$'. </param>
-    /// <param name="hyperparameters"> The hyperparameters (Epochs/Cycles, Batch size, and learning rate multiplier). </param>
-    /// <param name="suffix"> The suffix to append to the model name. </param>
-    /// <param name="validationFileId"> The validation file Id that is already uploaded. String should match pattern '^file-[a-zA-Z0-9]{24}$' and is retrieved by using a FileClient.UploadFile(...) call. </param>
-    /// <param name="integrations"> The integrations to use, such as WandB.io. </param>
-    /// <param name="seed"> The seed to use for reproducibility. </param>
-    /// <param name="options"> Additional options (<see cref="RequestOptions"/>) to customize the request. </param>
+    /// <param name="options"> Additional options (<see cref="FineTuningOptions"/>) to customize the request. </param>
     /// <returns>A <see cref="ClientResult{FineTuningJob}"/> containing the newly started fine-tuning job.</returns>
     public ClientResult<FineTuningJob> CreateJob(
-        string model, 
+        string model,
         string trainingFileId,
-        HyperparameterOptions hyperparameters = default,
-        string suffix = null,
-        string validationFileId = null,
-        List<Integration> integrations = null,
-        int? seed = null,
-        RequestOptions options = default
+        FineTuningOptions options = default,
+        CancellationToken cancellationToken = default
         )
     {
-        var request = new InternalCreateFineTuningJobRequest(model, trainingFileId, hyperparameters, suffix, validationFileId, integrations, seed, null);
-        var content = request.ToBinaryContent();
-        ClientResult result = CreateJob(content, options);
+        options ??= new FineTuningOptions();
+        options.Model = model;
+        options.TrainingFile = trainingFileId;
+
+        ClientResult result = CreateJob(options.ToBinaryContent(), cancellationToken.ToRequestOptions());
         return ClientResult.FromValue(FineTuningJob.FromResponse(result.GetRawResponse()), result.GetRawResponse());
     }
 
-    /// <summary> Async version of create job</summary>
-    /// <summary> Creates a job with a training file and model. </summary>
+    /// <summary> Async Creates a job with a training file and model. </summary>
     /// <param name="model"> The model name to fine-tune. String such as "gpt-3.5-turbo" </param>
     /// <param name="trainingFileId"> The training file Id that is already uploaded. String should match pattern '^file-[a-zA-Z0-9]{24}$'. </param>
-    /// <param name="hyperparameters"> The hyperparameters (Epochs/Cycles, Batch size, and learning rate multiplier). </param>
-    /// <param name="suffix"> The suffix to append to the model name. </param>
-    /// <param name="validationFileId"> The validation file Id that is already uploaded. String should match pattern '^file-[a-zA-Z0-9]{24}$' and is retrieved by using a FileClient.UploadFile(...) call. </param>
-    /// <param name="integrations"> The integrations to use, such as WandB.io. </param>
-    /// <param name="seed"> The seed to use for reproducibility. </param>
-    /// <param name="options"> Additional options (<see cref="RequestOptions"/>) to customize the request. </param>
+    /// <param name="options"> Additional options (<see cref="FineTuningOptions"/>) to customize the request. </param>
     /// <returns>A <see cref="Task"/> of a <see cref="ClientResult{FineTuningJob}"/> containing the newly started fine-tuning job.</returns>
     public async Task<ClientResult<FineTuningJob>> CreateJobAsync(
         string model,
         string trainingFileId,
-        HyperparameterOptions hyperparameters = default,
-        string suffix = null,
-        string validationFileId = null,
-        List<Integration> integrations = null,
-        int? seed = null,
-        RequestOptions options = default
+        FineTuningOptions options = default,
+        CancellationToken cancellationToken = default
         )
     {
-        var request = new InternalCreateFineTuningJobRequest(
-            model, 
-            trainingFileId, 
-            hyperparameters, 
-            suffix, 
-            validationFileId, 
-            integrations,
-            seed, 
-            null);
-        var content = request.ToBinaryContent();
-        ClientResult result = await CreateJobAsync(content, options);
+       
+        options ??= new FineTuningOptions();
+        options.Model = model;
+        options.TrainingFile = trainingFileId;
+
+        ClientResult result = await CreateJobAsync(options.ToBinaryContent(), cancellationToken.ToRequestOptions());
         return ClientResult.FromValue(FineTuningJob.FromResponse(result.GetRawResponse()), result.GetRawResponse());
     }
 

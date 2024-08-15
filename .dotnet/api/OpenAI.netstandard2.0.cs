@@ -1361,9 +1361,9 @@ namespace OpenAI.FineTuning {
         public virtual Task<ClientResult> CancelJobAsync(string jobId, RequestOptions options);
         public Task<ClientResult<FineTuningJob>> CancelJobAsync(string jobId, CancellationToken cancellationToken = default);
         public virtual ClientResult CreateJob(BinaryContent content, RequestOptions options = null);
-        public ClientResult<FineTuningJob> CreateJob(string model, string trainingFileId, HyperparameterOptions hyperparameters = null, string suffix = null, string validationFileId = null, List<Integration> integrations = null, int? seed = null, RequestOptions options = null);
+        public ClientResult<FineTuningJob> CreateJob(string model, string trainingFileId, FineTuningOptions options = null, CancellationToken cancellationToken = default);
         public virtual Task<ClientResult> CreateJobAsync(BinaryContent content, RequestOptions options = null);
-        public Task<ClientResult<FineTuningJob>> CreateJobAsync(string model, string trainingFileId, HyperparameterOptions hyperparameters = null, string suffix = null, string validationFileId = null, List<Integration> integrations = null, int? seed = null, RequestOptions options = null);
+        public Task<ClientResult<FineTuningJob>> CreateJobAsync(string model, string trainingFileId, FineTuningOptions options = null, CancellationToken cancellationToken = default);
         public virtual ClientResult GetJob(string jobId, RequestOptions options);
         public virtual Task<ClientResult> GetJobAsync(string jobId, RequestOptions options);
         public Task<ClientResult<FineTuningJob>> GetJobAsync(string jobId);
@@ -1392,7 +1392,6 @@ namespace OpenAI.FineTuning {
         public FineTuningJobStatus Status { get; }
         public int? TrainedTokens { get; }
         public string TrainingFileId { get; }
-        public string ValidationFile { get; }
         public string ValidationFileId { get; }
         public string GetPlaygroundURL();
     }
@@ -1404,8 +1403,6 @@ namespace OpenAI.FineTuning {
     public readonly partial struct FineTuningJobHyperparameters {
         private readonly object _dummy;
         private readonly int _dummyPrimitive;
-        public FineTuningJobHyperparameters();
-        public FineTuningJobHyperparameters(int cycleCount = 0, int batchSize = 0, int learningRateMultiplier = 0);
         public IDictionary<string, BinaryData> SerializedAdditionalRawData { get; }
         public readonly int GetBatchSize();
         public readonly int GetCycleCount();
@@ -1431,6 +1428,13 @@ namespace OpenAI.FineTuning {
         public static implicit operator FineTuningJobStatus(string value);
         public static bool operator !=(FineTuningJobStatus left, FineTuningJobStatus right);
         public override readonly string ToString();
+    }
+    public class FineTuningOptions {
+        public HyperparameterOptions Hyperparameters { get; set; }
+        public IList<Integration> Integrations { get; set; }
+        public int? Seed { get; set; }
+        public string Suffix { get; set; }
+        public string ValidationFile { get; set; }
     }
     public readonly partial struct HyperparameterBatchSize : IEquatable<HyperparameterBatchSize> {
         private readonly object _dummy;
@@ -1621,6 +1625,23 @@ namespace OpenAI.Images {
     }
 }
 namespace OpenAI.Models {
+    public readonly partial struct CreateFineTuningJobRequestModel : IEquatable<CreateFineTuningJobRequestModel> {
+        private readonly object _dummy;
+        private readonly int _dummyPrimitive;
+        public CreateFineTuningJobRequestModel(string value);
+        public static CreateFineTuningJobRequestModel Babbage002 { get; }
+        public static CreateFineTuningJobRequestModel Davinci002 { get; }
+        public static CreateFineTuningJobRequestModel Gpt35Turbo { get; }
+        public readonly bool Equals(CreateFineTuningJobRequestModel other);
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override readonly bool Equals(object obj);
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override readonly int GetHashCode();
+        public static bool operator ==(CreateFineTuningJobRequestModel left, CreateFineTuningJobRequestModel right);
+        public static implicit operator CreateFineTuningJobRequestModel(string value);
+        public static bool operator !=(CreateFineTuningJobRequestModel left, CreateFineTuningJobRequestModel right);
+        public override readonly string ToString();
+    }
     public readonly partial struct FineTuningJobObject : IEquatable<FineTuningJobObject> {
         private readonly object _dummy;
         private readonly int _dummyPrimitive;

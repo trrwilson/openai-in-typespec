@@ -77,15 +77,18 @@ namespace OpenAI.Tests.FineTuning
         {
             // This test does not check for Integrations because it requires a valid API key
 
-            var hp = new HyperparameterOptions(cycleCount: 1, batchSize: 2, learningRate: 3);
+            var options = new FineTuningOptions()
+            {
+                Hyperparameters = new(cycleCount: 1, batchSize: 2, learningRate: 3),
+                Suffix = "TestFTJob",
+                ValidationFile = validationFile.Id,
+                Seed = 1234567
+            };
 
             FineTuningJob job = client.CreateJob(
                 "gpt-3.5-turbo",
                 sampleFile.Id,
-                hyperparameters: hp,
-                suffix: "TestFTJob",
-                validationFileId: validationFile.Id,
-                seed: 1234567
+                options
                 );
 
             Assert.AreEqual(1, job.Hyperparameters.GetCycleCount());
@@ -104,18 +107,21 @@ namespace OpenAI.Tests.FineTuning
         {
             // This test does not check for Integrations because it requires a valid API key
 
-            var hp = new HyperparameterOptions(cycleCount: 1, batchSize: 2, learningRate: 3);
+            var options = new FineTuningOptions()
+            {
+                Hyperparameters = new(cycleCount: 1, batchSize: 2, learningRate: 3),
+                Suffix = "TestFTJob",
+                ValidationFile = validationFile.Id,
+                Seed = 1234567
+            };
 
             FineTuningJob job = await client.CreateJobAsync(
                 "gpt-3.5-turbo",
                 sampleFile.Id,
-                hyperparameters: hp,
-                suffix: "TestFTJob",
-                validationFileId: validationFile.Id,
-                seed: 1234567
-                );
+                options
+            );
 
-            
+
             Assert.AreEqual(1, job.Hyperparameters.GetCycleCount());
             Assert.AreEqual(2, job.Hyperparameters.GetBatchSize());
             Assert.AreEqual(3, job.Hyperparameters.GetLearningRateMultiplier());
@@ -136,7 +142,11 @@ namespace OpenAI.Tests.FineTuning
             // Keep number of iterations low to avoid high costs
             var hp = new HyperparameterOptions(cycleCount: 1, batchSize: 10);
 
-            FineTuningJob job = client.CreateJob("ft:gpt-3.5-turbo-0125:personal::9rYqxSbx", sampleFile.Id, hyperparameters: hp);
+            FineTuningJob job = client.CreateJob(
+                "gpt-3.5-turbo",
+                sampleFile.Id,
+                options: new() { Hyperparameters = hp }
+            );
 
             job = await client.WaitUntilCompleted(job);
             // Debug logs might be similar to:
@@ -162,8 +172,11 @@ namespace OpenAI.Tests.FineTuning
                 new(new IntegrationWandB("ft-tests"))
             };
 
-            FineTuningJob job = client.CreateJob("gpt-3.5-turbo", sampleFile.Id, integrations: integrations);
-
+            FineTuningJob job = client.CreateJob(
+                "gpt-3.5-turbo",
+                sampleFile.Id,
+                options: new() { Integrations = integrations }
+            );
             client.CancelJob(job.Id);
 
         }
@@ -193,7 +206,11 @@ namespace OpenAI.Tests.FineTuning
 
             Assert.Throws<ClientResultException>(() =>
             {
-                FineTuningJob job = client.CreateJob("gpt-3.5-turbo", sampleFile.Id, validationFileId: "7");
+                FineTuningJob job = client.CreateJob(
+                    "gpt-3.5-turbo",
+                    sampleFile.Id,
+                    new() { ValidationFile = "7" }
+                );
             });
         }
 
@@ -204,7 +221,11 @@ namespace OpenAI.Tests.FineTuning
 
             Assert.ThrowsAsync<ClientResultException>(async () =>
             {
-                var job = await client.CreateJobAsync("gpt-3.5-turbo", sampleFile.Id, validationFileId: "7");
+                var job = await client.CreateJobAsync(
+                    "gpt-3.5-turbo", 
+                    sampleFile.Id,
+                    new() { ValidationFile = "7" }
+                    );
             });
         }
     }

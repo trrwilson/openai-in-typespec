@@ -2,13 +2,10 @@ namespace OpenAI.FineTuning;
 
 // CUSTOM: Made internal.
 
-[CodeGenModel("CreateFineTuningJobRequest")]
-internal partial class InternalCreateFineTuningJobRequest { }
 
 
 
-[CodeGenModel("CreateFineTuningJobRequestModel")]
-internal readonly partial struct InternalCreateFineTuningJobRequestModel { }
+
 
 [CodeGenModel("FineTuneChatCompletionRequestAssistantMessage")]
 internal partial class InternalFineTuneChatCompletionRequestAssistantMessage { }

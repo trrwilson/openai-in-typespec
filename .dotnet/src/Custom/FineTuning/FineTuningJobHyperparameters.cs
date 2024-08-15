@@ -17,13 +17,6 @@ public readonly partial struct FineTuningJobHyperparameters
 
     public IDictionary<string, BinaryData> SerializedAdditionalRawData { get; }
 
-    public FineTuningJobHyperparameters(int cycleCount = 0, int batchSize = 0, int learningRateMultiplier = 0)
-    {
-        CycleCount = cycleCount > 0 ? new BinaryData(cycleCount) : Auto;
-        BatchSize = batchSize > 0 ? new BinaryData(batchSize) : Auto;
-        LearningRateMultiplier = learningRateMultiplier > 0 ? new BinaryData(learningRateMultiplier) : Auto;
-    }
-
     private float HandleDefaults(BinaryData data)
     {
         if (data is null)

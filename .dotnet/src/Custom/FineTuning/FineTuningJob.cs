@@ -17,7 +17,7 @@ public partial class FineTuningJob
     [CodeGenMember("EstimatedFinish")]
     public DateTimeOffset? EstimatedFinishAt { get; }
 
-    [CodeGenMember("ValidationFileId")]
+    [CodeGenMember("ValidationFile")]
     public string ValidationFileId { get; }
 
     [CodeGenMember("TrainingFile")]
