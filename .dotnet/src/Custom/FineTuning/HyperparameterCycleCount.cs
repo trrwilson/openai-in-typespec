@@ -1,9 +1,10 @@
 using System;
+using System.ComponentModel;
 
 namespace OpenAI.FineTuning;
 
 [CodeGenModel("CreateFineTuningJobRequestHyperparametersNEpochsChoiceEnum")]
-public readonly partial struct HyperparameterCycleCount
+public readonly partial struct HyperparameterCycleCount: IEquatable<int>, IEquatable<string>
 {
     internal HyperparameterCycleCount(string predefinedLabel)
     {
@@ -16,4 +17,9 @@ public readonly partial struct HyperparameterCycleCount
     }
 
     public static implicit operator HyperparameterCycleCount(int epochCount) => new(epochCount);
+
+    public bool Equals(int other) => this == new HyperparameterCycleCount(other);
+    public bool Equals(string other) => this == new HyperparameterCycleCount(other);
+
+    public override bool Equals(object other) => other is HyperparameterCycleCount cc && cc == this;
 }

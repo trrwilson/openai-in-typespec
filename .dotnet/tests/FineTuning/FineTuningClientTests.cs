@@ -42,7 +42,7 @@ namespace OpenAI.Tests.FineTuning
         [Parallelizable]
         public void MinimalRequiredParams()
         {
-
+            
             FineTuningJob job = client.CreateJob("gpt-3.5-turbo", sampleFile.Id);
 
             Assert.True(job.Status.InProgress());

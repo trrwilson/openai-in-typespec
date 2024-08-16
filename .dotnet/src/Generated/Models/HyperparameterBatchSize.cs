@@ -17,9 +17,6 @@ namespace OpenAI.FineTuning
         public static bool operator ==(HyperparameterBatchSize left, HyperparameterBatchSize right) => left.Equals(right);
         public static bool operator !=(HyperparameterBatchSize left, HyperparameterBatchSize right) => !left.Equals(right);
         public static implicit operator HyperparameterBatchSize(string value) => new HyperparameterBatchSize(value);
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public override bool Equals(object obj) => obj is HyperparameterBatchSize other && Equals(other);
         public bool Equals(HyperparameterBatchSize other) => string.Equals(_value, other._value, StringComparison.InvariantCultureIgnoreCase);
 
         [EditorBrowsable(EditorBrowsableState.Never)]
