@@ -103,7 +103,7 @@ public partial class FineTuningClient
         options.Model = model;
         options.TrainingFile = trainingFileId;
 
-        ClientResult result = await CreateJobAsync(options.ToBinaryContent(), cancellationToken.ToRequestOptions());
+        ClientResult result = await CreateJobAsync(options.ToBinaryContent(), cancellationToken.ToRequestOptions()).ConfigureAwait(false);
         return ClientResult.FromValue(FineTuningJob.FromResponse(result.GetRawResponse()), result.GetRawResponse());
     }
 
@@ -125,13 +125,13 @@ public partial class FineTuningClient
     /// <returns> A <see cref="Task{T}"/> of <see cref="ClientResult{FineTuningJob}"/> containing the canceled fine-tuning job. </returns>
     public virtual async Task<ClientResult<FineTuningJob>> CancelJobAsync(string jobId, CancellationToken cancellationToken = default)
     {
-        ClientResult result = await CancelJobAsync(jobId, cancellationToken.ToRequestOptions());
+        ClientResult result = await CancelJobAsync(jobId, cancellationToken.ToRequestOptions()).ConfigureAwait(false);
         return ClientResult.FromValue(FineTuningJob.FromResponse(result.GetRawResponse()), result.GetRawResponse());
     }
 
     public virtual async Task<ClientResult<FineTuningJob>> GetJobAsync(string jobId)
     {
-        ClientResult result = await GetJobAsync(jobId, null);
+        ClientResult result = await GetJobAsync(jobId, null).ConfigureAwait(false);
         return ClientResult.FromValue(FineTuningJob.FromResponse(result.GetRawResponse()), result.GetRawResponse());
     }
 
@@ -144,15 +144,15 @@ public partial class FineTuningClient
             if (estimate.HasValue)
             {
                 // Console.WriteLine($"Waiting for {estimate.Value - DateTimeOffset.UtcNow}");
-                await Task.Delay(estimate.Value - DateTimeOffset.UtcNow);
+                await Task.Delay(estimate.Value - DateTimeOffset.UtcNow).ConfigureAwait(false);
             }
             else
             {
                 // Console.WriteLine("Waiting for 30 seconds");
-                await Task.Delay(30 * 1000);
+                await Task.Delay(30 * 1000).ConfigureAwait(false);
             }
 
-            job = await GetJobAsync(job.Id);
+            job = await GetJobAsync(job.Id).ConfigureAwait(false);
         }
         return job;
     }
