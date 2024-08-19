@@ -71,7 +71,7 @@ public partial class FineTuningClient
     /// <param name="trainingFileId"> The training file name that is already uploaded. String should match pattern '^file-[a-zA-Z0-9]{24}$'. </param>
     /// <param name="options"> Additional options (<see cref="FineTuningOptions"/>) to customize the request. </param>
     /// <returns>A <see cref="ClientResult{FineTuningJob}"/> containing the newly started fine-tuning job.</returns>
-    public ClientResult<FineTuningJob> CreateJob(
+    public virtual ClientResult<FineTuningJob> CreateJob(
         string model,
         string trainingFileId,
         FineTuningOptions options = default,
@@ -91,7 +91,7 @@ public partial class FineTuningClient
     /// <param name="trainingFileId"> The training file Id that is already uploaded. String should match pattern '^file-[a-zA-Z0-9]{24}$'. </param>
     /// <param name="options"> Additional options (<see cref="FineTuningOptions"/>) to customize the request. </param>
     /// <returns>A <see cref="Task"/> of a <see cref="ClientResult{FineTuningJob}"/> containing the newly started fine-tuning job.</returns>
-    public async Task<ClientResult<FineTuningJob>> CreateJobAsync(
+    public virtual async Task<ClientResult<FineTuningJob>> CreateJobAsync(
         string model,
         string trainingFileId,
         FineTuningOptions options = default,
@@ -113,7 +113,7 @@ public partial class FineTuningClient
     /// <param name="jobId">The ID of the job to cancel.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A <see cref="ClientResult{FineTuningJob}"/> containing the canceled fine-tuning job.</returns>
-    public ClientResult<FineTuningJob> CancelJob(string jobId, CancellationToken cancellationToken = default)
+    public virtual ClientResult<FineTuningJob> CancelJob(string jobId, CancellationToken cancellationToken = default)
     {
         ClientResult result = CancelJob(jobId, cancellationToken.ToRequestOptions());
         return ClientResult.FromValue(FineTuningJob.FromResponse(result.GetRawResponse()), result.GetRawResponse());
@@ -123,19 +123,19 @@ public partial class FineTuningClient
     /// <param name="jobId"> The job ID to cancel. </param>
     /// <param name="cancellationToken"> The cancellation token. </param>
     /// <returns> A <see cref="Task{T}"/> of <see cref="ClientResult{FineTuningJob}"/> containing the canceled fine-tuning job. </returns>
-    public async Task<ClientResult<FineTuningJob>> CancelJobAsync(string jobId, CancellationToken cancellationToken = default)
+    public virtual async Task<ClientResult<FineTuningJob>> CancelJobAsync(string jobId, CancellationToken cancellationToken = default)
     {
         ClientResult result = await CancelJobAsync(jobId, cancellationToken.ToRequestOptions());
         return ClientResult.FromValue(FineTuningJob.FromResponse(result.GetRawResponse()), result.GetRawResponse());
     }
 
-    public async Task<ClientResult<FineTuningJob>> GetJobAsync(string jobId)
+    public virtual async Task<ClientResult<FineTuningJob>> GetJobAsync(string jobId)
     {
         ClientResult result = await GetJobAsync(jobId, null);
         return ClientResult.FromValue(FineTuningJob.FromResponse(result.GetRawResponse()), result.GetRawResponse());
     }
 
-    public async Task<FineTuningJob> WaitUntilCompleted(FineTuningJob job)
+    public virtual async Task<FineTuningJob> WaitUntilCompleted(FineTuningJob job)
     {
         while (job.Status.InProgress())
         {
