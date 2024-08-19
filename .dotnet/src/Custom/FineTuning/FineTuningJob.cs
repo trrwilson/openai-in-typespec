@@ -26,6 +26,17 @@ public partial class FineTuningJob
     [CodeGenMember("ResultFiles")]
     public IReadOnlyList<string> ResultFileIds { get; }
 
+    [CodeGenMember("Status")]
+    public FineTuningJobStatus Status { get; }
+
+    [CodeGenMember("Object")]
+    private string _object { get; }
+
+    [CodeGenMember("Hyperparameters")]
+    public FineTuningJobHyperparameters Hyperparameters { get; set; } = default;
+
+    [CodeGenMember("Integrations")]
+    internal IReadOnlyList<InternalFineTuningIntegration> Integrations { get; }
 
 
 
@@ -59,10 +70,7 @@ public partial class FineTuningJob
         }
         return job;
     }
-    public FineTuningJobStatus Status { get; }
-    internal string Object { get; }  // make hidden 
-    public FineTuningJobHyperparameters Hyperparameters { get; set; } = default;
-    internal IReadOnlyList<InternalFineTuningIntegration> Integrations { get; }
+
 
     public string GetPlaygroundURL() {
         return $"https://platform.openai.com/playground/chat?models={Model}&models={FineTunedModel}";

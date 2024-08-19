@@ -22,7 +22,7 @@ namespace OpenAI.FineTuning
             FinishedAt = finishedAt;
             Hyperparameters = hyperparameters;
             Model = model;
-            Object = @object;
+            _object = @object;
             OrganizationId = organizationId;
             ResultFileIds = resultFileIds;
             Status = status;
