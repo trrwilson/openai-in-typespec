@@ -7,4 +7,6 @@ namespace OpenAI.FineTuning;
 [CodeGenModel("CreateFineTuningJobRequestIntegration")]
 public partial class Integration
 {
+    public static Integration WandB(string name) => new(new IntegrationWandB(name));
+
 }

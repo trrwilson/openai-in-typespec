@@ -168,14 +168,10 @@ namespace OpenAI.Tests.FineTuning
         public void WandBIntegrations()
         {
 
-            var integrations = new List<Integration> {
-                new(new IntegrationWandB("ft-tests"))
-            };
-
             FineTuningJob job = client.CreateJob(
                 "gpt-3.5-turbo",
                 sampleFile.Id,
-                options: new() { Integrations = integrations }
+                options: new() { Integrations = [Integration.WandB("ft-tests")] }
             );
             client.CancelJob(job.Id);
 
