@@ -12,7 +12,7 @@ namespace OpenAI.FineTuning
     {
         internal IDictionary<string, BinaryData> SerializedAdditionalRawData { get; set; }
 
-        internal FineTuningOptions(CreateFineTuningJobRequestModel model, string trainingFile, HyperparameterOptions hyperparameters, string suffix, string validationFile, IList<Integration> integrations, int? seed, IDictionary<string, BinaryData> serializedAdditionalRawData)
+        internal FineTuningOptions(CreateFineTuningJobRequestModel model, string trainingFile, HyperparameterOptions hyperparameters, string suffix, string validationFile, IList<FineTuningIntegration> integrations, int? seed, IDictionary<string, BinaryData> serializedAdditionalRawData)
         {
             Model = model;
             TrainingFile = trainingFile;

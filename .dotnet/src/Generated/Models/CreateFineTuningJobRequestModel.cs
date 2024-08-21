@@ -19,10 +19,12 @@ namespace OpenAI.Models
         private const string Babbage002Value = "babbage-002";
         private const string Davinci002Value = "davinci-002";
         private const string Gpt35TurboValue = "gpt-3.5-turbo";
+        private const string Gpt4oMiniValue = "gpt-4o-mini";
 
         public static CreateFineTuningJobRequestModel Babbage002 { get; } = new CreateFineTuningJobRequestModel(Babbage002Value);
         public static CreateFineTuningJobRequestModel Davinci002 { get; } = new CreateFineTuningJobRequestModel(Davinci002Value);
         public static CreateFineTuningJobRequestModel Gpt35Turbo { get; } = new CreateFineTuningJobRequestModel(Gpt35TurboValue);
+        public static CreateFineTuningJobRequestModel Gpt4oMini { get; } = new CreateFineTuningJobRequestModel(Gpt4oMiniValue);
         public static bool operator ==(CreateFineTuningJobRequestModel left, CreateFineTuningJobRequestModel right) => left.Equals(right);
         public static bool operator !=(CreateFineTuningJobRequestModel left, CreateFineTuningJobRequestModel right) => !left.Equals(right);
         public static implicit operator CreateFineTuningJobRequestModel(string value) => new CreateFineTuningJobRequestModel(value);

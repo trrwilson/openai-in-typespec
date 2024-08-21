@@ -66,3 +66,22 @@ union FineTuningJobHyperparametersLearningRateMultiplierChoiceEnum {
 union FineTuningJobHyperparametersNEpochsChoiceEnum {
   auto: "auto",
 }
+
+@discriminator("type")
+model CreateFineTuningJobRequestIntegration {
+  type: string;
+}
+
+model CreateFineTuningJobRequestWandbIntegration
+  extends CreateFineTuningJobRequestIntegration {
+  type: "wandb";
+  project: string;
+  name?: string | null;
+  entity?: string | null;
+  tags?: string[];
+}
+
+@discriminator("type")
+model FineTuningIntegration {
+  type: string;
+}

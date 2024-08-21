@@ -21,6 +21,18 @@ namespace OpenAI.FineTuning
             }
 
             writer.WriteStartObject();
+            if (SerializedAdditionalRawData?.ContainsKey("user_provided_suffix") != true && Optional.IsDefined(UserProvidedSuffix))
+            {
+                if (UserProvidedSuffix != null)
+                {
+                    writer.WritePropertyName("user_provided_suffix"u8);
+                    writer.WriteStringValue(UserProvidedSuffix);
+                }
+                else
+                {
+                    writer.WriteNull("user_provided_suffix");
+                }
+            }
             if (SerializedAdditionalRawData?.ContainsKey("id") != true)
             {
                 writer.WritePropertyName("id"u8);
@@ -139,7 +151,7 @@ namespace OpenAI.FineTuning
                     writer.WriteStartArray();
                     foreach (var item in Integrations)
                     {
-                        writer.WriteObjectValue<InternalFineTuningIntegration>(item, options);
+                        writer.WriteObjectValue<FineTuningIntegration>(item, options);
                     }
                     writer.WriteEndArray();
                 }
@@ -207,6 +219,7 @@ namespace OpenAI.FineTuning
             {
                 return null;
             }
+            string userProvidedSuffix = default;
             string id = default;
             DateTimeOffset createdAt = default;
             FineTuningJobError error = default;
@@ -221,13 +234,23 @@ namespace OpenAI.FineTuning
             int? trainedTokens = default;
             string trainingFile = default;
             string validationFile = default;
-            IReadOnlyList<InternalFineTuningIntegration> integrations = default;
+            IReadOnlyList<FineTuningIntegration> integrations = default;
             int seed = default;
             DateTimeOffset? estimatedFinish = default;
             IDictionary<string, BinaryData> serializedAdditionalRawData = default;
             Dictionary<string, BinaryData> rawDataDictionary = new Dictionary<string, BinaryData>();
             foreach (var property in element.EnumerateObject())
             {
+                if (property.NameEquals("user_provided_suffix"u8))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        userProvidedSuffix = null;
+                        continue;
+                    }
+                    userProvidedSuffix = property.Value.GetString();
+                    continue;
+                }
                 if (property.NameEquals("id"u8))
                 {
                     id = property.Value.GetString();
@@ -334,10 +357,10 @@ namespace OpenAI.FineTuning
                     {
                         continue;
                     }
-                    List<InternalFineTuningIntegration> array = new List<InternalFineTuningIntegration>();
+                    List<FineTuningIntegration> array = new List<FineTuningIntegration>();
                     foreach (var item in property.Value.EnumerateArray())
                     {
-                        array.Add(InternalFineTuningIntegration.DeserializeInternalFineTuningIntegration(item, options));
+                        array.Add(FineTuningIntegration.DeserializeFineTuningIntegration(item, options));
                     }
                     integrations = array;
                     continue;
@@ -365,6 +388,7 @@ namespace OpenAI.FineTuning
             }
             serializedAdditionalRawData = rawDataDictionary;
             return new FineTuningJob(
+                userProvidedSuffix,
                 id,
                 createdAt,
                 error,
@@ -379,7 +403,7 @@ namespace OpenAI.FineTuning
                 trainedTokens,
                 trainingFile,
                 validationFile,
-                integrations ?? new ChangeTrackingList<InternalFineTuningIntegration>(),
+                integrations ?? new ChangeTrackingList<FineTuningIntegration>(),
                 seed,
                 estimatedFinish,
                 serializedAdditionalRawData);
@@ -415,6 +439,12 @@ namespace OpenAI.FineTuning
         }
 
         string IPersistableModel<FineTuningJob>.GetFormatFromOptions(ModelReaderWriterOptions options) => "J";
+
+        internal static FineTuningJob FromResponse(PipelineResponse response)
+        {
+            using var document = JsonDocument.Parse(response.Content);
+            return DeserializeFineTuningJob(document.RootElement);
+        }
 
         internal virtual BinaryContent ToBinaryContent()
         {
