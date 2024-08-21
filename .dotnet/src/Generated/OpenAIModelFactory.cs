@@ -90,18 +90,6 @@ namespace OpenAI
             return new HyperparameterOptions(cycleCount, batchSize, learningRate, serializedAdditionalRawData: null);
         }
 
-        public static Integration Integration(IntegrationType type = default, IntegrationWandB wandb = null)
-        {
-            return new Integration(type, wandb, serializedAdditionalRawData: null);
-        }
-
-        public static IntegrationWandB IntegrationWandB(string project = null, string name = null, string entity = null, IEnumerable<string> tags = null)
-        {
-            tags ??= new List<string>();
-
-            return new IntegrationWandB(project, name, entity, tags?.ToList(), serializedAdditionalRawData: null);
-        }
-
         public static FineTuningJobError FineTuningJobError(string code = null, string message = null, string param = null)
         {
             return new FineTuningJobError(code, message, param, serializedAdditionalRawData: null);

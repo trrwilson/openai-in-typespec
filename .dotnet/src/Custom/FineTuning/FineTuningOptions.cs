@@ -37,7 +37,7 @@ public partial class FineTuningOptions
     /// Only WandB.io is currently supported.
     /// </summary>
     [CodeGenMember("Integrations")]
-    public IList<Integration> Integrations { get; set; }
+    public IList<FineTuningIntegration> Integrations { get; }
 
 
     /// <summary>
@@ -47,8 +47,13 @@ public partial class FineTuningOptions
     [CodeGenMember("Seed")]
     public int? Seed { get; set; }
 
-    public FineTuningOptions() { }
+    public FineTuningOptions()
+    {
+        Integrations = new ChangeTrackingList<FineTuningIntegration>();
+    }
+
     internal FineTuningOptions(CreateFineTuningJobRequestModel model, string trainingFile)
+        : this()
     {
         Argument.AssertNotNull(trainingFile, nameof(trainingFile));
 

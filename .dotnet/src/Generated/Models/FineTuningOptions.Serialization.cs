@@ -69,7 +69,7 @@ namespace OpenAI.FineTuning
                     writer.WriteStartArray();
                     foreach (var item in Integrations)
                     {
-                        writer.WriteObjectValue<Integration>(item, options);
+                        writer.WriteObjectValue<FineTuningIntegration>(item, options);
                     }
                     writer.WriteEndArray();
                 }
@@ -137,7 +137,7 @@ namespace OpenAI.FineTuning
             HyperparameterOptions hyperparameters = default;
             string suffix = default;
             string validationFile = default;
-            IList<Integration> integrations = default;
+            IList<FineTuningIntegration> integrations = default;
             int? seed = default;
             IDictionary<string, BinaryData> serializedAdditionalRawData = default;
             Dictionary<string, BinaryData> rawDataDictionary = new Dictionary<string, BinaryData>();
@@ -188,10 +188,10 @@ namespace OpenAI.FineTuning
                     {
                         continue;
                     }
-                    List<Integration> array = new List<Integration>();
+                    List<FineTuningIntegration> array = new List<FineTuningIntegration>();
                     foreach (var item in property.Value.EnumerateArray())
                     {
-                        array.Add(Integration.DeserializeIntegration(item, options));
+                        array.Add(FineTuningIntegration.DeserializeFineTuningIntegration(item, options));
                     }
                     integrations = array;
                     continue;
@@ -219,7 +219,7 @@ namespace OpenAI.FineTuning
                 hyperparameters,
                 suffix,
                 validationFile,
-                integrations ?? new ChangeTrackingList<Integration>(),
+                integrations ?? new ChangeTrackingList<FineTuningIntegration>(),
                 seed,
                 serializedAdditionalRawData);
         }

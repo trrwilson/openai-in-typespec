@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.ClientModel.Primitives;
 using OpenAI.FineTuning;
 
 namespace OpenAI.Tests.FineTuning
@@ -17,22 +18,25 @@ namespace OpenAI.Tests.FineTuning
 
         private static FineTuningJob JobStub()
         {
-            return new FineTuningJob(
-                            id: "ftjob-unitTest",
-                            createdAt: DateTimeOffset.MinValue,
-                            error: null,
-                            fineTunedModel: "ft:gpt-3.5-turbo-0125:personal::unitTest",
-                            finishedAt: DateTimeOffset.Now,
-                            hyperparameters: new(),
-                            model: "gpt-3.5-turbo-0125",
-                            organizationId: "org-unitTest",
-                            resultFiles: ["file-unitTest"],
-                            FineTuningJobStatus.Succeeded,
-                            trainedTokens: 0,
-                            trainingFile: "file-unitTest",
-                            validationFile: "file-unitTest",
-                            seed: 0
-                            );
+            return ModelReaderWriter.Read<FineTuningJob>(BinaryData.FromString($$"""
+            {
+              "object": "fine_tuning.job",
+              "id": "ftjob-unitTest",
+              "created_at": {{DateTimeOffset.MinValue.ToUnixTimeSeconds()}},
+              "error": null,
+              "fine_tuned_model": "ft:gpt-3.5-turbo-0125:personal::unitTest",
+              "finished_at": {{DateTimeOffset.Now.ToUnixTimeSeconds()}},
+              "hyperparameters": {},
+              "model": "gpt-3.5-turbo-0125",
+              "organization_id": "org-unitTest",
+              "result_files": ["file-unitTest"],
+              "status": "succeeded",
+              "trained_tokens": 0,
+              "training_file": "file-unitTest",
+              "validation_file": "file-unitTest",
+              "seed": 0
+            }
+            """));
         }
     }
 }

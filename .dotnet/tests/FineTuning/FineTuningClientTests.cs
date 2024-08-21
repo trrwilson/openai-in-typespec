@@ -94,7 +94,7 @@ namespace OpenAI.Tests.FineTuning
             Assert.AreEqual(1, job.Hyperparameters.GetCycleCount());
             Assert.AreEqual(2, job.Hyperparameters.GetBatchSize());
             Assert.AreEqual(3, job.Hyperparameters.GetLearningRateMultiplier());
-            Assert.AreEqual(job._user_provided_suffix, "TestFTJob");
+            Assert.AreEqual(job.UserProvidedSuffix, "TestFTJob");
             Assert.AreEqual(1234567, job.Seed);
             Assert.AreEqual(validationFile.Id, job.ValidationFileId);
 
@@ -125,7 +125,7 @@ namespace OpenAI.Tests.FineTuning
             Assert.AreEqual(1, job.Hyperparameters.GetCycleCount());
             Assert.AreEqual(2, job.Hyperparameters.GetBatchSize());
             Assert.AreEqual(3, job.Hyperparameters.GetLearningRateMultiplier());
-            Assert.AreEqual(job._user_provided_suffix, "TestFTJob");
+            Assert.AreEqual(job.UserProvidedSuffix, "TestFTJob");
             Assert.AreEqual(1234567, job.Seed);
             Assert.AreEqual(validationFile.Id, job.ValidationFileId);
 
@@ -171,10 +171,12 @@ namespace OpenAI.Tests.FineTuning
             FineTuningJob job = client.CreateJob(
                 "gpt-3.5-turbo",
                 sampleFile.Id,
-                options: new() { Integrations = [Integration.WandB("ft-tests")] }
+                options: new()
+                {
+                    Integrations = { new WeightsAndBiasesIntegration("ft-tests") },
+                }
             );
             client.CancelJob(job.Id);
-
         }
 
         [Test]

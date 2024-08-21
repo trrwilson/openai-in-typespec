@@ -2,11 +2,6 @@ namespace OpenAI.FineTuning;
 
 // CUSTOM: Made internal.
 
-
-
-
-
-
 [CodeGenModel("FineTuneChatCompletionRequestAssistantMessage")]
 internal partial class InternalFineTuneChatCompletionRequestAssistantMessage { }
 
@@ -69,3 +64,12 @@ internal readonly partial struct InternalFineTuningJobHyperparametersLearningRat
 
 [CodeGenModel("FineTuningJobHyperparametersNEpochsChoiceEnum")]
 internal readonly partial struct InternalFineTuningJobHyperparametersNEpochsChoiceEnum { }
+
+[CodeGenModel("FineTuningIntegrationWandbWandb")]
+internal partial class InternalFineTuningIntegrationWandbWandb { }
+
+[CodeGenModel("UnknownCreateFineTuningJobRequestIntegration")]
+internal partial class InternalUnknownCreateFineTuningJobRequestIntegration { }
+
+[CodeGenModel("UnknownFineTuningIntegration")]
+internal partial class InternalUnknownFineTuningIntegration { }

@@ -10,40 +10,40 @@ using System.Text.Json;
 
 namespace OpenAI.FineTuning
 {
-    public partial class IntegrationWandB : IJsonModel<IntegrationWandB>
+    public partial class WeightsAndBiasesIntegration : IJsonModel<WeightsAndBiasesIntegration>
     {
-        void IJsonModel<IntegrationWandB>.Write(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+        void IJsonModel<WeightsAndBiasesIntegration>.Write(Utf8JsonWriter writer, ModelReaderWriterOptions options)
         {
-            var format = options.Format == "W" ? ((IPersistableModel<IntegrationWandB>)this).GetFormatFromOptions(options) : options.Format;
+            var format = options.Format == "W" ? ((IPersistableModel<WeightsAndBiasesIntegration>)this).GetFormatFromOptions(options) : options.Format;
             if (format != "J")
             {
-                throw new FormatException($"The model {nameof(IntegrationWandB)} does not support writing '{format}' format.");
+                throw new FormatException($"The model {nameof(WeightsAndBiasesIntegration)} does not support writing '{format}' format.");
             }
 
             writer.WriteStartObject();
             if (SerializedAdditionalRawData?.ContainsKey("project") != true)
             {
                 writer.WritePropertyName("project"u8);
-                writer.WriteStringValue(Project);
+                writer.WriteStringValue(_project);
             }
-            if (SerializedAdditionalRawData?.ContainsKey("name") != true && Optional.IsDefined(Name))
+            if (SerializedAdditionalRawData?.ContainsKey("name") != true && Optional.IsDefined(DisplayName))
             {
-                if (Name != null)
+                if (DisplayName != null)
                 {
                     writer.WritePropertyName("name"u8);
-                    writer.WriteStringValue(Name);
+                    writer.WriteStringValue(DisplayName);
                 }
                 else
                 {
                     writer.WriteNull("name");
                 }
             }
-            if (SerializedAdditionalRawData?.ContainsKey("entity") != true && Optional.IsDefined(Entity))
+            if (SerializedAdditionalRawData?.ContainsKey("entity") != true && Optional.IsDefined(EntityName))
             {
-                if (Entity != null)
+                if (EntityName != null)
                 {
                     writer.WritePropertyName("entity"u8);
-                    writer.WriteStringValue(Entity);
+                    writer.WriteStringValue(EntityName);
                 }
                 else
                 {
@@ -59,6 +59,11 @@ namespace OpenAI.FineTuning
                     writer.WriteStringValue(item);
                 }
                 writer.WriteEndArray();
+            }
+            if (SerializedAdditionalRawData?.ContainsKey("type") != true)
+            {
+                writer.WritePropertyName("type"u8);
+                writer.WriteStringValue(Type);
             }
             if (SerializedAdditionalRawData != null)
             {
@@ -82,19 +87,19 @@ namespace OpenAI.FineTuning
             writer.WriteEndObject();
         }
 
-        IntegrationWandB IJsonModel<IntegrationWandB>.Create(ref Utf8JsonReader reader, ModelReaderWriterOptions options)
+        WeightsAndBiasesIntegration IJsonModel<WeightsAndBiasesIntegration>.Create(ref Utf8JsonReader reader, ModelReaderWriterOptions options)
         {
-            var format = options.Format == "W" ? ((IPersistableModel<IntegrationWandB>)this).GetFormatFromOptions(options) : options.Format;
+            var format = options.Format == "W" ? ((IPersistableModel<WeightsAndBiasesIntegration>)this).GetFormatFromOptions(options) : options.Format;
             if (format != "J")
             {
-                throw new FormatException($"The model {nameof(IntegrationWandB)} does not support reading '{format}' format.");
+                throw new FormatException($"The model {nameof(WeightsAndBiasesIntegration)} does not support reading '{format}' format.");
             }
 
             using JsonDocument document = JsonDocument.ParseValue(ref reader);
-            return DeserializeIntegrationWandB(document.RootElement, options);
+            return DeserializeWeightsAndBiasesIntegration(document.RootElement, options);
         }
 
-        internal static IntegrationWandB DeserializeIntegrationWandB(JsonElement element, ModelReaderWriterOptions options = null)
+        internal static WeightsAndBiasesIntegration DeserializeWeightsAndBiasesIntegration(JsonElement element, ModelReaderWriterOptions options = null)
         {
             options ??= ModelSerializationExtensions.WireOptions;
 
@@ -106,6 +111,7 @@ namespace OpenAI.FineTuning
             string name = default;
             string entity = default;
             IList<string> tags = default;
+            string type = default;
             IDictionary<string, BinaryData> serializedAdditionalRawData = default;
             Dictionary<string, BinaryData> rawDataDictionary = new Dictionary<string, BinaryData>();
             foreach (var property in element.EnumerateObject())
@@ -149,6 +155,11 @@ namespace OpenAI.FineTuning
                     tags = array;
                     continue;
                 }
+                if (property.NameEquals("type"u8))
+                {
+                    type = property.Value.GetString();
+                    continue;
+                }
                 if (options.Format != "W")
                 {
                     rawDataDictionary ??= new Dictionary<string, BinaryData>();
@@ -156,47 +167,53 @@ namespace OpenAI.FineTuning
                 }
             }
             serializedAdditionalRawData = rawDataDictionary;
-            return new IntegrationWandB(project, name, entity, tags ?? new ChangeTrackingList<string>(), serializedAdditionalRawData);
+            return new WeightsAndBiasesIntegration(
+                type,
+                serializedAdditionalRawData,
+                project,
+                name,
+                entity,
+                tags ?? new ChangeTrackingList<string>());
         }
 
-        BinaryData IPersistableModel<IntegrationWandB>.Write(ModelReaderWriterOptions options)
+        BinaryData IPersistableModel<WeightsAndBiasesIntegration>.Write(ModelReaderWriterOptions options)
         {
-            var format = options.Format == "W" ? ((IPersistableModel<IntegrationWandB>)this).GetFormatFromOptions(options) : options.Format;
+            var format = options.Format == "W" ? ((IPersistableModel<WeightsAndBiasesIntegration>)this).GetFormatFromOptions(options) : options.Format;
 
             switch (format)
             {
                 case "J":
                     return ModelReaderWriter.Write(this, options);
                 default:
-                    throw new FormatException($"The model {nameof(IntegrationWandB)} does not support writing '{options.Format}' format.");
+                    throw new FormatException($"The model {nameof(WeightsAndBiasesIntegration)} does not support writing '{options.Format}' format.");
             }
         }
 
-        IntegrationWandB IPersistableModel<IntegrationWandB>.Create(BinaryData data, ModelReaderWriterOptions options)
+        WeightsAndBiasesIntegration IPersistableModel<WeightsAndBiasesIntegration>.Create(BinaryData data, ModelReaderWriterOptions options)
         {
-            var format = options.Format == "W" ? ((IPersistableModel<IntegrationWandB>)this).GetFormatFromOptions(options) : options.Format;
+            var format = options.Format == "W" ? ((IPersistableModel<WeightsAndBiasesIntegration>)this).GetFormatFromOptions(options) : options.Format;
 
             switch (format)
             {
                 case "J":
                     {
                         using JsonDocument document = JsonDocument.Parse(data);
-                        return DeserializeIntegrationWandB(document.RootElement, options);
+                        return DeserializeWeightsAndBiasesIntegration(document.RootElement, options);
                     }
                 default:
-                    throw new FormatException($"The model {nameof(IntegrationWandB)} does not support reading '{options.Format}' format.");
+                    throw new FormatException($"The model {nameof(WeightsAndBiasesIntegration)} does not support reading '{options.Format}' format.");
             }
         }
 
-        string IPersistableModel<IntegrationWandB>.GetFormatFromOptions(ModelReaderWriterOptions options) => "J";
+        string IPersistableModel<WeightsAndBiasesIntegration>.GetFormatFromOptions(ModelReaderWriterOptions options) => "J";
 
-        internal static IntegrationWandB FromResponse(PipelineResponse response)
+        internal static new WeightsAndBiasesIntegration FromResponse(PipelineResponse response)
         {
             using var document = JsonDocument.Parse(response.Content);
-            return DeserializeIntegrationWandB(document.RootElement);
+            return DeserializeWeightsAndBiasesIntegration(document.RootElement);
         }
 
-        internal virtual BinaryContent ToBinaryContent()
+        internal override BinaryContent ToBinaryContent()
         {
             return BinaryContent.Create(this, ModelSerializationExtensions.WireOptions);
         }
