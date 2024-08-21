@@ -20,6 +20,9 @@ internal readonly partial struct InternalFineTuningIntegrationType { }
 [CodeGenModel("FineTuningIntegrationWandb")]
 internal partial class InternalFineTuningIntegrationWandb { }
 
+[CodeGenModel("FineTuningJobObject")]
+internal readonly partial struct InternalFineTuningJobObject { }
+
 [CodeGenModel("FineTuningJobCheckpoint")]
 internal partial class InternalFineTuningJobCheckpoint { }
 
