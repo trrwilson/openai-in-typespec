@@ -2067,21 +2067,6 @@ namespace OpenAI.Models {
         public static bool operator !=(CreateFineTuningJobRequestModel left, CreateFineTuningJobRequestModel right);
         public override readonly string ToString();
     }
-    public readonly partial struct FineTuningJobObject : IEquatable<FineTuningJobObject> {
-        private readonly object _dummy;
-        private readonly int _dummyPrimitive;
-        public FineTuningJobObject(string value);
-        public static FineTuningJobObject FineTuningJob { get; }
-        public readonly bool Equals(FineTuningJobObject other);
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public override readonly bool Equals(object obj);
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public override readonly int GetHashCode();
-        public static bool operator ==(FineTuningJobObject left, FineTuningJobObject right);
-        public static implicit operator FineTuningJobObject(string value);
-        public static bool operator !=(FineTuningJobObject left, FineTuningJobObject right);
-        public override readonly string ToString();
-    }
     public class ModelClient {
         protected ModelClient();
         public ModelClient(OpenAIClientOptions options = null);
