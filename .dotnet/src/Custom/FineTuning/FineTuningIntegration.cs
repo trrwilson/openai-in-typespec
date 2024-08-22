@@ -14,6 +14,16 @@ public partial class FineTuningIntegration
         string entityName = null,
         IEnumerable<string> tags = null)
     {
-        return new WeightsAndBiasesIntegration("wandb", serializedAdditionalRawData: null, projectName, displayName, entityName, tags.ToList());
+        WeightsAndBiasesIntegration result = new()
+        {
+            ProjectName = projectName,
+            DisplayName = displayName,
+            EntityName = entityName,
+        };
+        foreach (string tag in tags ?? [])
+        {
+            result.Tags.Add(tag);
+        }
+        return result;
     }
 }

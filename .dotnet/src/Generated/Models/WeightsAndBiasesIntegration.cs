@@ -9,6 +9,5 @@ namespace OpenAI.FineTuning
 {
     public partial class WeightsAndBiasesIntegration : FineTuningIntegration
     {
-        public IList<string> Tags { get; }
     }
 }

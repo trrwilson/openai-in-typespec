@@ -6,53 +6,65 @@ using System.Text;
 namespace OpenAI.FineTuning;
 
 /// <summary>
-/// Setting for integration with Weights and Biases (https://wandb.ai).
+/// Settings for fine tuning integration with Weights and Biases (https://wandb.ai).
 /// </summary>
 [CodeGenModel("CreateFineTuningJobRequestWandbIntegration")]
-[CodeGenSuppress(nameof(WeightsAndBiasesIntegration), typeof(string), typeof(IDictionary<string, BinaryData>), typeof(string), typeof(string), typeof(string), typeof(IList<string>))]
+[CodeGenSuppress(nameof(WeightsAndBiasesIntegration), typeof(InternalCreateFineTuningJobRequestWandbIntegrationWandb))]
+[CodeGenSuppress(nameof(WeightsAndBiasesIntegration), typeof(string), typeof(IDictionary<string, BinaryData>), typeof(InternalCreateFineTuningJobRequestWandbIntegrationWandb))]
 public partial class WeightsAndBiasesIntegration
 {
-    [CodeGenMember("Project")]
-    private string _project;
+    [CodeGenMember("Wandb")]
+    private InternalCreateFineTuningJobRequestWandbIntegrationWandb _innerWandb { get; }
 
     /// <summary>
     /// The Weights &amp; Biases <c>project</c> name that the run will be created under.
     /// </summary>
     public required string ProjectName
     {
-        get => _project;
-        set => _project = value;
+        get => _innerWandb.Project;
+        set => _innerWandb.Project = value;
     }
 
     /// <summary>
     /// The friendly <c>name</c> to associate with the run. If not specified, the job ID will be used.
     /// </summary>
-    [CodeGenMember("Name")]
-    public string DisplayName { get; set; }
+    public string DisplayName
+    {
+        get => _innerWandb.Name;
+        set => _innerWandb.Name = value;
+    }
 
     /// <summary>
     /// The Weights &amp; Biases <c>entity</c> to associate with the run, specified as a team or user name.
     /// </summary>
-    [CodeGenMember("Entity")]
-    public string EntityName { get; set; }
+    public string EntityName
+    {
+        get => _innerWandb.Entity;
+        set => _innerWandb.Entity = value;
+    }
+
+    public IList<string> Tags
+    {
+        get => _innerWandb.Tags;
+    }
 
     public WeightsAndBiasesIntegration()
         : base("wandb", null)
-    {}
-
-    [SetsRequiredMembers]
-    public WeightsAndBiasesIntegration(string projectName)
     {
-        ProjectName = projectName;
+        _innerWandb = new(project: string.Empty);
     }
 
     [SetsRequiredMembers]
-    internal WeightsAndBiasesIntegration(string type, IDictionary<string, BinaryData> serializedAdditionalRawData, string project, string displayName, string entityName, IList<string> tags)
+    public WeightsAndBiasesIntegration(string projectName)
+        : base("wandb", null)
+    {
+        _innerWandb = new(projectName);
+    }
+
+    [SetsRequiredMembers]
+    internal WeightsAndBiasesIntegration(string type, IDictionary<string, BinaryData> serializedAdditionalRawData, InternalCreateFineTuningJobRequestWandbIntegrationWandb wandb)
         : base(type, serializedAdditionalRawData)
     {
-        _project = project;
-        DisplayName = displayName;
-        EntityName = entityName;
-        Tags = tags;
+        _innerWandb = wandb;
     }
 }

@@ -21,44 +21,10 @@ namespace OpenAI.FineTuning
             }
 
             writer.WriteStartObject();
-            if (SerializedAdditionalRawData?.ContainsKey("project") != true)
+            if (SerializedAdditionalRawData?.ContainsKey("wandb") != true)
             {
-                writer.WritePropertyName("project"u8);
-                writer.WriteStringValue(_project);
-            }
-            if (SerializedAdditionalRawData?.ContainsKey("name") != true && Optional.IsDefined(DisplayName))
-            {
-                if (DisplayName != null)
-                {
-                    writer.WritePropertyName("name"u8);
-                    writer.WriteStringValue(DisplayName);
-                }
-                else
-                {
-                    writer.WriteNull("name");
-                }
-            }
-            if (SerializedAdditionalRawData?.ContainsKey("entity") != true && Optional.IsDefined(EntityName))
-            {
-                if (EntityName != null)
-                {
-                    writer.WritePropertyName("entity"u8);
-                    writer.WriteStringValue(EntityName);
-                }
-                else
-                {
-                    writer.WriteNull("entity");
-                }
-            }
-            if (SerializedAdditionalRawData?.ContainsKey("tags") != true && Optional.IsCollectionDefined(Tags))
-            {
-                writer.WritePropertyName("tags"u8);
-                writer.WriteStartArray();
-                foreach (var item in Tags)
-                {
-                    writer.WriteStringValue(item);
-                }
-                writer.WriteEndArray();
+                writer.WritePropertyName("wandb"u8);
+                writer.WriteObjectValue<InternalCreateFineTuningJobRequestWandbIntegrationWandb>(_innerWandb, options);
             }
             if (SerializedAdditionalRawData?.ContainsKey("type") != true)
             {
@@ -107,52 +73,15 @@ namespace OpenAI.FineTuning
             {
                 return null;
             }
-            string project = default;
-            string name = default;
-            string entity = default;
-            IList<string> tags = default;
+            InternalCreateFineTuningJobRequestWandbIntegrationWandb wandb = default;
             string type = default;
             IDictionary<string, BinaryData> serializedAdditionalRawData = default;
             Dictionary<string, BinaryData> rawDataDictionary = new Dictionary<string, BinaryData>();
             foreach (var property in element.EnumerateObject())
             {
-                if (property.NameEquals("project"u8))
+                if (property.NameEquals("wandb"u8))
                 {
-                    project = property.Value.GetString();
-                    continue;
-                }
-                if (property.NameEquals("name"u8))
-                {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        name = null;
-                        continue;
-                    }
-                    name = property.Value.GetString();
-                    continue;
-                }
-                if (property.NameEquals("entity"u8))
-                {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        entity = null;
-                        continue;
-                    }
-                    entity = property.Value.GetString();
-                    continue;
-                }
-                if (property.NameEquals("tags"u8))
-                {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        continue;
-                    }
-                    List<string> array = new List<string>();
-                    foreach (var item in property.Value.EnumerateArray())
-                    {
-                        array.Add(item.GetString());
-                    }
-                    tags = array;
+                    wandb = InternalCreateFineTuningJobRequestWandbIntegrationWandb.DeserializeInternalCreateFineTuningJobRequestWandbIntegrationWandb(property.Value, options);
                     continue;
                 }
                 if (property.NameEquals("type"u8))
@@ -167,13 +96,7 @@ namespace OpenAI.FineTuning
                 }
             }
             serializedAdditionalRawData = rawDataDictionary;
-            return new WeightsAndBiasesIntegration(
-                type,
-                serializedAdditionalRawData,
-                project,
-                name,
-                entity,
-                tags ?? new ChangeTrackingList<string>());
+            return new WeightsAndBiasesIntegration(type, serializedAdditionalRawData, wandb);
         }
 
         BinaryData IPersistableModel<WeightsAndBiasesIntegration>.Write(ModelReaderWriterOptions options)

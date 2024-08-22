@@ -75,10 +75,12 @@ model CreateFineTuningJobRequestIntegration {
 model CreateFineTuningJobRequestWandbIntegration
   extends CreateFineTuningJobRequestIntegration {
   type: "wandb";
-  project: string;
-  name?: string | null;
-  entity?: string | null;
-  tags?: string[];
+  wandb: {
+    project: string;
+    name?: string | null;
+    entity?: string | null;
+    tags?: string[];
+  };
 }
 
 @discriminator("type")

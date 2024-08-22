@@ -3959,24 +3959,29 @@ components:
       type: object
       required:
         - type
-        - project
+        - wandb
       properties:
         type:
           type: string
           enum:
             - wandb
-        project:
-          type: string
-        name:
-          type: string
-          nullable: true
-        entity:
-          type: string
-          nullable: true
-        tags:
-          type: array
-          items:
-            type: string
+        wandb:
+          type: object
+          properties:
+            project:
+              type: string
+            name:
+              type: string
+              nullable: true
+            entity:
+              type: string
+              nullable: true
+            tags:
+              type: array
+              items:
+                type: string
+          required:
+            - project
       allOf:
         - $ref: '#/components/schemas/CreateFineTuningJobRequestIntegration'
     CreateImageEditRequestMultiPart:
